@@ -1,0 +1,23 @@
+body .Body {
+  display: grid;
+  grid-template-columns: 10% 70% 20%;
+  grid-template-rows: 90% 10%;
+  column-gap: 5px;
+  row-gap: 5px;
+  margin: 20px auto;
+
+  padding: 0%;
+  width: 100%;
+  height: 740px;
+  background-color: rgba(240, 240, 240, 1);
+}
+
+body .config {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+
+  background-color: rgba(50, 50, 50, 1);
+  border-radius: 20px;
+}
