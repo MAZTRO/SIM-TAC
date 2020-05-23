@@ -1,5 +1,9 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
+import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
 // ...
+
+const lastBarCache = new Map();
+
 async function getAllSymbols() {
   const data = await makeApiRequest('data/v3/all/exchanges');
   let allSymbols = [];
@@ -25,7 +29,7 @@ async function getAllSymbols() {
 }
 
 const configurationData = {
-  supported_resolutions: ['1D', '1W', '1M'],
+  supported_resolutions: ['1D', '1H'],
   exchanges: [
     {
       value: 'Bitfinex',
@@ -125,6 +129,11 @@ export default {
           }];
         }
       });
+      /* data.Data.forEach( ... ); */
+
+      if (firstDataRequest) {
+        lastBarCache.set(symbolInfo.full_name, {...bars[bars.length - 1]});
+      }
       console.log(`[getBars]: returned ${bars.length} bar(s)`);
       onHistoryCallback(bars, { noData: false });
     } catch (error) {
@@ -132,10 +141,19 @@ export default {
       onErrorCallback(error);
     }
   },
-  /* subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
+  subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
     console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
+    subscribeOnStream(
+      symbolInfo,
+      resolution,
+      onRealtimeCallback,
+      subscribeUID,
+      onResetCacheNeededCallback,
+      lastBarCache.get(symbolInfo.full_name)
+    );
   },
   unsubscribeBars: (subscriberUID) => {
     console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
-  }, */
+    unsubscribeFromStream(subscriberUID);
+  },
 };
