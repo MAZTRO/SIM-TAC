@@ -29,7 +29,7 @@ async function getAllSymbols() {
 }
 
 const configurationData = {
-  supported_resolutions: ['1D'],
+  supported_resolutions: ['1', '2', '5', '15', '1H', '1D'],
   exchanges: [
     {
       value: 'Bitfinex',
@@ -79,7 +79,7 @@ export default {
       exchange: symbolItem.exchange,
       minmov: 1,
       pricescale: 100,
-      has_intraday: false,
+      has_intraday: true,
       has_no_volume: true,
       has_weekly_and_monthly: false,
       supported_resolutions: configurationData.supported_resolutions,
@@ -101,24 +101,47 @@ export default {
     };
     const query = Object.keys(urlParameters).map(name => `${name}=${encodeURIComponent(urlParameters[name])}`).join('&');
     try {
-      const data = await makeApiRequest(`data/histoday?${query}`);
-      if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
-        // "noData" should be set if there is no data in the requested period.
-        onHistoryCallback([], { noData: true });
-        return;
-      }
       let bars = [];
-      data.Data.forEach(bar => {
-        if (bar.time >= from && bar.time < to) {
-          bars = [...bars, {
-            time: bar.time * 1000,
-            low: bar.low,
-            high: bar.high,
-            open: bar.open,
-            close: bar.close,
-          }];
+      let data;
+      if (resolution == '1D') {
+        data = await makeApiRequest(`data/histoday?${query}`);
+        if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
+          // "noData" should be set if there is no data in the requested period.
+          onHistoryCallback([], { noData: true });
+          return;
         }
-      });
+        data.Data.forEach(bar => {
+          if (bar.time >= from && bar.time < to) {
+            bars = [...bars, {
+              time: bar.time * 1000,
+              low: bar.low,
+              high: bar.high,
+              open: bar.open,
+              close: bar.close,
+            }];
+          }
+        });
+      } else {
+        if (resolution === '15') {
+          data = await makeApiRequest(`data/v2/histominute?${query}`);
+          if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
+            // "noData" should be set if there is no data in the requested period.
+            onHistoryCallback([], { noData: true });
+            return;
+          }
+          data.Data.Data.forEach(bar => {
+            if (bar.time >= from && bar.time < to) {
+              bars = [...bars, {
+                time: bar.time * 1000,
+                low: bar.low,
+                high: bar.high,
+                open: bar.open,
+                close: bar.close,
+              }];
+            }
+          });
+        }
+      }
       /* data.Data.forEach( ... ); */
 
       if (firstDataRequest) {
