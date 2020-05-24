@@ -29,21 +29,13 @@ async function getAllSymbols() {
 }
 
 const configurationData = {
-  supported_resolutions: ['1D', '1H'],
+  supported_resolutions: ['1D'],
   exchanges: [
     {
       value: 'Bitfinex',
       name: 'Bitfinex',
       desc: 'Bitfinex',
-    },
-    {
-      // `exchange` argument for the `searchSymbols` method, if a user selects this exchange
-      value: 'Kraken',
-      // filter name
-      name: 'Kraken',
-      // full exchange name displayed in the filter popup
-      desc: 'Kraken bitcoin exchange',
-    },
+    }
   ],
   symbols_types: [
     {
@@ -83,7 +75,7 @@ export default {
       description: symbolItem.description,
       type: symbolItem.type,
       session: '24x7',
-      timezone: 'Etc/UTC',
+      timezone: 'America/New_York',
       exchange: symbolItem.exchange,
       minmov: 1,
       pricescale: 100,
@@ -107,9 +99,7 @@ export default {
       toTs: to,
       limit: 2000,
     };
-    const query = Object.keys(urlParameters)
-    .map(name => `${name}=${encodeURIComponent(urlParameters[name])}`)
-    .join('&');
+    const query = Object.keys(urlParameters).map(name => `${name}=${encodeURIComponent(urlParameters[name])}`).join('&');
     try {
       const data = await makeApiRequest(`data/histoday?${query}`);
       if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
