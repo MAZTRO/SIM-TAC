@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="../Web/styles/common.css">
   <link rel="stylesheet" href="../Web/styles/footer.css">
   <link rel="stylesheet" href="../Web/styles/body.css">
+  <!-- Load React. -->
+  <!-- Note: cuando se despliegue, reemplazar "development.js" con "production.min.js". -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="../Web/scripts/configBlock.js" async></script>
   <title>SIM-TAC</title>
 </head>
 <body>
@@ -32,8 +37,23 @@
   <!-- == body section == -->
   <!-- ==================== -->
   <div class="Body">
-    <div class="config"></div>
-    <div class="tcChart"></div>
+    <div class="config">
+      <div class="currencies">
+        <button class="btnToggleCurr" id="btc">BTC</button>
+        <button class="btn" id="ltc">LTC</button>
+        <button class="btn" id="eth">ETH</button>
+        <button class="btn" id="nasdaq">NASDAQ</button>
+      </div>
+      <div class="times">
+        <button class="btnToggleTime" id="time">2 min</button>
+        <button class="btn" id="time">5 min</button>
+        <button class="btn" id="time">15 min</button>
+      </div>
+      <div class="dates">
+        <!-- Calendar -->
+      </div>
+    </div>
+    <div class="tvChart"></div>
     <div class="operator"></div>
     <div class="player"></div>
   </div>
