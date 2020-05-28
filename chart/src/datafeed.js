@@ -29,6 +29,7 @@ async function getAllSymbols() {
 }
 
 const configurationData = {
+  supports_time: true,
   supported_resolutions: ['1', '2', '5', '15', '1H', '1D'],
   exchanges: [
     {
@@ -80,6 +81,7 @@ export default {
       minmov: 1,
       pricescale: 100,
       has_intraday: true,
+      intraday_multipliers: ['1'],
       has_no_volume: true,
       has_weekly_and_monthly: false,
       supported_resolutions: configurationData.supported_resolutions,
@@ -122,10 +124,9 @@ export default {
           }
         });
       } else {
-        if (resolution === '15') {
+        if (resolution === '1') {
           data = await makeApiRequest(`data/v2/histominute?${query}`);
           if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
-            // "noData" should be set if there is no data in the requested period.
             onHistoryCallback([], { noData: true });
             return;
           }
@@ -140,7 +141,7 @@ export default {
               }];
             }
           });
-        }
+        } 
       }
       /* data.Data.forEach( ... ); */
 

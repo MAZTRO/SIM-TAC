@@ -3,7 +3,7 @@ import Datafeed from './datafeed.js';
 
 window.tvWidget = new TradingView.widget({
     symbol: 'Bitfinex:BTC/USD', // default symbol
-    interval: '1D', // default interval
+    interval: '5', // default interval
     timezone: "America/New_York",
     width: '1000',
     height: '600',

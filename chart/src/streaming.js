@@ -81,7 +81,7 @@ socket.on('m', data => {
     return;
   }
   const lastDailyBar = subscriptionItem.lastDailyBar;
-  const nextDailyBartime = getNextDailyBartime(lastDailyBar.time);
+  const nextDailyBartime = getNextBartime(lastDailyBar.time);
 
   let bar;
   if (tradeTime >= nextDailyBartime) {
@@ -105,7 +105,7 @@ socket.on('m', data => {
   subscriptionItem.handlers.forEach(handler => handler.callback(bar));
 });
 
-function getNextDailyBartime(barTime) {
+function getNextBartime(barTime) {
   const date = new Date(barTime * 1000);
   date.setDate(date.getDate() + 1);
   return date.getTime() / 1000;
