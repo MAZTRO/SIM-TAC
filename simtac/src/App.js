@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 
-class MyApp extends Component {
+class App extends Component {
   state = {
     date: new Date(),
   }
@@ -18,3 +19,6 @@ class MyApp extends Component {
     );
   }
 }
+
+
+export default App;
