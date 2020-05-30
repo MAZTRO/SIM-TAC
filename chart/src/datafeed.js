@@ -1,13 +1,16 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
 // ...
+import { widget } from './main.js';
+import { addEvent } from './orderLine.js';
 
 const lastBarCache = new Map();
+const orderButton = document.getElementById('orderButton');
 
 async function getAllSymbols() {
   const data = await makeApiRequest('data/v3/all/exchanges');
   let allSymbols = [];
-  
+  console.log(data)
   for (const exchange of configurationData.exchanges) {
     const pairs = data.Data[exchange.value].pairs;
     for (const leftPairPart of Object.keys(pairs)) {
@@ -22,7 +25,7 @@ async function getAllSymbols() {
         };
       });
       allSymbols = [...allSymbols, ...symbols];
-      console.log(allSymbols);
+      //console.log(allSymbols);
     }
   }
   return allSymbols;
@@ -36,7 +39,7 @@ const configurationData = {
       value: 'Bitfinex',
       name: 'Bitfinex',
       desc: 'Bitfinex',
-    }
+    },
   ],
   symbols_types: [
     {
@@ -149,7 +152,12 @@ export default {
         lastBarCache.set(symbolInfo.full_name, {...bars[bars.length - 1]});
       }
       console.log(`[getBars]: returned ${bars.length} bar(s)`);
+      //console.log(widget)      
       onHistoryCallback(bars, { noData: false });
+
+      addEvent(orderButton);
+
+
     } catch (error) {
       console.log('[getBars]: Get error', error);
       onErrorCallback(error);
@@ -165,6 +173,19 @@ export default {
       onResetCacheNeededCallback,
       lastBarCache.get(symbolInfo.full_name)
     );
+    /**setInterval(function () {
+      var d = new Date();
+      var seconds = d.getMinutes() * 60 + d.getSeconds(); //convet 00:00 to seconds for easier caculation
+      var fiveMin = 60 * resolution; //five minutes is 300 seconds!
+      var timeleft = fiveMin - seconds % fiveMin; // let's say 01:30, then current seconds is 90, 90%300 = 90, then 300-90 = 210. That's the time left!
+      var result = parseInt(timeleft / 60) + ':' + timeleft % 60; //formart seconds into 00:00 
+      //document.getElementById('test').innerHTML = result;
+      if  (result == '0:1'){
+        onResetCacheNeededCallback();
+        widget.chart().resetData();
+      }
+  }, 500) //calling it every 0.5 second to do a count down
+    */
   },
   unsubscribeBars: (subscriberUID) => {
     console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
