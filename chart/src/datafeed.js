@@ -40,8 +40,8 @@ const configurationData = {
   ],
   symbols_types: [
     {
-      name: 'crypto',
       // `symbolType` argument for the `searchSymbols` method, if a user selects this symbol type
+      name: 'crypto',
       value: 'crypto',
     },
   ],
@@ -143,7 +143,6 @@ export default {
           });
         } 
       }
-      /* data.Data.forEach( ... ); */
 
       if (firstDataRequest) {
         lastBarCache.set(symbolInfo.full_name, {...bars[bars.length - 1]});
@@ -165,18 +164,18 @@ export default {
       onResetCacheNeededCallback,
       lastBarCache.get(symbolInfo.full_name)
     );
-    /* setInterval(function () {
+    setInterval(() => {
       let d = new Date();
       let seconds = d.getMinutes() * 60 + d.getSeconds(); //convet 00:00 to seconds for easier caculation
-      let fiveMin = 60 * resolution; //five minutes is 300 seconds!
-      let timeleft = fiveMin - seconds % fiveMin; // let's say 01:30, then current seconds is 90, 90%300 = 90, then 300-90 = 210. That's the time left!
-      var result = parseInt(timeleft / 60) + ':' + timeleft % 60; //formart seconds into 00:00 
-      console.log(result);
-      if (result === "0:1") {
+      let Min = 60 * resolution;
+      let timeleft = Min - seconds % Min; // let's say 01:30, then current seconds is 90, 90%300 = 90, then 300-90 = 210. That's the time left!
+      let result = parseInt(timeleft / 60) + ':' + timeleft % 60; //formart seconds into 00:00 
+      /* console.log(result); */
+      if (result === "0:59") {
         onResetCacheNeededCallback();
         window.tvWidget.activeChart().resetData();
       }
-    }, 1000) */
+    }, 1000)
   },
   unsubscribeBars: (subscriberUID) => {
     console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
