@@ -21,6 +21,7 @@ export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, su
   const handler = {
     id: subscribeUID,
     callback: onRealtimeCallback,
+    callback2: onResetCacheNeededCallback
   };
   let subscriptionItem = channelToSubscription.get(channelString);
   if (subscriptionItem) {
@@ -56,6 +57,7 @@ export function unsubscribeFromStream(subscribeUID) {
 }
 
 socket.on('m', data => {
+  /* debugger */
   console.log('[socket] Message:', data);
   const [
     eventTypeStr,
@@ -82,6 +84,7 @@ socket.on('m', data => {
   }
   const lastDailyBar = subscriptionItem.lastDailyBar;
   const nextDailyBartime = getNextBartime(lastDailyBar.time);
+ /*  console.log(subscriptionItem.resolution); */
 
   let bar;
   if (tradeTime >= nextDailyBartime) {
@@ -89,7 +92,7 @@ socket.on('m', data => {
       ...lastDailyBar,
       high: Math.max(lastDailyBar.high, tradePrice),
       low: Math.min(lastDailyBar.low, tradePrice),
-      close: tradePrice
+      close: tradePrice,
     };
   } else {
     bar = {
@@ -102,7 +105,15 @@ socket.on('m', data => {
   }
   
   subscriptionItem.lastDailyBar = bar;
-  subscriptionItem.handlers.forEach(handler => handler.callback(bar));
+  console.log(bar);
+  console.log(bar.isBarClosed);
+  console.log(bar.isLastBar);
+  subscriptionItem.handlers[0].callback(bar);
+  /* subscriptionItem.handlers.forEach(handler => {
+    handler.callback(bar);
+    handler.callback2()
+  }); */
+  /* window.tvWidget.activeChart().resetData(); */
 });
 
 function getNextBartime(barTime) {
