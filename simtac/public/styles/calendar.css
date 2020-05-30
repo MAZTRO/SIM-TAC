@@ -1,0 +1,24 @@
+/* ========================== */
+/* ***** Calendar style ***** */
+/* ========================== */
+
+.calendarDIV {
+  min-width: 160px;
+  max-width: 80%;
+
+  margin: 10px auto;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: none;
+  /* background-color: rgba(150, 150, 150, 1); */
+  border-radius: 15px;
+}
+
+.week-day {
+  margin: 5px auto;
+  color: aliceblue;
+  font-size: 9px;
+}

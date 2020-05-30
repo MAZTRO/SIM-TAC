@@ -9,7 +9,7 @@ body .Body {
 
   padding: 0%;
   width: 100%;
-  height: 740px;
+  height: 640px;
   border-bottom: 1px solid;
   border-color: rgba(230, 230, 230, 1);
   background-color: rgba(240, 240, 240, 1);
@@ -22,7 +22,7 @@ body .config {
   grid-row-start: 1;
   grid-row-end: span 2;
 
-  min-width: 150px;
+  min-width: 170px;
 
   margin: 5px 0px 5px 5px;
   background-color: rgba(180, 180, 180, 1);
@@ -35,10 +35,10 @@ body .tvChart {
   grid-row-start: 1;
   grid-row-end: span 1;
 
-  /* min-width: 1110px; */
+  min-width: 600px;
 
   margin: 5px;
-  background-color: rgba(100, 100, 100, 1);
+  background-color: rgba(100, 100, 100, 0);
   border-radius: 20px;
 }
 
@@ -51,7 +51,7 @@ body .operator {
   min-width: 200px;
 
   margin: 5px 5px 5px 0px;
-  background-color: rgba(150, 150, 150, 1);
+  background-color: rgba(180, 180, 180, 1);
   border-radius: 20px;
 }
 
@@ -62,7 +62,7 @@ body .player {
   grid-row-end: span 2;
 
   margin: 0px 5px 5px 5px;
-  background-color: rgba(150, 150, 150, 1);
+  background-color: rgba(150, 150, 150, 0);
   border-radius: 20px;
 }
 
@@ -158,3 +158,173 @@ body .player {
   cursor: pointer;
 }
 
+/* ================================= */
+/* Configuration of block 'operator' */
+/* ================================= */
+
+.operator .status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  height: 120px;
+  border: 0px;
+  border-bottom: 1px solid;
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.operator .status p {
+  margin: 0px;
+  margin-bottom: 10px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .status .statusDIV {
+  color: rgb(50, 50, 50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  max-width: 80%;
+  height: 60px;
+  background-color: rgba(200, 200, 200, 1);
+  border-radius: 15px;
+
+}
+
+.operator .operations {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 20% 30% 50%;
+  height: 200px;
+  border: 0px;
+  border-bottom: 1px solid;
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.operator .operations p {
+  grid-column: 1 / span 4;
+  grid-row: 1 / 2;
+  text-align: center;
+  width: 100%;
+  margin: auto auto;
+  margin-bottom: 10px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .operations input {
+  text-align: center;
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+  margin: auto auto;
+  width: 90%;
+  height: 40px;
+  background-color: rgba(230, 230, 230, 1);
+  box-shadow: inset 4px 4px 10px rgb(190, 190, 190),
+              inset -4px -4px 10px rgb(255, 255, 255);
+  border-radius: 15px;
+  border: none;
+  outline: none;
+}
+
+.Body .operator .btn {
+  color: rgba(240, 240, 240, 1);
+  margin: 10px auto;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  width: 80%;
+  height: 50px;
+  background-color: rgba(230, 230, 230, 1);
+}
+.Body .operator .btn:hover {
+  cursor: pointer;
+}
+
+.Body .operator #sell {
+  grid-column: 3 / span 4;
+  grid-row: 3 / span 3;
+  background-color: rgb(209, 65, 65);
+}
+
+.Body .operator #buy {
+  grid-column: 1 / span 2;
+  grid-row: 3 / span 3;
+  background-color: rgb(25, 175, 58);
+}
+
+.Body .operator #buy:hover {
+  cursor: pointer;
+  box-shadow: inset 4px 4px 10px rgb(13, 109, 34),
+              inset -4px -4px 10px rgb(79, 212, 108);
+}
+
+
+.Body .operator #sell:hover {
+  cursor: pointer;
+  box-shadow: inset 4px 4px 10px rgb(116, 21, 21),
+              inset -4px -4px 10px rgb(233, 107, 107);
+}
+
+.operator .closer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  height: 120px;
+  border: 0px;
+  border-bottom: 1px solid;
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.operator .closer p {
+  text-align: center;
+  width: 100%;
+  margin: 10px auto;
+  margin-bottom: 10px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .closer #close {
+  background-color: rgba(100, 100, 100, 1);
+  color: rgba(230, 230, 230, 1);
+}
+
+.operator .closer #close:hover {
+  background-color: rgba(100, 100, 100, 1);
+  box-shadow: inset 4px 4px 10px rgb(65, 65, 65),
+              inset -4px -4px 10px rgb(130, 130, 130);
+}
+
+.operator .amountInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  height: 120px;
+  border: 0px;
+}
+
+.operator .amountInfo p {
+  text-align: center;
+  width: 100%;
+  margin: 10px auto;
+  margin-bottom: 10px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .amountInfo .cash {
+  color: rgb(50, 50, 50);
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  max-width: 80%;
+  height: 60px;
+  background-color: rgba(200, 200, 200, 1);
+  border-radius: 15px;
+}
