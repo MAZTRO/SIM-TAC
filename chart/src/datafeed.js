@@ -5,12 +5,12 @@ import { widget } from './main.js';
 import { addEvent } from './orderLine.js';
 
 const lastBarCache = new Map();
-const orderButton = document.getElementById('orderButton');
+const openOrderButton = document.getElementById('openOrderButton');
 
 async function getAllSymbols() {
   const data = await makeApiRequest('data/v3/all/exchanges');
   let allSymbols = [];
-  console.log(data)
+
   for (const exchange of configurationData.exchanges) {
     const pairs = data.Data[exchange.value].pairs;
     for (const leftPairPart of Object.keys(pairs)) {
@@ -155,7 +155,7 @@ export default {
       //console.log(widget)      
       onHistoryCallback(bars, { noData: false });
 
-      addEvent(orderButton);
+      addEvent(openOrderButton);
 
 
     } catch (error) {

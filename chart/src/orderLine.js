@@ -5,10 +5,12 @@
         quantity
 */
 import { widget } from './main.js';
+// import last price each time the socket update a tick
 import { LP } from './streaming.js';
 
 export const addEvent = function (element) {
     element.addEventListener('click', () => {
+        //Quantity must be set by the user in this case we set it by default
         createOrder(LP, "1200.00 USDT");  
     });
 }
@@ -18,33 +20,9 @@ function createOrderInActiveChart(data) {
     order.setPrice(data.price);
     order.setQuantity(data.quantity);
     console.log("order ready")
-    //order.setQuantity(data.quantity);
-}
-
-const createOrder = function (price, quantity) {
-    // save data in sobject
-    const orderData = Object();
-    orderData['price'] = LP;
-    orderData ['quantity'] = quantity;
-    //console.log('that ', orderData.price)
-    createOrderInActiveChart(orderData);
-    return orderData;
-}
-
-/*here we  have two options first generate de complete order form
-and send  to the api or send to the api and call it again with the
-safe stored information*/
-
-
-// send  Post order to the api
-
-//  create order template
-
-//  inner the order template in the view
-
-/*const color = '#ff9f0a';
+    /*other methos that can set to the order line on th chart
+      const color = '#ff9f0a';
       const fontColor = '#fff';
-      const n = widget.activeChart().createOrderLine({disableUndo: true})
       //.setText("Buy Line")
       //.setLineLength(1) 
       //.setLineStyle(3)
@@ -65,4 +43,26 @@ safe stored information*/
       .setLineStyle(2)             
       //n.lines.set(id, widget)
       console.log(n)*/
-    
+}
+
+const createOrder = function (price, quantity) {
+    // save data in sobject
+    const orderData = Object();
+    orderData['price'] = LP;
+    orderData ['quantity'] = quantity;
+    // Create order in chart
+    createOrderInActiveChart(orderData);
+
+    return orderData;
+}
+
+/*here we  have two options first generate de complete order form
+and send  to the api or send to the api and call it again with the
+safe stored information*/
+
+
+// send  Post order to the api
+
+//  create order template
+
+//  inner the order template in the view    
