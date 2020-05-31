@@ -2,10 +2,11 @@ import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
 // ...
 import { widget } from './main.js';
-import { addEvent } from './createOrderLine.js';
+import { addEvent, addCloseEvent } from './createOrderLine.js';
 
 const lastBarCache = new Map();
 const openOrderButton = document.getElementById('openOrderButton');
+const closeOrderButton = document.getElementById('closeOrderButton');
 
 async function getAllSymbols() {
   const data = await makeApiRequest('data/v3/all/exchanges');
@@ -155,6 +156,7 @@ export default {
       onHistoryCallback(bars, { noData: false });
 
       addEvent(openOrderButton);
+      addCloseEvent(closeOrderButton);
 
 
     } catch (error) {

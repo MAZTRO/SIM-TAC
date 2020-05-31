@@ -7,6 +7,7 @@
 import { widget } from './main.js';
 // import last price each time the socket update a tick
 import { LP } from './streaming.js';
+let userOrders  = [];
 
 export const addEvent = function (element) {
     element.addEventListener('click', () => {
@@ -15,12 +16,63 @@ export const addEvent = function (element) {
     });
 }
 
+export const addCloseEvent = function (element) {
+    element.addEventListener('click', () => {
+        deleteOrder(userOrders);
+    });
+}
+
 function createOrderInActiveChart(data) {
+    // set the new order on the chart
     const order  = widget.activeChart().createOrderLine()
     order.setPrice(data.price);
     order.setQuantity(data.quantity);
-    console.log("order ready")
-    /*other methos that can set to the order line on th chart
+
+    const  orderId = order._line._id;
+    userOrders.push({
+        id : orderId,
+        price: data.price,
+        quantity: data.quantity,
+        orr: order
+    });
+    
+    order.onCancel("onCancel evert", function(text) {
+        this._active = false;
+        setTimeout(() => this.remove(), 1500); 
+    });
+}
+
+const createOrder = function (price, quantity) {
+    const orderData = Object(); // save data in sobject
+    orderData['price'] = LP;
+    orderData ['quantity'] = quantity;
+    createOrderInActiveChart(orderData); // Create order in chart
+}
+
+function deleteOrder (userOrders) {
+    // this function has to delete the with the correct id
+   userOrders.forEach(element => {
+        console.log(element.orr)
+        element.orr._active = false;
+        setTimeout(() => element.orr.remove(), 1000); 
+   });
+}
+
+/*here
+
+we  have two options first generate de complete order form
+and send  to the api or send to the api and call it again with the
+safe stored information*/
+
+
+// send  Post order to the api
+
+//  create order template
+
+//  inner the order template in the view    
+
+
+/*other methos that can set to the order line on th chart
       const color = '#ff9f0a';
       const fontColor = '#fff';
       //.setText("Buy Line")
@@ -43,26 +95,3 @@ function createOrderInActiveChart(data) {
       .setLineStyle(2)             
       //n.lines.set(id, widget)
       console.log(n)*/
-}
-
-const createOrder = function (price, quantity) {
-    // save data in sobject
-    const orderData = Object();
-    orderData['price'] = LP;
-    orderData ['quantity'] = quantity;
-    // Create order in chart
-    createOrderInActiveChart(orderData);
-
-    return orderData;
-}
-
-/*here we  have two options first generate de complete order form
-and send  to the api or send to the api and call it again with the
-safe stored information*/
-
-
-// send  Post order to the api
-
-//  create order template
-
-//  inner the order template in the view    

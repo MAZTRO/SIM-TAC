@@ -67,7 +67,7 @@ export function unsubscribeFromStream(subscribeUID) {
 
 socket.on('m', data => {
   /* debugger */
-  console.log('[socket] Message:', data);
+  //console.log('[socket] Message:', data);
 
   const [
     eventTypeStr,
@@ -110,7 +110,7 @@ socket.on('m', data => {
       low: Math.min(lastDailyBar.low, tradePrice),
       close: tradePrice,
     }
-    console.log('[socket] Update the latest bar by price', tradePrice);
+    //console.log('[socket] Update the latest bar by price', tradePrice);
     LP = lPrice(tradePrice);
 
   }
