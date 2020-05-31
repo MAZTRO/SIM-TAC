@@ -1,7 +1,7 @@
 // Datafeed implementation, will be added later
 import Datafeed from './datafeed.js';
 
-window.tvWidget = new TradingView.widget({
+export const widget = window.tvWidget = new TradingView.widget({
     symbol: 'Bitfinex:BTC/USD', // default symbol
     interval: '2', // default interval
     timezone: "America/New_York",
@@ -14,3 +14,6 @@ window.tvWidget = new TradingView.widget({
     datafeed: Datafeed,
     library_path: '../charting_library/',
 });
+
+//console.log(widget.chart());
+

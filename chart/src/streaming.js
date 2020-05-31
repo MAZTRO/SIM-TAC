@@ -1,7 +1,9 @@
 import { parseFullSymbol } from './helpers.js';
+import { widget } from './main.js';
 
 const channelToSubscription = new Map();
 const socket = io('wss://streamer.cryptocompare.com');
+export let LP;
 
 socket.on('connect', () => {
   console.log('[socket] Connected');
@@ -39,6 +41,13 @@ export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, su
   socket.emit('SubAdd', {subs: [channelString]});
 }
 
+function lPrice (lPrice) {
+  const lastPrice = lPrice;
+  //console.log(`LAST: ${lastPrice}`)
+  return lastPrice;
+}
+
+
 export function unsubscribeFromStream(subscribeUID) {
   for (const channelString of channelToSubscription.keys()) {
     const subscriptionItem = channelToSubscription.get(channelString);
@@ -59,6 +68,7 @@ export function unsubscribeFromStream(subscribeUID) {
 socket.on('m', data => {
   /* debugger */
   console.log('[socket] Message:', data);
+
   const [
     eventTypeStr,
     exchange,
@@ -101,6 +111,8 @@ socket.on('m', data => {
       close: tradePrice,
     }
     console.log('[socket] Update the latest bar by price', tradePrice);
+    LP = lPrice(tradePrice);
+
   }
   
   subscriptionItem.lastDailyBar = bar;
@@ -112,3 +124,7 @@ function getNextBartime(barTime) {
   date.setDate(date.getDate() + 1);
   return date.getTime() / 1000;
 }
+
+
+// get resolution and bar.time
+
