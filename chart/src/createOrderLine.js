@@ -8,18 +8,7 @@ import { widget } from './main.js';
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
 const ordersTemplate = document.getElementById('ordersTemplate');
 let userOrders  = [];
-
-export const addOpenEvent = function (element) {
-    element.addEventListener('click', () => {
-        //Quantity must be set by the user in this case we set it by default
-        createOrder(LP, "1200.00 USDT");  
-    });
-}
-export const addCloseEvent = function (element) {
-    element.addEventListener('click', () => {
-        deleteOrder(userOrders);
-    });
-}
+let count = 0;
 
 const createOrder = function (price, quantity) {
     const orderData = Object(); // save data in sobject
@@ -32,11 +21,13 @@ function createOrderInActiveChart(data) {
     const order  = widget.activeChart().createOrderLine() // set the new order on the chart
     order.setPrice(data.price);
     order.setQuantity(data.quantity);
-    order.onCancel("onCancel evert", deleteOrder);
     const orderObject = saveOrder(data, order);
     const HTMLString = cp(orderObject);
     const orderElement = createTemplate(HTMLString);
     ordersTemplate.append(orderElement);
+    const closeOrderButton = document.getElementById(`closeOrderButton-${count}`);
+    addCloseEvent(closeOrderButton);
+    //order.onCancel("onCancel evert", deleteOrder);
 }
 
 function saveOrder (data, order) {
@@ -51,11 +42,17 @@ function saveOrder (data, order) {
     return orderObject;
 }
 
-function deleteOrder () {
+function deleteOrder (id) {
     // this function has to delete the with the correct id
     userOrders.forEach(element => {
-        element.orr._active = false;
-        setTimeout(() => element.orr.remove(), 1500);
+        if (id === element.id) {
+            element.orr._active = false;
+            setTimeout(() => element.orr.remove(), 1000);
+            const index = userOrders.indexOf(element);
+            if (index > -1) {
+                userOrders.splice(index, 1);
+            }
+        }
     });
 }
 
@@ -69,10 +66,23 @@ function cp (el) {
     return (
         `<p class="" data-id='${el.id}' data-type='${el.type}'>
             order type: ${el.type} - price: ${el.price} - quantity: ${el.quantity}
+            <button id="closeOrderButton-${++count}" data-id='${el.id}'> x </button>
         </p>`
     )
 }
 
+export const addOpenEvent = function (element) {
+    element.addEventListener('click', () => {
+        //Quantity must be set by the user in this case we set it by default
+        createOrder(LP, "1200.00 USDT");  
+    });
+}
+const addCloseEvent = function (element, id) {
+    element.addEventListener('click', () => {
+        deleteOrder(element.dataset.id);
+        element.parentNode.remove();
+    });
+}
 /*here
 
 we  have two options first generate de complete order form
@@ -93,8 +103,6 @@ safe stored information*/
       //.setText("Buy Line")
       //.setLineLength(1) 
       //.setLineStyle(3)
-      .setPrice(bars[bars.length - 1].close) 
-      .setQuantity("221.235 USDT")
       .onModify(res => res)
       //.setLineColor(color)                
       /*.setBodyTextColor(fontColor)                
