@@ -5,40 +5,19 @@
         quantity
 */
 import { widget } from './main.js';
-// import last price each time the socket update a tick
-import { LP } from './streaming.js';
+import { LP } from './streaming.js'; // import last price each time the socket update a tick
+const ordersTemplate = document.getElementById('ordersTemplate');
 let userOrders  = [];
 
-export const addEvent = function (element) {
+export const addOpenEvent = function (element) {
     element.addEventListener('click', () => {
         //Quantity must be set by the user in this case we set it by default
         createOrder(LP, "1200.00 USDT");  
     });
 }
-
 export const addCloseEvent = function (element) {
     element.addEventListener('click', () => {
         deleteOrder(userOrders);
-    });
-}
-
-function createOrderInActiveChart(data) {
-    // set the new order on the chart
-    const order  = widget.activeChart().createOrderLine()
-    order.setPrice(data.price);
-    order.setQuantity(data.quantity);
-
-    const  orderId = order._line._id;
-    userOrders.push({
-        id : orderId,
-        price: data.price,
-        quantity: data.quantity,
-        orr: order
-    });
-    
-    order.onCancel("onCancel evert", function(text) {
-        this._active = false;
-        setTimeout(() => this.remove(), 1500); 
     });
 }
 
@@ -49,13 +28,49 @@ const createOrder = function (price, quantity) {
     createOrderInActiveChart(orderData); // Create order in chart
 }
 
-function deleteOrder (userOrders) {
+function createOrderInActiveChart(data) {
+    const order  = widget.activeChart().createOrderLine() // set the new order on the chart
+    order.setPrice(data.price);
+    order.setQuantity(data.quantity);
+    order.onCancel("onCancel evert", deleteOrder);
+    const orderObject = saveOrder(data, order);
+    const HTMLString = cp(orderObject);
+    const orderElement = createTemplate(HTMLString);
+    ordersTemplate.append(orderElement);
+}
+
+function saveOrder (data, order) {
+    const orderObject = {
+        type: 'buy',
+        id : order._line._id,
+        price: data.price,
+        quantity: data.quantity,
+        orr: order
+    }
+    userOrders.push(orderObject);
+    return orderObject;
+}
+
+function deleteOrder () {
     // this function has to delete the with the correct id
-   userOrders.forEach(element => {
-        console.log(element.orr)
+    userOrders.forEach(element => {
         element.orr._active = false;
-        setTimeout(() => element.orr.remove(), 1000); 
-   });
+        setTimeout(() => element.orr.remove(), 1500);
+    });
+}
+
+function createTemplate (HTMLString) {
+    const html = document.implementation.createHTMLDocument()
+    html.body.innerHTML = HTMLString
+    return html.body.children[0]
+}
+
+function cp (el) {
+    return (
+        `<p class="" data-id='${el.id}' data-type='${el.type}'>
+            order type: ${el.type} - price: ${el.price} - quantity: ${el.quantity}
+        </p>`
+    )
 }
 
 /*here
