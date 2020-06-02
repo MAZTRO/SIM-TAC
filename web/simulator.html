@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script
+    type="text/javascript"
+    src="chart/charting_library/charting_library.min.js" async>
+  </script>
+  <!-- <script src="chart/src/createOrderLine.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js" async></script>
+  <!-- Custom datafeed module. -->
+  <script type="module" src="chart/src/main.js" async></script>
+
+  <link rel="stylesheet" href="styles/chart/header.css">
+  <link rel="stylesheet" href="styles/chart/common.css">
+  <link rel="stylesheet" href="styles/chart/footer.css">
+  <link rel="stylesheet" href="styles/chart/body.css">
+
+  <title>SIM-TAC</title>
+</head>
+<body>
+  <!-- ==================== -->
+  <!-- == header section == -->
+  <!-- ==================== -->
+  <header>
+    <a href="#">
+      <img src="pub_images/sim_logo.png" alt="sim-tac">
+    </a>
+    <div class="userInfo">
+      <div class="avatar"></div>
+      <div class="name">Jhon Doe</div>
+      <div class="userId">123456789</div>
+      <div class="userMenu">
+        <img src="pub_images/img_Menu.png" alt="Menu">
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== -->
+  <!-- == body section == -->
+  <!-- ==================== -->
+  <div class="Body">
+    <div class="config" id="config">
+      <div class="currencies" id="currencies">
+        <button class="btnToggleCurr" id="btc">BTC</button>
+        <button class="btn" id="ltc">LTC</button>
+        <button class="btn" id="eth">ETH</button>
+        <button class="btn" id="nasdaq">NASDAQ</button>
+      </div>
+      <div class="times">
+        <button class="btnToggleTime" id="time">2 min</button>
+        <button class="btn" id="time">5 min</button>
+        <button class="btn" id="time">15 min</button>
+      </div>
+      <div class="calendar" id="calendar">
+        <!-- Calendar -->
+      </div>
+    </div>
+    <div class="tvChart" id="tvChart"></div>
+    <div class="operator">
+      <div class="status">
+        <p>Status</p>
+        <div class="statusDIV">
+          Constant
+        </div>
+      </div>
+      <div class="operations">
+        <p>Enter the amount to operate</p>
+        <input class="value" placeholder="$"></input>
+        <button class="btn" id="sell">SELL</button>
+        <button class="btn" id="buy">BUY</button>
+      </div>
+      <div class="closer">
+        <p>Close operation</p>
+        <button class="btn" id="close">Close</button>
+      </div>
+      <div class="amountInfo">
+        <p>Amount of money available</p>
+        <div class="cash">$ 5200</div>
+      </div>
+    </div>
+    <div class="player"></div>
+  </div>
+
+  <!-- ==================== -->
+  <!-- == Footer section == -->
+  <!-- ==================== -->
+  <footer>
+    <div class="owners">©SIM-TAC <br> All rights reserved </div>
+  </footer>
+</body>
+</html>
