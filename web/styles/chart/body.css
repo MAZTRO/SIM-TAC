@@ -5,7 +5,7 @@ body {
 
 body .Body {
   display: grid;
-  grid-template-columns: 10% 70% 20%;
+  grid-template-columns: 20% 60% 20%;
   grid-template-rows: repeat(4, 1fr);
   /* column-gap: 5px; */
   /* row-gap: 5px; */
@@ -27,6 +27,9 @@ body .config {
   grid-row-end: span 4;
 
   min-width: 100px;
+
+  display: flex;
+  justify-content: center;
 
   margin: 5px 0px 5px 5px;
   background-color: rgba(180, 180, 180, 1);
@@ -78,7 +81,7 @@ body .player {
 /* Configuration of block 'Config' */
 /* =============================== */
 
-.Body .config .currencies {
+.Body .config .operations {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,82 +91,6 @@ body .player {
   border: 0px;
   border-bottom: 1px solid;
   border-color: rgba(100, 100, 100, 0.2);
-}
-
-.Body .config .btn {
-  color: rgba(50, 50, 50, 1);
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  width: 80%;
-  height: 50px;
-  background-color: rgba(230, 230, 230, 1);
-}
-
-.Body .config .btn:hover {
-  color: rgba(50, 100, 255, 1);
-  cursor: pointer;
-}
-
-.Body .config .btnToggleCurr {
-  box-sizing: border-box;
-  color: rgba(50, 100, 255, 1);
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  width: 80%;
-  height: 50px;
-  background-color: rgba(230, 230, 230, 1);
-  box-shadow: inset 4px 4px 10px rgba(120, 120, 120, 1),
-              inset -4px -4px 10px rgba(250, 250, 250, 1);
-}
-
-.Body .config .btnToggleCurr:hover {
-  cursor: pointer;
-}
-
-.Body .config .times {
-  padding: 0px;
-  margin: 0px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  border-bottom: 1px solid;
-  width: 100%;
-  height: 70px;
-  border-color: rgba(100, 100, 100, 0.2);
-}
-
-.Body .config .times #time {
-  padding: 0px;
-  margin: 5px;
-  width: 100px;
-  height: 50%;
-}
-
-.Body .config .times #time:hover {
-  color: rgba(50, 100, 255, 1);
-}
-
-.Body .config .btnToggleTime {
-  box-sizing: border-box;
-  color: rgba(50, 100, 255, 1);
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  width: 80%;
-  height: 50px;
-  background-color: rgba(230, 230, 230, 1);
-  box-shadow: inset 2px 2px 7px rgba(120, 120, 120, 1),
-              inset -2px -2px 7px rgba(250, 250, 250, 1);
-}
-
-.Body .config .btnToggleTime:hover {
-  cursor: pointer;
 }
 
 /* ================================= */

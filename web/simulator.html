@@ -13,6 +13,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js" async></script>
   <!-- Custom datafeed module. -->
   <script type="module" src="chart/src/main.js" async></script>
+  <script src="scripts/header.js" async></script>
+  <script src="scripts/config_module.js" async></script>
 
   <link rel="stylesheet" href="styles/chart/header.css">
   <link rel="stylesheet" href="styles/chart/common.css">
@@ -33,9 +35,17 @@
       <div class="avatar"></div>
       <div class="name">Jhon Doe</div>
       <div class="userId">123456789</div>
-      <div class="userMenu">
-        <img src="pub_images/img_Menu.png" alt="Menu">
-      </div>
+      <button class="userMenu">
+        <span class="top-bar"></span>
+        <span class="med-bar"></span>
+        <span class="bot-bar"></span>
+      </button>
+    </div>
+    <div class="menuSlideClose" id="menuSlides">
+      <ul>
+        <li class="title">Do you want to leave the session?<br>Click in the button bellow!</button></li>
+        <li><button>Sign out</button></li>
+      </ul>
     </div>
   </header>
 
@@ -44,20 +54,28 @@
   <!-- ==================== -->
   <div class="Body">
     <div class="config" id="config">
-      <div class="currencies" id="currencies">
-        <button class="btnToggleCurr" id="btc">BTC</button>
-        <button class="btn" id="ltc">LTC</button>
-        <button class="btn" id="eth">ETH</button>
-        <button class="btn" id="nasdaq">NASDAQ</button>
+      <tr class="operations">
+        <th>id</th>
+        <th>Price</th>
+        <th>type</th>
+        <th>Quantity</th>
+        <th><button class="remove"></button></th>
+      </tr>
+
+
+
+
+      <!-- <div class="currencies" id="currencies">
+        <button class="btn btnToggleCurr" id="btc">BTC</button>
+        <button class="btn currencies" id="ltc">LTC</button>
+        <button class="btn currencies" id="eth">ETH</button>
+        <button class="btn currencies" id="nasdaq">NASDAQ</button>
       </div>
       <div class="times">
-        <button class="btnToggleTime" id="time">2 min</button>
-        <button class="btn" id="time">5 min</button>
-        <button class="btn" id="time">15 min</button>
-      </div>
-      <div class="calendar" id="calendar">
-        <!-- Calendar -->
-      </div>
+        <button class="btn btnToggleTime" id="m2">2 min</button>
+        <button class="btn time" id="m5">5 min</button>
+        <button class="btn time" id="m15">15 min</button>
+      </div> -->
     </div>
     <div class="tvChart" id="tvChart"></div>
     <div class="operator">
