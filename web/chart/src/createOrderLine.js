@@ -7,14 +7,17 @@
 // import { widget } from './main.js';
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
 const ordersTemplate = document.querySelector('.ordersTemplate');
+const cashItem = document.querySelector('.cash');
 const priceInput = document.querySelector('.value');
 const buyButton = document.getElementById('buy');
 const sellButton = document.getElementById('sell');
 
 let userOrders  = [];
 let pendingOrders = [];
+let money = 5000;
 let count = 0;
 
+/* Create order in the chart and correc objct assignement */
 function orderCase (price, orderType) {
     let isProgrammable = false;
     if (!price) {
@@ -46,14 +49,17 @@ function saveOrder (order, orderType, price, isProgrammable) {
         programmable: isProgrammable
     }
     if (isProgrammable) {
+        orderObject['state'] = 'pending';
         pendingOrders.push(orderObject);
     }
     else {
+        orderObject['state'] = 'success';
         userOrders.push(orderObject);
     }
     return orderObject;
 }
 
+/* create orden template */
 function createOrderTemplate(orderObject) {
     const HTMLString = cp(orderObject);
     const orderElement = createTemplate(HTMLString);
@@ -65,9 +71,11 @@ function createOrderTemplate(orderObject) {
 
 function cp (el) {
     return (
-        `<p class="" data-id='${el.id}' data-type='${el.type}'>
-            order type: ${el.type} - price: ${el.price} - quantity: ${el.quantity} - id: ${el.id}
-            <button id="closeOrderButton-${++count}" data-id='${el.id}' data-is='${el.programmable}'> x </button>
+        `<p class="" data-id='${el.id}' data-type='${el.type}' data-state='${el.state}'>
+            order type: ${el.type} - price: ${el.price} - 
+            quantity: ${el.quantity} - id: ${el.id} - state: ${el.state}
+            <button id="closeOrderButton-${++count}" data-id='${el.id}' 
+            data-is='${el.programmable}'> x </button>
         </p>`
     )
 }
@@ -78,18 +86,7 @@ function createTemplate (HTMLString) {
     return html.body.children[0]
 }
 
-/*function pendingOrdersReview (pendingOrders, LP) {
-    pendingOrders.forEach(element =>  {
-        if (element.price == LP) {
-            element.isProgrammable = false;
-        }
-    });
-}
-
-function changetoSuccess () {
-
-}*/
-
+/* Delete an specific order */
 function deleteOrder (id, isProgrammable) {
     if (isProgrammable === 'false') {
         deleteSpecific(id, userOrders);
@@ -98,19 +95,53 @@ function deleteOrder (id, isProgrammable) {
     }
 }
 
-function deleteSpecific(id, ordersO) {
-    ordersO.forEach(element => {
+function deleteSpecific(id, ordersObject) {
+    ordersObject.forEach(element => {
         if (id === element.id) {
+            const index = ordersObject.indexOf(element);
             element.orr._active = false;
             setTimeout(() => element.orr.remove(), 1000);
-            const index = ordersO.indexOf(element);
             if (index > -1) {
-                ordersO.splice(index, 1);
+                ordersObject.splice(index, 1);
             }
         }
     });
 }
 
+/* Update pending orders */
+export const pendingOrdersReview = function () {
+    priceInput.placeholder = LP.toFixed(2);
+    pendingOrders.forEach(element =>  {
+        if (element.price == LP) {
+            element.isProgrammable = false;
+            userOrders.push(element);
+            changeOrderState(element);
+            pendingOrders.splice(pendingOrders.indexOf(element), 1);
+        }
+    });
+}
+
+function changeOrderState(element) {
+    const oT = ordersTemplate.childNodes;
+    for (const x in oT) {
+        if (x >= 1) {
+            if (oT[x].dataset.id == element.id) {
+                console.log(oT[x].dataset.state)
+                oT[x].dataset.state = "success";
+                console.log(oT[x].dataset.state)
+            }
+        }
+    }
+}
+/*****/
+export const foundsTemplate = function () {
+    const HTMLString = `<p>$ ${money}<p>`;
+    const template = createTemplate(HTMLString)
+    cashItem.append(template);
+}
+//function founds() {}
+
+/* buttons events open and close */
 buyButton.addEventListener('click', () => {
     orderCase(priceInput.value, buyButton.dataset.type);  
 });
@@ -119,7 +150,7 @@ sellButton.addEventListener('click', () => {
     orderCase(priceInput.value, sellButton.dataset.type);
 });
 
-const addCloseEvent = function (element, id) {
+const addCloseEvent = function (element) {
     element.addEventListener('click', () => {
         deleteOrder(element.dataset.id, element.dataset.is);
         element.parentNode.remove();

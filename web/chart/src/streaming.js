@@ -1,4 +1,5 @@
 import { parseFullSymbol } from './helpers.js';
+import { pendingOrdersReview } from './createOrderLine.js'
 
 const channelToSubscription = new Map();
 const socket = io('wss://streamer.cryptocompare.com');
@@ -58,7 +59,7 @@ export function unsubscribeFromStream(subscribeUID) {
 
 socket.on('m', data => {
   /* debugger */
-  console.log('[socket] Message:', data);
+  //console.log('[socket] Message:', data);
   const [
     eventTypeStr,
     exchange,
@@ -102,6 +103,7 @@ socket.on('m', data => {
     }
     //console.log('[socket] Update the latest bar by price', tradePrice);
     LP = tradePrice;
+    pendingOrdersReview();
   }
   
   subscriptionItem.lastDailyBar = bar;

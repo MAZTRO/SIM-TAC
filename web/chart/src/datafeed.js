@@ -1,6 +1,6 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
-import { createOrder } from './createOrderLine.js';
+import { createOrder, foundsTemplate} from './createOrderLine.js';
 import { LP } from './streaming.js';
 // ...
 
@@ -26,6 +26,7 @@ async function getAllSymbols() {
         };
       });
       allSymbols = [...allSymbols, ...symbols];
+      console.log('paso')
       console.log(allSymbols);
     }
   }
@@ -54,6 +55,7 @@ const configurationData = {
 export default {
   onReady: (callback) => {
     console.log('[onReady]: Method call');
+    foundsTemplate();
     setTimeout(() => callback(configurationData));
   },
   searchSymbols: async (userInput, exchange, symbolType, onResultReadyCallback) => {
@@ -130,6 +132,7 @@ export default {
       } else {
         if (resolution === '1') {
           data = await makeApiRequest(`data/v2/histominute?${query}`);
+          
           if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
             onHistoryCallback([], { noData: true });
             return;
@@ -153,6 +156,7 @@ export default {
       }
       console.log(`[getBars]: returned ${bars.length} bar(s)`);
       onHistoryCallback(bars, { noData: false });
+
 
     } catch (error) {
       console.log('[getBars]: Get error', error);
