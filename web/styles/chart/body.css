@@ -1,3 +1,9 @@
+:root {
+  --color-blue: rgba(50, 100, 255, 1);
+  --color-red: rgb(209, 65, 65);
+  --color-green: rgb(25, 175, 58);
+}
+
 /* Main setup with GRID */
 body {
   margin-bottom: 120px;
@@ -5,7 +11,7 @@ body {
 
 body .Body {
   display: grid;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 80% 20%;
   grid-template-rows: repeat(4, 1fr);
   /* column-gap: 5px; */
   /* row-gap: 5px; */
@@ -23,7 +29,7 @@ body .Body {
 body .config {
   grid-column-start: 1;
   grid-column-end: 2;
-  grid-row-start: 1;
+  grid-row-start: 4;
   grid-row-end: span 4;
 
   min-width: 100px;
@@ -31,16 +37,16 @@ body .config {
   display: flex;
   justify-content: center;
 
-  margin: 5px 0px 5px 5px;
+  margin: 0px 5px 5px 5px;
   background-color: rgba(180, 180, 180, 1);
   border-radius: 20px;
 }
 
 body .tvChart {
-  grid-column-start: 2;
-  grid-column-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
   grid-row-start: 1;
-  grid-row-end: span 4;
+  grid-row-end: span 3;
 
   min-width: 300px;
   padding: 5px;
@@ -51,8 +57,8 @@ body .tvChart {
 }
 
 body .operator {
-  grid-column-start: 3;
-  grid-column-end: span 3;
+  grid-column-start: 2;
+  grid-column-end: span 2;
   grid-row-start: 1;
   grid-row-end: span 4;
 
@@ -82,15 +88,55 @@ body .player {
 /* =============================== */
 
 .Body .config .operations {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 
-  height: 300px;
+  width: 100%;
+  max-height: 180px;
+
+  border-collapse: collapse;
+
+  margin: 10px 5px;
+}
+
+.Body .config .operations caption {
+  margin: 10px auto;
+  color: rgba(60, 60, 60, 1);
+}
+
+.Body .config .operations th, td {
+  width: 20%;
+  padding: 5px 10px;
   border: 0px;
-  border-bottom: 1px solid;
-  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.Body .config .operations th:nth-child(even) {
+  background-color: rgb(2, 48, 255);
+}
+
+.Body .config .operations th:last-child {
+  border-top-right-radius: 15px;
+  width: 10%;
+}
+
+.Body .config .operations th:first-child {
+  border-top-left-radius: 15px;
+}
+
+.Body .config .operations thead {
+  background-color: rgba(50, 100, 255, 1);
+  color: #ffffff;
+  font-size: 13px;
+  border-bottom: 5px solid rgb(100, 100, 100);
+}
+
+.Body .config .operations td {
+  background-color: rgb(230, 230, 230);
+  color: rgb(60, 60, 60);
+  font-size: 13px;
+  text-align: center;
+}
+
+.Body .config .operations tr:nth-child(even) {
+  background-color: rgb(50, 50, 50);
 }
 
 /* ================================= */
@@ -262,120 +308,4 @@ body .player {
   height: 60px;
   background-color: rgba(200, 200, 200, 1);
   border-radius: 15px;
-}
-
-
-
-
-
-
-/* RESPONSIVE DESIGN */
-
-
-@media (max-width: 1100px) {
-  body .config {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 4;
-    grid-row-end: span 4;
-
-    display: flex;
-    flex-wrap: wrap;
-    margin: 5px;
-  }
-
-  body .tvChart {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 1;
-    grid-row-end: span 3;
-  }
-
-  .Body .config .currencies {
-    display: flex;
-    flex-wrap: wrap;
-
-    height: 100%;
-    width: 50%;
-    border: 0px;
-    border-right: 1px solid;
-    border-color: rgba(100, 100, 100, 0.2);
-  }
-
-  .Body .config .btn {
-    box-sizing: border-box;
-    color: rgba(50, 50, 50, 1);
-    margin: 5px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    width: 40%;
-    height: 30%;
-    background-color: rgba(230, 230, 230, 1);
-  }
-
-  .Body .config .btn:hover {
-    color: rgba(50, 100, 255, 1);
-    cursor: pointer;
-  }
-
-  .Body .config .btnToggleCurr {
-    box-sizing: border-box;
-    color: rgba(50, 100, 255, 1);
-    margin: 5px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    width: 40%;
-    height: 30%;
-    background-color: rgba(230, 230, 230, 1);
-    box-shadow: inset 4px 4px 10px rgba(120, 120, 120, 1),
-                inset -4px -4px 10px rgba(250, 250, 250, 1);
-  }
-
-  .Body .config .btnToggleCurr:hover {
-    cursor: pointer;
-  }
-
-  .Body .config .times {
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-    display: flex;
-    align-items: center;
-    flex-flow: column;
-
-    border-right: 1px solid;
-    width: 30%;
-    height: 100%;
-    border-color: rgba(100, 100, 100, 0.2);
-  }
-  .Body .config .times #time {
-    padding: 0px;
-    margin: 5px;
-    width: 40%;
-    height: 20%;
-  }
-  
-  .Body .config .times #time:hover {
-    color: rgba(50, 100, 255, 1);
-  }
-  
-  .Body .config .btnToggleTime {
-    box-sizing: border-box;
-    color: rgba(50, 100, 255, 1);
-    margin: 10px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    width: 80%;
-    height: 50px;
-    background-color: rgba(230, 230, 230, 1);
-    box-shadow: inset 2px 2px 7px rgba(120, 120, 120, 1),
-                inset -2px -2px 7px rgba(250, 250, 250, 1);
-  }
-  
-  .Body .config .btnToggleTime:hover {
-    cursor: pointer;
-  }
 }
