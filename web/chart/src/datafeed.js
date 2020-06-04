@@ -22,7 +22,7 @@ async function getAllSymbols() {
         };
       });
       allSymbols = [...allSymbols, ...symbols];
-      console.log(allSymbols);
+      /* console.log(allSymbols); */
     }
   }
   return allSymbols;

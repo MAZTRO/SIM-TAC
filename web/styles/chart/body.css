@@ -1,5 +1,6 @@
 :root {
   --color-blue: rgba(50, 100, 255, 1);
+  --color-blue-dark: #083763;
   --color-red: rgb(209, 65, 65);
   --color-green: rgb(25, 175, 58);
 }
@@ -34,8 +35,10 @@ body .config {
 
   min-width: 100px;
 
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 20% 80%;
+
 
   margin: 0px 5px 5px 5px;
   background-color: rgba(180, 180, 180, 1);
@@ -87,57 +90,114 @@ body .player {
 /* Configuration of block 'Config' */
 /* =============================== */
 
-.Body .config .operations {
-
-  width: 100%;
-  max-height: 180px;
-
-  border-collapse: collapse;
-
-  margin: 10px 5px;
+body .config .tableOp {
+  overflow-y: scroll;
 }
 
-.Body .config .operations caption {
-  margin: 10px auto;
+body .config .tableOp::-webkit-scrollbar {
+  width: 5px;
+  max-height: 30%;
+  height: 30%;
+}
+body .config .tableOp::-webkit-scrollbar-track {
+  background-color: rgba(200, 200, 200, 0);
+  max-height: 30%;
+  height: 30%;
+}
+body .config .tableOp::-webkit-scrollbar-thumb {
+  padding: 20px;
+  height: 80px;
+}
+
+.config p {
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  text-align: center;
+  margin: auto auto;
+
   color: rgba(60, 60, 60, 1);
 }
 
-.Body .config .operations th, td {
-  width: 20%;
-  padding: 5px 10px;
-  border: 0px;
+.config .tableOp {
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+
+  margin: 0px 10px 15px 10px;
+  min-height: 135px;
+
+  border-radius: 15px;
 }
 
-.Body .config .operations th:nth-child(even) {
-  background-color: rgb(2, 48, 255);
-}
+.config .tableOp #operations_list {
+  border-collapse: collapse;
+  width: 100%;
 
-.Body .config .operations th:last-child {
-  border-top-right-radius: 15px;
-  width: 10%;
-}
-
-.Body .config .operations th:first-child {
-  border-top-left-radius: 15px;
-}
-
-.Body .config .operations thead {
-  background-color: rgba(50, 100, 255, 1);
-  color: #ffffff;
-  font-size: 13px;
-  border-bottom: 5px solid rgb(100, 100, 100);
-}
-
-.Body .config .operations td {
+  border-radius: 15px;
   background-color: rgb(230, 230, 230);
-  color: rgb(60, 60, 60);
-  font-size: 13px;
-  text-align: center;
 }
 
-.Body .config .operations tr:nth-child(even) {
-  background-color: rgb(50, 50, 50);
+.config #operations_list th {
+  font-size: 14px;
+  color: #FFFFFF;
+  height: 30px;
+  width: 15%;
+  background-color: var(--color-blue);
 }
+
+.config #operations_list th:last-child {
+  width: 5%;
+}
+
+.config #operations_list th:nth-child(even) {
+  background-color: var(--color-blue-dark);
+}
+
+.config #operations_list tr {
+  height: 25px;
+}
+
+.config #operations_list tr:nth-child(odd) {
+  background-color: rgba(200, 200, 200, 1);
+}
+
+.config #operations_list tr td {
+  font-size: 12px;
+  text-align: center;
+  height: 25px;
+
+  padding: 2px;
+  margin: 0px;
+  color: rgba(70, 70, 70, 1);
+}
+
+.config #operations_list tr td button {
+  outline: none;
+  border: none;
+
+  width: 100%;
+  height: 100%;
+
+  margin: auto;
+  padding: 0px;
+
+  cursor: pointer;
+
+  background-color: rgba(50, 100, 255, 0);
+  background-image: url(../../pub_images/basura.png);
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: center;
+}
+
+.config #operations_list tr td button:active {
+  transform: scale(0.90);
+}
+
 
 /* ================================= */
 /* Configuration of block 'operator' */
@@ -212,7 +272,7 @@ body .player {
 .Body .operator .btn {
   color: rgba(240, 240, 240, 1);
   margin: 10px auto;
-  border-radius: 10px;
+  border-radius: 15px;
   border: none;
   outline: none;
   width: 80%;
@@ -235,17 +295,12 @@ body .player {
   background-color: rgb(25, 175, 58);
 }
 
-.Body .operator #buy:hover {
+.Body .operator #buy:hover, #sell:hover {
   cursor: pointer;
-  box-shadow: inset 4px 4px 10px rgb(13, 109, 34),
-              inset -4px -4px 10px rgb(79, 212, 108);
 }
 
-
-.Body .operator #sell:hover {
-  cursor: pointer;
-  box-shadow: inset 4px 4px 10px rgb(116, 21, 21),
-              inset -4px -4px 10px rgb(233, 107, 107);
+.Body .operator #buy:active, #sell:active {
+  transform: scale(0.95);
 }
 
 .operator .closer {
@@ -275,8 +330,10 @@ body .player {
 
 .operator .closer #close:hover {
   background-color: rgba(100, 100, 100, 1);
-  box-shadow: inset 4px 4px 10px rgb(65, 65, 65),
-              inset -4px -4px 10px rgb(130, 130, 130);
+}
+
+.operator .closer #close:active {
+  transform: scale(0.95);
 }
 
 .operator .amountInfo {

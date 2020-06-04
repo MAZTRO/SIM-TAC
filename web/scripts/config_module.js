@@ -1,31 +1,11 @@
-document.onclick = function(event) {
+const operationList = document.getElementsByTagName('tr');
 
-  const btn_curr = document.querySelectorAll('.currencies button');
-  const btn_time = document.querySelectorAll('div.times > button');
+console.log(operationList[1].cells[4]);
 
-  const btn = event.srcElement.classList;
-
-  if (btn[0] === 'btn' && btn[1] === 'currencies') {
-    event.srcElement.className = 'btn btnToggleCurr';
-
-    for (let i = 0; i < btn_curr.length; i++) {
-      if (btn_curr[i].id !== event.srcElement.id) {
-        btn_curr[i].className = "btn currencies";
-      }
-    }
-  } else if (btn[0] === 'btn' && btn[1] === 'btnToggleCurr') {
-    event.srcElement.className = 'btn currencies';
+for (let  i = 1; i < operationList.length; i++) {
+  if (operationList[i].cells[2].textContent === 'Buy') {
+    operationList[i].cells[2].style.color = "rgb(25, 175, 58)";
+  } else if (operationList[i].cells[2].textContent === 'Sell') {
+    operationList[i].cells[2].style.color = "rgb(209, 65, 65)";
   }
-
-  if (btn[0] === 'btn' && btn[1] === 'time') {
-    event.srcElement.className = 'btn btnToggleTime';
-
-    for (let j = 0; j < btn_time.length; j++) {
-      if (btn_time[j].id !== event.srcElement.id) {
-        btn_time[j].className = "btn time";
-      }
-    }
-  } else if (btn[0] === 'btn' && btn[1] === 'btnToggleTime') {
-    event.srcElement.className = 'btn time';
-  }
-};
+}
