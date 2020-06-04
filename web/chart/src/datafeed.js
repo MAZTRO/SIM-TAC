@@ -1,16 +1,17 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
-import { addOpenEvent } from './createOrderLine.js';
+import { createOrder } from './createOrderLine.js';
+import { LP } from './streaming.js';
 // ...
-import { widget } from './main.js';
+
+
 
 const lastBarCache = new Map();
-const openOrderButton = document.getElementById('openOrderButton');
 
 async function getAllSymbols() {
   const data = await makeApiRequest('data/v3/all/exchanges');
   let allSymbols = [];
-  console.log(data)
+  
   for (const exchange of configurationData.exchanges) {
     const pairs = data.Data[exchange.value].pairs;
     for (const leftPairPart of Object.keys(pairs)) {
@@ -25,7 +26,7 @@ async function getAllSymbols() {
         };
       });
       allSymbols = [...allSymbols, ...symbols];
-      //console.log(allSymbols);
+      console.log(allSymbols);
     }
   }
   return allSymbols;
@@ -39,7 +40,7 @@ const configurationData = {
       value: 'Bitfinex',
       name: 'Bitfinex',
       desc: 'Bitfinex',
-    },
+    }
   ],
   symbols_types: [
     {
@@ -151,10 +152,7 @@ export default {
         lastBarCache.set(symbolInfo.full_name, {...bars[bars.length - 1]});
       }
       console.log(`[getBars]: returned ${bars.length} bar(s)`);
-      //console.log(widget)      
       onHistoryCallback(bars, { noData: false });
-      addOpenEvent(openOrderButton);
-
 
     } catch (error) {
       console.log('[getBars]: Get error', error);
@@ -171,7 +169,7 @@ export default {
       onResetCacheNeededCallback,
       lastBarCache.get(symbolInfo.full_name)
     );
-    
+
     setInterval(() => {
       let d = new Date();
       let seconds = d.getMinutes() * 60 + d.getSeconds(); //convet 00:00 to seconds for easier caculation
