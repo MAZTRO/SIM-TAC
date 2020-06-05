@@ -3,27 +3,35 @@ import { LP } from './streaming.js'; // import last price each time the socket u
 const ordersTemplate = document.querySelector('.ordersTemplate');
 const cashItem = document.querySelector('.cash');
 const priceInput = document.querySelector('.value');
+const lotesInput = document.querySelector('.lotes');
 const buyButton = document.getElementById('buy');
 const sellButton = document.getElementById('sell');
 
 let userOrders  = [];
 let pendingOrders = [];
-let money = 5000;
+let money = 20;
 let count = 0;
 
-function orderCase (price, orderType) {
+function orderCase (price, lotes, orderType) {
     /*
         ordercase buy or sell
         if price doesn't comes from user is a market order
         if price comes from user input is a programable order 
     */
     let isProgrammable = false;
+    //lotes = 1; if input lotes is empty
+    lotes  = (lotes * 10); // get the dollas quantity of the order
+    const state = activeFounds(lotes, orderType);
+    if (!state) {
+        console.log("not enought founds");
+        return;
+    }
     if (!price) {
-        createOrder(LP, '1200', orderType, isProgrammable);
+            createOrder(LP, lotes, orderType, isProgrammable);
     }
     else {
         isProgrammable = true;
-        createOrder(price, '1200', orderType, isProgrammable);
+        createOrder(price, lotes, orderType, isProgrammable);
     }
 }
 
@@ -140,22 +148,37 @@ function changeOrderState(element) {
     }
 }
 
-/*****/
+
 export const founds = function () {
     /* show the user found in chas item input */
     const HTMLString = `<p>$ ${money}<p>`;
     const template = createTemplate(HTMLString)
     cashItem.append(template);
 }
-//function founds() {}
+
+function activeFounds (lotes, orderType) {
+    if (orderType === "buy") {
+        if (money <= 0 || (money - lotes) < 0) {
+            return;
+        }
+        money = money - lotes;
+        console.log(money);
+    }
+    else {
+        money += lotes;
+        console.log(money);
+    }
+    cashItem.innerText = cashItem.textContent = money;
+    return true;
+}
 
 /* buttons events open and close */
 buyButton.addEventListener('click', () => {
-    orderCase(priceInput.value, buyButton.dataset.type);  
+    orderCase(priceInput.value, lotesInput.value, buyButton.dataset.type);  
 });
 
 sellButton.addEventListener('click', () => {
-    orderCase(priceInput.value, sellButton.dataset.type);
+    orderCase(priceInput.value, lotesInput.value, sellButton.dataset.type);
 });
 
 const addCloseEvent = function (element) {
