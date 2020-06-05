@@ -234,19 +234,166 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
 }
 
+.operator .options {
+  display: flex;
+  flex-flow: wrap;
+
+  height: 120px;
+  border: 0px;
+  border-bottom: 1px solid;
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+/* Customize the label (the container) */
+.container-1 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 35px;
+  margin: 25px 30px 5px 30px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  font-size: 16px;
+  color: rgba(70, 70, 70, 1);
+
+  height: 25px;
+}
+
+/* Hide the browser's default radio button */
+.container-1 input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: rgba(230, 230, 230, 1);
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container-1:hover input ~ .checkmark {
+  background-color: rgba(100, 100, 100, 1);
+}
+
+/* When the radio button is checked, add a blue background */
+.container-1 input:checked ~ .checkmark {
+  background-color: var(--color-blue);
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container-1 input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container-1 .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* ============================== */
+
+.container-2 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 35px;
+  margin: 5px 30px 25px 30px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  font-size: 16px;
+  color: rgba(70, 70, 70, 1);
+
+  height: 25px;
+}
+
+
+/* Hide the browser's default radio button */
+.container-2 input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* On mouse-over, add a grey background color */
+.container-2:hover input ~ .checkmark {
+  background-color: rgba(100, 100, 100, 1);
+}
+
+/* When the radio button is checked, add a blue background */
+.container-2 input:checked ~ .checkmark {
+  background-color: var(--color-blue);
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container-2 input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container-2 .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* ================================ */
+
 .operator .operations {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 20% 30% 50%;
+  grid-template-rows: 10% 10% 40% 40%;
   height: 200px;
   border: 0px;
   border-bottom: 1px solid;
   border-color: rgba(100, 100, 100, 0.2);
 }
 
-.operator .operations p {
-  grid-column: 1 / span 4;
-  grid-row: 1 / 2;
+.operator .operations p.priceP {
+  grid-column: 1 /  3;
+  grid-row: 2 / 3;
   text-align: center;
   width: 100%;
   margin: auto auto;
@@ -254,12 +401,37 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   color: rgba(60, 60, 60, 1);
 }
 
-.operator .operations input {
-  text-align: center;
-  grid-column: 1 / span 4;
+.operator .operations p.lotsP {
+  grid-column: 3 /  span 4;
   grid-row: 2 / 3;
+  text-align: center;
+  width: 100%;
   margin: auto auto;
-  width: 90%;
+  margin-bottom: 10px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .operations .price {
+  text-align: center;
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+  margin: auto auto;
+  width: 80%;
+  height: 40px;
+  background-color: rgba(230, 230, 230, 1);
+  box-shadow: inset 4px 4px 10px rgb(190, 190, 190),
+              inset -4px -4px 10px rgb(230, 230, 230);
+  border-radius: 15px;
+  border: none;
+  outline: none;
+}
+
+.operator .operations .lots {
+  text-align: center;
+  grid-column: 3 / span 4;
+  grid-row: 3 / 4;
+  margin: auto auto;
+  width: 80%;
   height: 40px;
   background-color: rgba(230, 230, 230, 1);
   box-shadow: inset 4px 4px 10px rgb(190, 190, 190),
@@ -275,8 +447,8 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   border-radius: 15px;
   border: none;
   outline: none;
-  width: 80%;
-  height: 50px;
+  width: 70%;
+  height: 40px;
   background-color: rgba(230, 230, 230, 1);
 }
 .Body .operator .btn:hover {
@@ -285,13 +457,13 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
 .Body .operator #sell {
   grid-column: 3 / span 4;
-  grid-row: 3 / span 3;
+  grid-row: 4 / span 4;
   background-color: rgb(209, 65, 65);
 }
 
 .Body .operator #buy {
   grid-column: 1 / span 2;
-  grid-row: 3 / span 3;
+  grid-row: 4 / span 4;
   background-color: rgb(25, 175, 58);
 }
 

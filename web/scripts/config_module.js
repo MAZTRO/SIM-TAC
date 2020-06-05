@@ -1,6 +1,6 @@
 const operationList = document.getElementsByTagName('tr');
 
-console.log(operationList[1].cells[4]);
+console.log(operationList);
 
 for (let  i = 1; i < operationList.length; i++) {
   if (operationList[i].cells[2].textContent === 'Buy') {

@@ -15,6 +15,7 @@
   <script type="module" src="chart/src/main.js" async></script>
   <script src="scripts/header.js" async></script>
   <script src="scripts/config_module.js" async></script>
+  <script src="scripts/operation_module.js" async></script>
 
   <link rel="stylesheet" href="styles/chart/header.css">
   <link rel="stylesheet" href="styles/chart/common.css">
@@ -75,124 +76,8 @@
             <td>Pending</td>
             <td><button class="remove"></button></td>
           </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Sell</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Sell</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Sell</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>2500</td>
-            <td>Buy</td>
-            <td>10</td>
-            <td>Pending</td>
-            <td><button class="remove"></button></td>
-          </tr>
         </table>
       </div>
-
-
-
-
-      <!-- <div class="currencies" id="currencies">
-        <button class="btn btnToggleCurr" id="btc">BTC</button>
-        <button class="btn currencies" id="ltc">LTC</button>
-        <button class="btn currencies" id="eth">ETH</button>
-        <button class="btn currencies" id="nasdaq">NASDAQ</button>
-      </div>
-      <div class="times">
-        <button class="btn btnToggleTime" id="m2">2 min</button>
-        <button class="btn time" id="m5">5 min</button>
-        <button class="btn time" id="m15">15 min</button>
-      </div> -->
-
-
-
-
-
 
     </div>
     <div class="tvChart" id="tvChart"></div>
@@ -203,9 +88,21 @@
           Constant
         </div>
       </div>
+      <div class="options">
+        <label class="container-1">Market price
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container-2">Rcheduled orders
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label>
+      </div>
       <div class="operations">
-        <p>Enter the amount to operate</p>
-        <input class="value" placeholder="$"></input>
+        <p class="priceP">Price</p>
+        <p class="lotsP">Lots</p>
+        <input type="number" class="price" placeholder="$ of market"></input>
+        <input type="number" class="lots" placeholder="$ of lots" value="1"></input>
         <button class="btn" id="sell">SELL</button>
         <button class="btn" id="buy">BUY</button>
       </div>
