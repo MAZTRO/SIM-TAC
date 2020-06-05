@@ -1,6 +1,6 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
-import { createOrder, foundsTemplate} from './createOrderLine.js';
+import { createOrder, founds} from './createOrderLine.js';
 import { LP } from './streaming.js';
 // ...
 
@@ -55,7 +55,7 @@ const configurationData = {
 export default {
   onReady: (callback) => {
     console.log('[onReady]: Method call');
-    foundsTemplate();
+    founds();
     setTimeout(() => callback(configurationData));
   },
   searchSymbols: async (userInput, exchange, symbolType, onResultReadyCallback) => {
@@ -98,7 +98,7 @@ export default {
     onSymbolResolvedCallback(symbolInfo);
   },
   getBars: async (symbolInfo, resolution, from, to, onHistoryCallback, onErrorCallback, firstDataRequest) => {
-    console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
+    //console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
     const urlParameters = {
       e: parsedSymbol.exchange,
@@ -154,7 +154,7 @@ export default {
       if (firstDataRequest) {
         lastBarCache.set(symbolInfo.full_name, {...bars[bars.length - 1]});
       }
-      console.log(`[getBars]: returned ${bars.length} bar(s)`);
+     // console.log(`[getBars]: returned ${bars.length} bar(s)`);
       onHistoryCallback(bars, { noData: false });
 
 
@@ -164,7 +164,7 @@ export default {
     }
   },
   subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
-    console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
+    //console.log('[subscribeBars]: Method call with subscribeUID:', subscribeUID);
     subscribeOnStream(
       symbolInfo,
       resolution,
@@ -188,7 +188,7 @@ export default {
     }, 1000)
   },
   unsubscribeBars: (subscriberUID) => {
-    console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
+    //console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
     unsubscribeFromStream(subscriberUID);
   },
 };

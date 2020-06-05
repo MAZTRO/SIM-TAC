@@ -1,11 +1,5 @@
-/* data that is needed to make an order
-    by User: 
-        type (buy)
-        price
-        quantity
-*/
-// import { widget } from './main.js';
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
+
 const ordersTemplate = document.querySelector('.ordersTemplate');
 const cashItem = document.querySelector('.cash');
 const priceInput = document.querySelector('.value');
@@ -17,11 +11,14 @@ let pendingOrders = [];
 let money = 5000;
 let count = 0;
 
-/* Create order in the chart and correc objct assignement */
 function orderCase (price, orderType) {
+    /*
+        ordercase buy or sell
+        if price doesn't comes from user is a market order
+        if price comes from user input is a programable order 
+    */
     let isProgrammable = false;
     if (!price) {
-        const price = LP;
         createOrder(LP, '1200', orderType, isProgrammable);
     }
     else {
@@ -31,15 +28,20 @@ function orderCase (price, orderType) {
 }
 
 export const createOrder = function (price, quantity, orderType, isProgrammable) {
+    /* create order in active chart called order */
     const order  = window.tvWidget.activeChart().createOrderLine();
     order.setPrice(price);
     order.setQuantity(quantity);
-    //order.onCancel("onCancel evert", deleteOrder);
+    // save order in object, return an order object  info   
     const orderObject = saveOrder(order, orderType, price, isProgrammable);
-    createOrderTemplate(orderObject); // Create order in chart
+    createOrderTemplate(orderObject); // Create order in template orders
 }
 
 function saveOrder (order, orderType, price, isProgrammable) {
+    /*
+        * save order in proper object data for orders
+        * orderObject: order based in the order data
+     */
     const orderObject = {
         type: orderType,
         id : order._line._id,
@@ -50,30 +52,31 @@ function saveOrder (order, orderType, price, isProgrammable) {
     }
     if (isProgrammable) {
         orderObject['state'] = 'pending';
-        pendingOrders.push(orderObject);
+        pendingOrders.push(orderObject); // pendingOrders: programmable orders
     }
     else {
         orderObject['state'] = 'success';
-        userOrders.push(orderObject);
+        userOrders.push(orderObject); // userOrders: market orders
     }
     return orderObject;
 }
 
-/* create orden template */
 function createOrderTemplate(orderObject) {
-    const HTMLString = cp(orderObject);
-    const orderElement = createTemplate(HTMLString);
-    ordersTemplate.append(orderElement);
-    const closeOrderButton = document.getElementById(`closeOrderButton-${count}`);
+    /* create orden template */
+    const HTMLString = cp(orderObject); // object string for table
+    const orderElement = createTemplate(HTMLString); // convert the string in html tag
+    ordersTemplate.append(orderElement); //append element in ordersTemplate <div>
+    const closeOrderButton = document.getElementById(`closeOrderButton-${count}`); 
     addCloseEvent(closeOrderButton);
 }
 
 
 function cp (el) {
+    /* create order string  baed in html tag*/
     return (
         `<p class="" data-id='${el.id}' data-type='${el.type}' data-state='${el.state}'>
             order type: ${el.type} - price: ${el.price} - 
-            quantity: ${el.quantity} - id: ${el.id} - state: ${el.state}
+            quantity: ${el.quantity} - id: ${el.id} - <span class="orderState">state: ${el.state}</span>
             <button id="closeOrderButton-${++count}" data-id='${el.id}' 
             data-is='${el.programmable}'> x </button>
         </p>`
@@ -81,13 +84,14 @@ function cp (el) {
 }
 
 function createTemplate (HTMLString) {
+    /* create a html->body tree to put inside the HTML string */
     const html = document.implementation.createHTMLDocument()
-    html.body.innerHTML = HTMLString
+    html.body.innerHTML = HTMLString // change this parts is insecure
     return html.body.children[0]
 }
 
-/* Delete an specific order */
 function deleteOrder (id, isProgrammable) {
+    /* Delete an specific order  calling deleteSpecific pasing properly obj */
     if (isProgrammable === 'false') {
         deleteSpecific(id, userOrders);
     } else {
@@ -96,45 +100,49 @@ function deleteOrder (id, isProgrammable) {
 }
 
 function deleteSpecific(id, ordersObject) {
+    /* deletes order from active chart and object */
     ordersObject.forEach(element => {
         if (id === element.id) {
-            const index = ordersObject.indexOf(element);
-            element.orr._active = false;
-            setTimeout(() => element.orr.remove(), 1000);
-            if (index > -1) {
-                ordersObject.splice(index, 1);
-            }
+            const index = ordersObject.indexOf(element); // get the index of the object
+            element.orr._active = false; //put inactive the order in the chart
+            setTimeout(() => element.orr.remove(), 1000); // remove the order of the chart
+            if (index > -1) ordersObject.splice(index, 1); // deletes the order of the object
         }
     });
 }
 
-/* Update pending orders */
 export const pendingOrdersReview = function () {
-    priceInput.placeholder = LP.toFixed(2);
+    /* 
+        Update pending orders to complete succesfully orders
+        if a price in a prending order is equal to last pice the oerder must be taked
+    */
+    priceInput.placeholder = LP.toFixed(1); //updates real price in price order input 
     pendingOrders.forEach(element =>  {
         if (element.price == LP) {
             element.isProgrammable = false;
-            userOrders.push(element);
-            changeOrderState(element);
-            pendingOrders.splice(pendingOrders.indexOf(element), 1);
+            element.state = "success"
+            changeOrderState(element); //change the order template state to success
+            userOrders.push(element); // push the order to sucess orders
+            pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
         }
     });
 }
 
 function changeOrderState(element) {
-    const oT = ordersTemplate.childNodes;
-    for (const x in oT) {
-        if (x >= 1) {
-            if (oT[x].dataset.id == element.id) {
-                console.log(oT[x].dataset.state)
-                oT[x].dataset.state = "success";
-                console.log(oT[x].dataset.state)
-            }
+    /* modify the order template once it needs pass order to success */
+    const order = ordersTemplate.childNodes;
+    for (const x in order) {
+        if ((x >= 1) && (order[x].dataset.id == element.id)) {
+            order[x].dataset.state = "success"; // updates data-state from html tag object
+            const state = order[x].getElementsByTagName('span')[0]; //get the element that content the order state
+            state.innerText = state.textContent = element.state; // change the order state
         }
     }
 }
+
 /*****/
-export const foundsTemplate = function () {
+export const founds = function () {
+    /* show the user found in chas item input */
     const HTMLString = `<p>$ ${money}<p>`;
     const template = createTemplate(HTMLString)
     cashItem.append(template);
