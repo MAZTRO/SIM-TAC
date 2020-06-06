@@ -19,15 +19,12 @@ function orderCase (price, lotes, orderType) {
         if price comes from user input is a programable order 
     */
     let isProgrammable = false;
-    //lotes = 1; if input lotes is empty
+    lotes = 1; //input lotes is empty
     lotes  = (lotes * 10); // get the dollas quantity of the order
-    const state = activeFounds(lotes, orderType);
-    if (!state) {
-        console.log("not enought founds");
-        return;
-    }
     if (!price) {
-            createOrder(LP, lotes, orderType, isProgrammable);
+        if (!activeFounds(lotes, orderType)) return;
+        if (growthOrder(LP, lotes, orderType)) return;
+        createOrder(LP, lotes, orderType, isProgrammable);
     }
     else {
         isProgrammable = true;
@@ -40,9 +37,35 @@ export const createOrder = function (price, quantity, orderType, isProgrammable)
     const order  = window.tvWidget.activeChart().createOrderLine();
     order.setPrice(price);
     order.setQuantity(quantity);
-    // save order in object, return an order object  info   
-    const orderObject = saveOrder(order, orderType, price, isProgrammable);
+    const orderObject = saveOrder(order, orderType, price, isProgrammable); // save order in object, return an order object  info  
+    createOrderInChart(orderObject, order); // create order in chart
     createOrderTemplate(orderObject); // Create order in template orders
+}
+
+function createOrderInChart(obj, order) {
+    const buyColor = '#19af3a';
+    const sellColor = "#d14141";
+    (obj.type === "buy") ? orderStyleChart(order, buyColor, obj) : orderStyleChart(order, sellColor, obj);
+}
+
+function orderStyleChart (order, color, obj) {
+    order.setLineColor(color).setBodyTextColor(color).setBodyBorderColor(color);                
+    order.setQuantityBorderColor(color).setQuantityTextColor(color);
+    order.setLineStyle(2).setQuantityBackgroundColor("#fff");
+    if (!obj.programmable)setTimeout(() => order.remove(), 5000); //remove succeful order item from active chart after 5 seg it was created
+}
+
+function growthOrder(price, quantity, orderType) {
+    let bool = false;
+    userOrders.forEach(el => {
+        if ((price.toFixed(0) === el.price.toFixed(0)) && (orderType === el.type)) {
+            console.log(el.type)
+            el.quantity += quantity;
+            el.orr._data.quantityText = el.quantity;
+            bool = true;
+        }
+    });
+    return bool;
 }
 
 function saveOrder (order, orderType, price, isProgrammable) {
@@ -51,13 +74,14 @@ function saveOrder (order, orderType, price, isProgrammable) {
         * orderObject: order based in the order data
      */
     const orderObject = {
-        type: orderType,
         id : order._line._id,
-        price: price,
-        quantity: order._data.quantityText,
         orr: order,
-        programmable: isProgrammable
+        price: price,
+        programmable: isProgrammable,
+        quantity: order._data.quantityText,
+        type: orderType,
     }
+
     if (isProgrammable) {
         orderObject['state'] = 'pending';
         pendingOrders.push(orderObject); // pendingOrders: programmable orders
@@ -128,8 +152,9 @@ export const pendingOrdersReview = function () {
     pendingOrders.forEach(element =>  {
         if (element.price == LP) {
             element.isProgrammable = false;
-            element.state = "success"
+            element.state = "success";
             changeOrderState(element); //change the order template state to success
+            activeFounds(element.quantity, element.type);
             userOrders.push(element); // push the order to sucess orders
             pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
         }
@@ -144,9 +169,15 @@ function changeOrderState(element) {
             order[x].dataset.state = "success"; // updates data-state from html tag object
             const state = order[x].getElementsByTagName('span')[0]; //get the element that content the order state
             state.innerText = state.textContent = element.state; // change the order state
+            //changeSpanContent(state, element.state);
+
         }
     }
 }
+
+/*function changeSpanContent(element, content) {
+    element.innerText = element.textContent = content;
+}*/
 
 
 export const founds = function () {
@@ -159,6 +190,7 @@ export const founds = function () {
 function activeFounds (lotes, orderType) {
     if (orderType === "buy") {
         if (money <= 0 || (money - lotes) < 0) {
+            console.log("not enought founds");
             return;
         }
         money = money - lotes;
