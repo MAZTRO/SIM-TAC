@@ -9,7 +9,7 @@
     type="text/javascript"
     src="chart/charting_library/charting_library.min.js" async>
   </script>
-  <!-- <script src="chart/src/createOrderLine.js"></script> -->
+  <!-- <script src="chart/src/createOrderLine.js" async></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js" async></script>
   <!-- Custom datafeed module. -->
   <script type="module" src="chart/src/main.js" async></script>
@@ -61,8 +61,9 @@
           <!-- HEAD -->
           <tr>
             <th>id</th>
-            <th>Price</th>
             <th>type</th>
+            <th>Price</th>
+            <th>Stop loss</th>
             <th>Quantity</th>
             <th>state</th>
             <th>delete</th>
@@ -70,8 +71,18 @@
           <!-- HEAD -->
           <tr>
             <td>1234</td>
-            <td>2500</td>
             <td>Buy</td>
+            <td>2500</td>
+            <td>2455</td>
+            <td>10</td>
+            <td>Pending</td>
+            <td><button class="remove"></button></td>
+          </tr>
+          <tr>
+            <td>1234</td>
+            <td>Sell</td>
+            <td>2500</td>
+            <td>N/A</td>
             <td>10</td>
             <td>Pending</td>
             <td><button class="remove"></button></td>
@@ -93,25 +104,27 @@
 
       <div class="operations">
         <p class="HeadTab headOpen" id="market">Market</p>
-        <div class="tab tabOpen">
+        <div class="tab tabOpen" id="marketTab">
+          <p class="lotsP">Lots</p>
           <input type="number" class="lots" placeholder="$" value="1"></input>
           <div class="divs" id="TOP"></div>
           <p class="opID">Order ID</p>
           <p class="stopPrice">Price</p>
           <input type="number" class="idOp" placeholder="ID"></input>
           <input type="number" class="priceStop" placeholder="$"></input>
-          <button class="btn" id="stop">Stop</button>
+          <button class="btn" id="stop">Stop loss</button>
           <div class="divs" id="BOTTOM"></div>
         </div>
 
         <p class="HeadTab" id="limit">Limit</p>
-        <div class="tab">
+        <div class="tab" id="limitTab">
           <p class="priceP">Price</p>
           <input type="number" class="price" placeholder="$"></input>
           <p class="lotsP">Lots</p>
           <input type="number" class="lots" placeholder="$" value="1"></input>
           <p class="stopP">Stop loss</p>
           <input type="number" class="stopIn" placeholder="$"></input>
+          <div class="divs" id="BOTTOM"></div>
         </div>
 
         <button class="btn" id="buy">BUY</button>
@@ -120,7 +133,7 @@
 
       <div class="amountInfo">
         <p>Amount of money available</p>
-        <div class="cash">$ 5200</div>
+        <div class="cash"></div>
       </div>
     </div>
 

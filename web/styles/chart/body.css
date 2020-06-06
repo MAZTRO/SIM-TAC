@@ -12,7 +12,7 @@ body {
 
 body .Body {
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: 80% 20%;
   grid-template-rows: repeat(4, 1fr);
 
   margin: 20px auto;
@@ -154,10 +154,6 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   width: 5%;
 }
 
-.config #operations_list th:nth-child(even) {
-  background-color: var(--color-blue-dark);
-}
-
 .config #operations_list tr {
   height: 25px;
 }
@@ -240,52 +236,73 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 /* ================================ */
 
 .operator .operations {
-  display: flex;
   position: relative;
+  display: grid;
+
+  grid-template-columns: repeat(6, 16.6666%);
+  grid-template-rows: 10% 70% 20%;
+
   width: 100%;
-  height: 62%;
+  height: 50%;
+
   border: 0px;
   border-bottom: 1px solid;
   border-color: rgba(100, 100, 100, 0.2);
 }
 
 .operations .HeadTab {
-  position: absolute;
-  height: 5%;
-  width: 45%;
-
   display: flex;
   justify-content: center;
+  align-items: center;
 
-  padding: 5px 0px;
+  margin: auto;
+
+  width: 100%;
+  height: 100%;
+
+  grid-row: 1 / span 1;
 
   border: 0px;
   border-bottom: 1px solid rgba(120, 120, 120, 1);
 
-  font-size: 16px;
   color: rgba(60, 60, 60, 1);
+
+  cursor: pointer;
 
 }
 
 .operations #market {
-  left: 0%;
+  grid-column: 1 / 4;
+
   border-right: 1px solid rgba(120, 120, 120, 1);
-  margin-left: 5%;
 }
 
 .operations #limit {
-  left: 50%;
+  grid-column: 4 / span 6;
+
   border-left: 1px solid rgba(120, 120, 120, 1);
-  margin-right: 5%;
 }
 
 
 .operations .tab {
-  position: absolute;
-  top: 12%;
-  height: 70%;
+  grid-column: 1 / span 6;
+  grid-row: 2 / 3;
+
+  display: grid;
+
+  height: 100%;
   width: 100%;
   visibility: hidden;
+}
+
+.operations #marketTab {
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 20% 20% 10% 20% 20%;
+}
+
+.operations #limitTab {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 25% 12.5% 12.5% 12.5% 12.5% 25%;
 }
 
 .operations .tabOpen {
@@ -297,10 +314,10 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 }
 
 .operations .btn {
-  width: 50%;
-  height: 12%;
+  width: 80%;
+  height: 50%;
 
-  margin: 10px;
+  margin: auto;
 
   border-radius: 15px;
   border: 0px;
@@ -318,28 +335,31 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 }
 
 .operations #stop {
-  position: absolute;
-  top: 70%;
-  left: 22%;
+  grid-column: 1 /span 4;
+  grid-row: 5 / span 7;
 
   border-radius: 8px;
   background-color: rgba(100, 100, 100, 1);
+
+  height: 40%;
 }
 
 .operations #buy {
-  position: relative;
-  top: 80%;
+  grid-column: 1 / 4;
+  grid-row: 3 / span 3;
+
   background-color: var(--color-green);
 }
 
 .operations #sell {
-  position: relative;
-  top: 80%;
+  grid-column: 4 / span 6;
+  grid-row: 3 / span 3;
+
   background-color: var(--color-red);
 }
 
 .operations .tab .divs {
-  margin: 0px auto;
+  margin: auto;
   width: 80%;
   height: 1px;
 
@@ -347,21 +367,24 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 }
 
 .operations .tab #TOP {
-  position: relative;
-  top: 35%;
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+
+  margin-bottom: 10px;
 }
 
 .operations .tab #BOTTOM {
-  position: absolute;
-  left: 10%;
-  top: 95%;
+  grid-column: 1 / span 4;
+  grid-row: 6 / span 6;
+
+  margin-bottom: 5px;
 }
 
 .operations .tab input {
-  width: 30%;
-  height: 10%;
+  width: 70%;
+  height: 60%;
 
-  text-align: center;
+  text-align: right;
   font-size: 14px;
 
   border: 0px;
@@ -369,53 +392,102 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   background-color: rgba(230, 230, 230, 1);
 
   outline: none;
+
+  margin: auto;
 }
 
 .operations .tab p {
+  text-align: center;
   font-size: 14px;
+
+  margin: auto;
+  margin-bottom: 5px;
   color: rgba(60, 60, 60, 1);
 }
 
 .operations .tab p.opID {
-  position: absolute;
-  top: 37%;
-  left: 23%;
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
 }
 
 .operations .tab p.stopPrice {
-  position: absolute;
-  top: 37%;
-  left: 65%;
+  grid-column: 3 / span 4;
+  grid-row: 3 / 4;
 }
 
-.operations .tab input.lots {
-  position: absolute;
-  left: 20%;
-  top: 18%;
-  width: 60%;
+.operations .tab p.priceP {
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
+}
+
+.operations .tab p.stopP {
+  grid-column: 2 / 4;
+  grid-row: 5 / 6;
+}
+
+.operations .tab p.lotsP {
+  grid-column: 2 / 4;
+  grid-row: 1 / 2;
+}
+
+.operations #limitTab input.lots {
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+
+  margin: auto;
+
+  width: 40%;
+  height: 70%;
+}
+
+.operations #marketTab input.lots {
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+
+  margin: auto;
+  margin-top: 5px;
+
+  width: 40%;
+  height: 50%;
 }
 
 .operations .tab input.idOp {
-  position: absolute;
-  left: 15%;
-  top: 53%;
-  width: 30%;
+  grid-column: 1 / 3;
+  grid-row: 4 / 5;
+
+  height: 50%;
 }
 
 .operations .tab input.priceStop {
-  position: absolute;
-  left: 55%;
-  top: 53%;
-  width: 30%;
+  grid-column: 3 / span 4;
+  grid-row: 4 / 5;
+
+  height: 50%;
 }
 
-/* FALTA LIMIT */
+.operations .tab input.price {
+  width: 40%;
+  height: 70%;
+  grid-column: 1 / span 4;
+  grid-row: 4 / 5;
+}
+
+.operations .tab input.stopIn {
+  width: 40%;
+  height: 40%;
+
+  margin-top: 0px;
+  grid-column: 1 / span 4;
+  grid-row: 6 / 7;
+}
 
 /* =========================== */
 /* =========== Info ========== */
 /* =========================== */
 
 .operator .amountInfo {
+  position: relative;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
