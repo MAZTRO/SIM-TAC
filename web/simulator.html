@@ -80,41 +80,50 @@
       </div>
 
     </div>
+
     <div class="tvChart" id="tvChart"></div>
+
     <div class="operator">
       <div class="status">
-        <p>Status</p>
+        <p>G/L</p>
         <div class="statusDIV">
           Constant
         </div>
       </div>
-      <div class="options">
-        <label class="container-1">Market price
-          <input type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-        <label class="container-2">Rcheduled orders
-          <input type="checkbox">
-          <span class="checkmark"></span>
-        </label>
-      </div>
+
       <div class="operations">
-        <p class="priceP">Price</p>
-        <p class="lotsP">Lots</p>
-        <input type="number" class="price" placeholder="$ of market"></input>
-        <input type="number" class="lots" placeholder="$ of lots" value="1"></input>
-        <button class="btn" id="sell">SELL</button>
+        <p class="HeadTab headOpen" id="market">Market</p>
+        <div class="tab tabOpen">
+          <input type="number" class="lots" placeholder="$" value="1"></input>
+          <div class="divs" id="TOP"></div>
+          <p class="opID">Order ID</p>
+          <p class="stopPrice">Price</p>
+          <input type="number" class="idOp" placeholder="ID"></input>
+          <input type="number" class="priceStop" placeholder="$"></input>
+          <button class="btn" id="stop">Stop</button>
+          <div class="divs" id="BOTTOM"></div>
+        </div>
+
+        <p class="HeadTab" id="limit">Limit</p>
+        <div class="tab">
+          <p class="priceP">Price</p>
+          <input type="number" class="price" placeholder="$"></input>
+          <p class="lotsP">Lots</p>
+          <input type="number" class="lots" placeholder="$" value="1"></input>
+          <p class="stopP">Stop loss</p>
+          <input type="number" class="stopIn" placeholder="$"></input>
+        </div>
+
         <button class="btn" id="buy">BUY</button>
+        <button class="btn" id="sell">SELL</button>
       </div>
-      <div class="closer">
-        <p>Close operation</p>
-        <button class="btn" id="close">Close</button>
-      </div>
+
       <div class="amountInfo">
         <p>Amount of money available</p>
         <div class="cash">$ 5200</div>
       </div>
     </div>
+
     <div class="player"></div>
   </div>
 

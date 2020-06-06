@@ -1,14 +1,26 @@
-const optionsList = document.getElementsByTagName('label');
-const price = document.getElementsByClassName('price');
+const headtabs = document.querySelectorAll('.HeadTab');
+const tabs = document.querySelectorAll('.tab');
 
-console.log(optionsList);
+const marketHead = headtabs[0];
+const limitHead = headtabs[1];
 
-if (optionsList[0].childNodes[1].checked) {
-  console.log("Cheked");
-} else {
-  console.log("NOP");
-}
+const marketTab = tabs[0];
+const limitTab = tabs[1];
 
-/* Provar el event mouse */
+console.log(tabs);
 
+marketHead.addEventListener('click', event => {
+  marketHead.className = "HeadTab headOpen";
+  limitHead.className = "HeadTab";
+  limitTab.className = "tab";
+  marketTab.className = "tab tabOpen";
+  console.log("Market");
+});
 
+limitHead.addEventListener('click', event => {
+  limitHead.className = "HeadTab headOpen";
+  marketHead.className = "HeadTab";
+  marketTab.className = "tab";
+  limitTab.className = "tab tabOpen";
+  console.log("Limit");
+});

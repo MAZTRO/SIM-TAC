@@ -10,7 +10,6 @@ userMenu.addEventListener('click', event => {
     menuSlide.className = 'menuSlideOpen';
     userMenu.className = 'userMenuOpen';
     console.log('MENU OPEN');
-    console.log(menuSlide.className);
   } else {
     menuSlide.className = 'menuSlideClose';
     userMenu.className = 'userMenu';
