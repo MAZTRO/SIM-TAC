@@ -1,7 +1,7 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
-import { createOrder, founds} from './createOrderLine.js';
-import { LP } from './streaming.js';
+import { founds} from './createOrderLine.js';
+//import { LP } from './streaming.js';
 // ...
 
 
@@ -26,8 +26,6 @@ async function getAllSymbols() {
         };
       });
       allSymbols = [...allSymbols, ...symbols];
-      console.log('paso')
-      console.log(allSymbols);
     }
   }
   return allSymbols;

@@ -1,0 +1,519 @@
+:root {
+  --color-blue: rgba(50, 100, 255, 1);
+  --color-blue-dark: #083763;
+  --color-red: rgb(209, 65, 65);
+  --color-green: rgb(25, 175, 58);
+}
+
+/* Main setup with GRID */
+body {
+  margin-bottom: 120px;
+}
+
+body .Body {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-template-rows: repeat(4, 1fr);
+
+  margin: 20px auto;
+  padding: 0%;
+
+  min-height: 610px;
+  max-height: 1200px;
+  width: 100%;
+  height: 83vh;
+  border-bottom: 1px solid;
+  border-color: rgba(230, 230, 230, 1);
+  background-color: rgba(240, 240, 240, 1);
+}
+
+/* Basic blocks's configuration */
+body .config {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 4;
+  grid-row-end: span 4;
+
+  min-width: 100px;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 20% 80%;
+
+
+  margin: 0px 5px 5px 5px;
+  background-color: rgba(180, 180, 180, 1);
+  border-radius: 20px;
+}
+
+body .tvChart {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: span 3;
+
+  min-width: 300px;
+  padding: 5px;
+
+  margin: 5px;
+  background-color: rgba(100, 100, 100, 1);
+  border-radius: 20px;
+}
+
+body .operator {
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  grid-row-end: span 4;
+
+  min-width: 200px;
+
+  margin: 5px 5px 5px 0px;
+  background-color: rgba(180, 180, 180, 1);
+  border-radius: 20px;
+}
+
+/* 
+    player comming soon
+body .player {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+
+  margin: 0px 5px 5px 5px;
+  background-color: rgba(150, 150, 150, 1);
+  border-radius: 20px;
+}
+ */
+
+/* =============================== */
+/* Configuration of block 'Config' */
+/* =============================== */
+
+body .config .tableOp {
+  overflow-y: scroll;
+}
+
+body .config .tableOp::-webkit-scrollbar {
+  width: 5px;
+  max-height: 30%;
+  height: 30%;
+}
+body .config .tableOp::-webkit-scrollbar-track {
+  background-color: rgba(200, 200, 200, 0);
+  max-height: 30%;
+  height: 30%;
+}
+body .config .tableOp::-webkit-scrollbar-thumb {
+  padding: 20px;
+  height: 80px;
+}
+
+.config p {
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 1;
+  grid-row-end: 2;
+
+  text-align: center;
+  margin: auto auto;
+
+  color: rgba(60, 60, 60, 1);
+}
+
+.config .tableOp {
+  grid-column-start: 1;
+  grid-column-end: span 1;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+
+  margin: 0px 10px 15px 10px;
+  min-height: 135px;
+
+  border-radius: 15px;
+}
+
+.config .tableOp #operations_list {
+  border-collapse: collapse;
+  width: 100%;
+
+  border-radius: 15px;
+  background-color: rgb(230, 230, 230);
+}
+
+.config #operations_list th {
+  font-size: 14px;
+  color: #FFFFFF;
+  height: 30px;
+  width: 15%;
+  background-color: var(--color-blue);
+}
+
+.config #operations_list th:last-child {
+  width: 5%;
+}
+
+.config #operations_list tr {
+  height: 25px;
+}
+
+.config #operations_list tr:nth-child(odd) {
+  background-color: rgba(200, 200, 200, 1);
+}
+
+.config #operations_list tr td {
+  font-size: 12px;
+  text-align: center;
+  height: 25px;
+
+  padding: 2px;
+  margin: 0px;
+  color: rgba(70, 70, 70, 1);
+}
+
+.config #operations_list tr td button {
+  outline: none;
+  border: none;
+
+  width: 100%;
+  height: 100%;
+
+  margin: auto;
+  padding: 0px;
+
+  cursor: pointer;
+
+  background-color: rgba(50, 100, 255, 0);
+  background-image: url(../../pub_images/basura.png);
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: center;
+}
+
+.config #operations_list tr td button:active {
+  transform: scale(0.90);
+}
+
+
+/* ================================= */
+/* Configuration of block 'operator' */
+/* ================================= */
+
+.operator .status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  height: 15%;
+  border: 0px;
+  border-bottom: 1px solid;
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.operator .status p {
+  margin: 0px;
+  margin-bottom: 2%;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .status .statusDIV {
+  color: rgb(50, 50, 50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  max-width: 80%;
+  height: 50%;
+  background-color: rgba(200, 200, 200, 1);
+  border-radius: 15px;
+
+}
+
+/* ================================ */
+/* ========= Operations =========== */
+/* ================================ */
+
+.operator .operations {
+  position: relative;
+  display: grid;
+
+  grid-template-columns: repeat(6, 16.6666%);
+  grid-template-rows: 10% 70% 20%;
+
+  width: 100%;
+  height: 50%;
+
+  border: 0px;
+  border-bottom: 1px solid;
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.operations .HeadTab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: auto;
+
+  width: 100%;
+  height: 100%;
+
+  grid-row: 1 / span 1;
+
+  border: 0px;
+  border-bottom: 1px solid rgba(120, 120, 120, 1);
+
+  color: rgba(60, 60, 60, 1);
+
+  cursor: pointer;
+
+}
+
+.operations #market {
+  grid-column: 1 / 4;
+
+  border-right: 1px solid rgba(120, 120, 120, 1);
+}
+
+.operations #limit {
+  grid-column: 4 / span 6;
+
+  border-left: 1px solid rgba(120, 120, 120, 1);
+}
+
+
+.operations .tab {
+  grid-column: 1 / span 6;
+  grid-row: 2 / 3;
+
+  display: grid;
+
+  height: 100%;
+  width: 100%;
+  visibility: hidden;
+}
+
+.operations #marketTab {
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: 20% 20% 10% 20% 20%;
+}
+
+.operations #limitTab {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 25% 12.5% 12.5% 12.5% 12.5% 25%;
+}
+
+.operations .tabOpen {
+  visibility: visible;
+}
+
+.operations .headOpen {
+  border-bottom-color: rgba(180, 180, 180, 1);
+}
+
+.operations .btn {
+  width: 80%;
+  height: 50%;
+
+  margin: auto;
+
+  border-radius: 15px;
+  border: 0px;
+  background-color: rgb(230, 230, 230);
+  color: #FFFFFF;
+  outline: none;
+}
+
+.operations .btn:hover {
+  cursor: pointer;
+}
+
+.operations .btn:active {
+  transform: scale(0.95);
+}
+
+.operations #stop {
+  grid-column: 1 /span 4;
+  grid-row: 5 / span 7;
+
+  border-radius: 8px;
+  background-color: rgba(100, 100, 100, 1);
+
+  height: 40%;
+}
+
+.operations #buy {
+  grid-column: 1 / 4;
+  grid-row: 3 / span 3;
+
+  background-color: var(--color-green);
+}
+
+.operations #sell {
+  grid-column: 4 / span 6;
+  grid-row: 3 / span 3;
+
+  background-color: var(--color-red);
+}
+
+.operations .tab .divs {
+  margin: auto;
+  width: 80%;
+  height: 1px;
+
+  background-color: rgba(60, 60, 60, .5);
+}
+
+.operations .tab #TOP {
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+
+  margin-bottom: 10px;
+}
+
+.operations .tab #BOTTOM {
+  grid-column: 1 / span 4;
+  grid-row: 6 / span 6;
+
+  margin-bottom: 5px;
+}
+
+.operations .tab input {
+  width: 70%;
+  height: 60%;
+
+  text-align: right;
+  font-size: 14px;
+
+  border: 0px;
+  border-radius: 10px;
+  background-color: rgba(230, 230, 230, 1);
+
+  outline: none;
+
+  margin: auto;
+}
+
+.operations .tab p {
+  text-align: center;
+  font-size: 14px;
+
+  margin: auto;
+  margin-bottom: 5px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operations .tab p.opID {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+}
+
+.operations .tab p.stopPrice {
+  grid-column: 3 / span 4;
+  grid-row: 3 / 4;
+}
+
+.operations .tab p.priceP {
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
+}
+
+.operations .tab p.stopP {
+  grid-column: 2 / 4;
+  grid-row: 5 / 6;
+}
+
+.operations .tab p.lotsP {
+  grid-column: 2 / 4;
+  grid-row: 1 / 2;
+}
+
+.operations #limitTab input.lots {
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+
+  margin: auto;
+
+  width: 40%;
+  height: 70%;
+}
+
+.operations #marketTab input.lots {
+  grid-column: 1 / span 4;
+  grid-row: 2 / 3;
+
+  margin: auto;
+  margin-top: 5px;
+
+  width: 40%;
+  height: 50%;
+}
+
+.operations .tab input.idOp {
+  grid-column: 1 / 3;
+  grid-row: 4 / 5;
+
+  height: 50%;
+}
+
+.operations .tab input.priceStop {
+  grid-column: 3 / span 4;
+  grid-row: 4 / 5;
+
+  height: 50%;
+}
+
+.operations .tab input.price {
+  width: 40%;
+  height: 70%;
+  grid-column: 1 / span 4;
+  grid-row: 4 / 5;
+}
+
+.operations .tab input.stopIn {
+  width: 40%;
+  height: 40%;
+
+  margin-top: 0px;
+  grid-column: 1 / span 4;
+  grid-row: 6 / 7;
+}
+
+/* =========================== */
+/* =========== Info ========== */
+/* =========================== */
+
+.operator .amountInfo {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  height: 19%;
+  border: 0px;
+}
+
+.operator .amountInfo p {
+  text-align: center;
+  width: 100%;
+  margin: 10px auto;
+  margin-bottom: 10px;
+  color: rgba(60, 60, 60, 1);
+}
+
+.operator .amountInfo .cash {
+  color: rgb(50, 50, 50);
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  max-width: 80%;
+  height: 60px;
+  background-color: rgba(200, 200, 200, 1);
+  border-radius: 15px;
+}

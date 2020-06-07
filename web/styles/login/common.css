@@ -1,0 +1,26 @@
+body {
+  background-color: rgba(250, 250, 250, 1);
+  margin: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* ================== */
+/* SCROLL BAR */
+/* ================== */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(180, 180, 180, 1);
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #083763;
+  border-radius: 3px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #128EE3;
+}

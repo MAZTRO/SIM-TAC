@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script
+    type="text/javascript"
+    src="chart/charting_library/charting_library.min.js" async>
+  </script>
+  <!-- <script src="chart/src/createOrderLine.js" async></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js" async></script>
+  <!-- Custom datafeed module. -->
+  <script type="module" src="chart/src/main.js" async></script>
+  <script src="scripts/header.js" async></script>
+  <script src="scripts/config_module.js" async></script>
+  <script src="scripts/operation_module.js" async></script>
+
+  <link rel="stylesheet" href="styles/chart/header.css">
+  <link rel="stylesheet" href="styles/chart/common.css">
+  <link rel="stylesheet" href="styles/chart/footer.css">
+  <link rel="stylesheet" href="styles/chart/body.css">
+
+  <title>SIM-TAC</title>
+</head>
+<body>
+  <!-- ==================== -->
+  <!-- == header section == -->
+  <!-- ==================== -->
+  <header>
+    <a href="#">
+      <img src="pub_images/sim_logo.png" alt="sim-tac">
+    </a>
+    <div class="userInfo">
+      <div class="avatar"></div>
+      <div class="name">Jhon Doe</div>
+      <div class="userId">123456789</div>
+      <button class="userMenu">
+        <span class="top-bar"></span>
+        <span class="med-bar"></span>
+        <span class="bot-bar"></span>
+      </button>
+    </div>
+    <div class="menuSlideClose" id="menuSlides">
+      <ul>
+        <li class="title">Do you want to leave the session?<br>Click in the button bellow!</button></li>
+        <li><button>Sign out</button></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ==================== -->
+  <!-- == body section == -->
+  <!-- ==================== -->
+  <div class="Body">
+    <div class="config" id="config">
+      <p>Operations</p>
+      <div class="tableOp">
+        <table id="operations_list">
+          <!-- HEAD -->
+          <tr>
+            <th>id</th>
+            <th>type</th>
+            <th>Price</th>
+            <th>Stop loss</th>
+            <th>Quantity</th>
+            <th>state</th>
+            <th>delete</th>
+          </tr>
+          <!-- HEAD -->
+          <!--<tr>
+            <td>1234</td>
+            <td>Buy</td>
+            <td>2500</td>
+            <td>2455</td>
+            <td>10</td>
+            <td>Pending</td>
+            <td><button class="remove"></button></td>
+          </tr>
+          <tr>
+            <td>1234</td>
+            <td>Sell</td>
+            <td>2500</td>
+            <td>N/A</td>
+            <td>10</td>
+            <td>Pending</td>
+            <td><button class="remove"></button></td>
+          </tr> -->
+        </table>
+      </div>
+
+    </div>
+
+    <div class="tvChart" id="tvChart"></div>
+
+    <div class="operator">
+      <div class="status">
+        <p>G/L</p>
+        <div class="statusDIV">
+          Constant
+        </div>
+      </div>
+
+      <div class="operations">
+        <p class="HeadTab headOpen" id="market">Market</p>
+        <div class="tab tabOpen" id="marketTab">
+          <p class="lotsP">Lots</p>
+          <input type="number" class="lots" placeholder="$" value="1"></input>
+          <div class="divs" id="TOP"></div>
+          <p class="opID">Order ID</p>
+          <p class="stopPrice">Price</p>
+          <input type="number" class="idOp" placeholder="ID"></input>
+          <input type="number" class="priceStop" placeholder="$"></input>
+          <button class="btn" id="stop">Stop loss</button>
+          <div class="divs" id="BOTTOM"></div>
+        </div>
+
+        <p class="HeadTab" id="limit">Limit</p>
+        <div class="tab" id="limitTab">
+          <p class="priceP">Price</p>
+          <input type="number" class="price" placeholder="$"></input>
+          <p class="lotsP">Lots</p>
+          <input type="number" class="lots" placeholder="$" value="1"></input>
+          <p class="stopP">Stop loss</p>
+          <input type="number" class="stopIn" placeholder="$"></input>
+          <div class="divs" id="BOTTOM"></div>
+        </div>
+
+        <button class="btn" id="buy" data-type="buy">BUY</button>
+        <button class="btn" id="sell" data-type="sell">SELL</button>
+      </div>
+
+      <div class="amountInfo">
+        <p>Amount of money available</p>
+        <div class="cash"></div>
+      </div>
+    </div>
+
+    <div class="player"></div>
+  </div>
+
+  <!-- ==================== -->
+  <!-- == Footer section == -->
+  <!-- ==================== -->
+  <footer>
+    <div class="owners">©SIM-TAC <br> All rights reserved </div>
+  </footer>
+</body>
+</html>

@@ -1,14 +1,18 @@
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
+/* import { LP } from './streaming.js'; */ // import last price each time the socket update a tick
 
-const ordersTemplate = document.querySelector('.ordersTemplate');
+//const ordersTemplate = document.querySelector('.operations_list');
+const ordersTemplate = document.getElementById('operations_list');
 const cashItem = document.querySelector('.cash');
-const priceInput = document.querySelector('.value');
-const lotesInput = document.querySelector('.lotes');
+const priceInput = document.querySelector('.priceStop');
+const lotesInput = document.querySelector('.lots');
 const buyButton = document.getElementById('buy');
 const sellButton = document.getElementById('sell');
 
+console.log(ordersTemplate)
 let userOrders  = [];
 let pendingOrders = [];
+let currencies = {};
 let money = 20;
 let count = 0;
 
@@ -18,28 +22,25 @@ function orderCase (price, lotes, orderType) {
         if price doesn't comes from user is a market order
         if price comes from user input is a programable order 
     */
-    let isProgrammable = false;
-    lotes = 1; //input lotes is empty
     lotes  = (lotes * 10); // get the dollas quantity of the order
     if (!price) {
         if (!activeFounds(lotes, orderType)) return;
         if (growthOrder(LP, lotes, orderType)) return;
-        createOrder(LP, lotes, orderType, isProgrammable);
+        createOrder(LP, lotes, orderType, false);
     }
     else {
-        isProgrammable = true;
-        createOrder(price, lotes, orderType, isProgrammable);
+        createOrder(price, lotes, orderType, true);
     }
 }
 
-export const createOrder = function (price, quantity, orderType, isProgrammable) {
+const createOrder = function (price, quantity, orderType, isProgrammable) {
     /* create order in active chart called order */
     const order  = window.tvWidget.activeChart().createOrderLine();
     order.setPrice(price);
     order.setQuantity(quantity);
     const orderObject = saveOrder(order, orderType, price, isProgrammable); // save order in object, return an order object  info  
     createOrderInChart(orderObject, order); // create order in chart
-    createOrderTemplate(orderObject); // Create order in template orders
+    createRowTable(orderObject); // crete row in table orders
 }
 
 function createOrderInChart(obj, order) {
@@ -52,18 +53,18 @@ function orderStyleChart (order, color, obj) {
     order.setLineColor(color).setBodyTextColor(color).setBodyBorderColor(color);                
     order.setQuantityBorderColor(color).setQuantityTextColor(color);
     order.setLineStyle(2).setQuantityBackgroundColor("#fff");
-    if (!obj.programmable)setTimeout(() => order.remove(), 5000); //remove succeful order item from active chart after 5 seg it was created
+    //if (!obj.programmable)setTimeout(() => order.remove(), 5000); //remove succeful order item from active chart after 5 seg it was created
 }
 
 function growthOrder(price, quantity, orderType) {
     let bool = false;
     userOrders.forEach(el => {
         if ((price.toFixed(0) === el.price.toFixed(0)) && (orderType === el.type)) {
-            console.log(el.type)
             el.quantity += quantity;
             el.orr._data.quantityText = el.quantity;
             bool = true;
-            changeOrderState(el, 'span', 0, el.quantity); 
+            console.log(el)
+            changeOrderState(el, el.quantity, 4); 
         }
     });
     return bool;
@@ -96,33 +97,36 @@ function saveOrder (order, orderType, price, isProgrammable) {
     return orderObject;
 }
 
-function createOrderTemplate(orderObject) {
-    /* create orden template */
-    const HTMLString = cp(orderObject); // object string for table
-    const orderElement = createTemplate(HTMLString); // convert the string in html tag
-    ordersTemplate.append(orderElement); //append element in ordersTemplate <div>
-    const closeOrderButton = document.getElementById(`closeOrderButton-${count}`); 
-    addCloseEvent(closeOrderButton);
+function createRowTable (el) {
+    let tr = document.createElement('tr');
+    let ob = [el.id, el.type, el.price, '2455', el.quantity, el.state];
+    let prop = ['id', 'type', 'price', 'stop', 'quantity', 'state'];
+
+    for (let i = 0; i <= ob.length; i++) {
+        let td = document.createElement('td');
+        if (i == ob.length) {
+            tr.appendChild(createCloseOrderButton(el, td));
+            ordersTemplate.appendChild(tr);
+            return
+        }
+        else {
+            td.dataset[prop[i]] = ob[i];
+            td.appendChild(document.createTextNode(ob[i]));
+            tr.appendChild(td);
+        }
+    }
 }
 
-
-function cp (el) {
-    /* create order string  baed in html tag*/
-    return (
-        `<p class="" data-id='${el.id}' data-type='${el.type}' data-state='${el.state}'>
-            order type: ${el.type} - price: ${el.price} - quatity:
-            <span class="quantity"> ${el.quantity} </span> - id: ${el.id} - <span class="orderState">state: ${el.state}</span>
-            <button id="closeOrderButton-${++count}" data-id='${el.id}' 
-            data-is='${el.programmable}'> x </button>
-        </p>`
-    )
-}
-
-function createTemplate (HTMLString) {
-    /* create a html->body tree to put inside the HTML string */
-    const html = document.implementation.createHTMLDocument()
-    html.body.innerHTML = HTMLString // change this parts is insecure
-    return html.body.children[0]
+function createCloseOrderButton(el, td) {
+    let close = document.createElement('button');
+    close.id = `closeOrderButton-${++count}`;
+    console.log(el);
+    close.dataset.is = el.programmable;
+    close.dataset.id = el.id;
+    close.classList.add('remove');
+    addCloseEvent(close);
+    td.appendChild(close);
+    return td;
 }
 
 function deleteOrder (id, isProgrammable) {
@@ -151,57 +155,67 @@ export const pendingOrdersReview = function () {
         Update pending orders to complete succesfully orders
         if a price in a prending order is equal to last pice the oerder must be taked
     */
-    priceInput.placeholder = LP.toFixed(1); //updates real price in price order input 
+    //priceInput.placeholder = LP.toFixed(1); //updates real price in price order input
     pendingOrders.forEach(element =>  {
         if (element.price == LP) {
+            activeFounds(element.quantity, element.type);
             element.isProgrammable = false;
             element.state = "success";
-            changeOrderState(element, 'span', 1, element.state); //change the order template state to success
-            activeFounds(element.quantity, element.type);
+            changeOrderState(element, element.state, 5); //change the order template state to success
             userOrders.push(element); // push the order to sucess orders
             pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
         }
     });
 }
 
-
-function changeOrderState(element, className, index, text) {
+function changeOrderState(element, text, index) {
     /* modify the order template once it needs pass order to success */
-    const order = ordersTemplate.childNodes;
-    for (const x in order) {
-        if ((x >= 1) && (order[x].dataset.id == element.id)) {
-            order[x].dataset.state = "success"; // updates data-state from html tag object
-            const state = order[x].getElementsByTagName(className)[index]; //get the element that content the order state
-            state.innerText = state.textContent = text; // change the order state
-            //changeSpanContent(state, element.state);
+    const orders = ordersTemplate.childNodes;
+    for (const x in orders) {
+        if (orders[x].cells) {
+            if (orders[x].cells[0].dataset.id == element.id) {
+                const order = orders[x].getElementsByTagName('td')[index]; 
+                order.innerText = order.textContent = text;
+            }
         }
     }
 }
 
-/*function changeSpanContent(element, content) {
-    element.innerText = element.textContent = content;
-}*/
-
-
 export const founds = function () {
     /* show the user found in chas item input */
-    const HTMLString = `<p>$ ${money}<p>`;
-    const template = createTemplate(HTMLString)
-    cashItem.append(template);
+    const p = document.createElement('p');
+    cashItem.appendChild(document.createTextNode(money));
 }
 
 function activeFounds (lotes, orderType) {
+    /* Verificates and make properly operation for found in order */
+    const currency = window.tvWidget.activeChart().symbol().split(":")[1]; //symbol pair
     if (orderType === "buy") {
         if (money <= 0 || (money - lotes) < 0) {
             console.log("not enought founds");
             return;
         }
-        money = money - lotes;
-        console.log(money);
+        // currencies will contains the currency user has in lotes price
+        if (!currencies.hasOwnProperty(currency)) {
+            currencies[currency] = lotes;
+        } else currencies[currency]  += lotes;
+        money -= lotes;
     }
     else {
-        money += lotes;
-        console.log(money);
+        // sell a currency if the user had bought
+        if (currencies.hasOwnProperty(currency)) {
+            if (lotes > currencies[currency]) {
+                console.log('cant sell this quantity you only have: ' + currencies[currency] + ' in ' + currency);
+                return;
+            }
+            currencies[currency] -= lotes;
+            money += lotes;
+            console.log(currencies)
+        }
+        else {
+            console.log('cant sell this quantity you only have: 0'  + ' in ' + currency);
+            return;
+        }
     }
     cashItem.innerText = cashItem.textContent = money;
     return true;
@@ -209,7 +223,8 @@ function activeFounds (lotes, orderType) {
 
 /* buttons events open and close */
 buyButton.addEventListener('click', () => {
-    orderCase(priceInput.value, lotesInput.value, buyButton.dataset.type);  
+    console.log(lotesInput.value)
+    orderCase(priceInput.value, lotesInput.value, buyButton.dataset.type);
 });
 
 sellButton.addEventListener('click', () => {
@@ -219,9 +234,11 @@ sellButton.addEventListener('click', () => {
 const addCloseEvent = function (element) {
     element.addEventListener('click', () => {
         deleteOrder(element.dataset.id, element.dataset.is);
-        element.parentNode.remove();
+        element.parentNode.parentNode.remove();
     });
 }
+
+
 /*here
 we  have two options first generate de complete order form
 and send  to the api or send to the api and call it again with the
@@ -232,27 +249,27 @@ safe stored information*/
 
 //  create order template
 
-//  inner the order template in the view    
+//  inner the order template in the view
 
 
 /*other methos that can set to the order line on th chart
       const color = '#ff9f0a';
       const fontColor = '#fff';
       //.setText("Buy Line")
-      //.setLineLength(1) 
+      //.setLineLength(1)
       //.setLineStyle(3)
       .onModify(res => res)
-      //.setLineColor(color)                
-      /*.setBodyTextColor(fontColor)                
-      .setBodyBorderColor(color)                
-      .setBodyBackgroundColor(color)                 
-      .setQuantityBorderColor(color)                
-      .setQuantityTextColor(fontColor)                
-      .setQuantityBackgroundColor(color)                 
-      .setCancelButtonBorderColor(color)                
-      .setCancelButtonBackgroundColor(color)                
-      .setCancelButtonIconColor(fontColor)                 
-      .setLineLength(25) // Margin right 25%                
-      .setLineStyle(2)             
+      //.setLineColor(color)
+      /*.setBodyTextColor(fontColor)
+      .setBodyBorderColor(color)
+      .setBodyBackgroundColor(color)
+      .setQuantityBorderColor(color)
+      .setQuantityTextColor(fontColor)
+      .setQuantityBackgroundColor(color)
+      .setCancelButtonBorderColor(color)
+      .setCancelButtonBackgroundColor(color)
+      .setCancelButtonIconColor(fontColor)
+      .setLineLength(25) // Margin right 25%
+      .setLineStyle(2)
       //n.lines.set(id, widget)
       console.log(n)*/
