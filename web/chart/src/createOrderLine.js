@@ -63,6 +63,7 @@ function growthOrder(price, quantity, orderType) {
             el.quantity += quantity;
             el.orr._data.quantityText = el.quantity;
             bool = true;
+            changeOrderState(el, 'span', 0, el.quantity); 
         }
     });
     return bool;
@@ -79,8 +80,10 @@ function saveOrder (order, orderType, price, isProgrammable) {
         price: price,
         programmable: isProgrammable,
         quantity: order._data.quantityText,
-        type: orderType,
+        symbol: window.tvWidget.activeChart().symbol().split(":")[1],
+        type: orderType
     }
+    console.log(orderObject)
 
     if (isProgrammable) {
         orderObject['state'] = 'pending';
@@ -107,8 +110,8 @@ function cp (el) {
     /* create order string  baed in html tag*/
     return (
         `<p class="" data-id='${el.id}' data-type='${el.type}' data-state='${el.state}'>
-            order type: ${el.type} - price: ${el.price} - 
-            quantity: ${el.quantity} - id: ${el.id} - <span class="orderState">state: ${el.state}</span>
+            order type: ${el.type} - price: ${el.price} - quatity:
+            <span class="quantity"> ${el.quantity} </span> - id: ${el.id} - <span class="orderState">state: ${el.state}</span>
             <button id="closeOrderButton-${++count}" data-id='${el.id}' 
             data-is='${el.programmable}'> x </button>
         </p>`
@@ -153,7 +156,7 @@ export const pendingOrdersReview = function () {
         if (element.price == LP) {
             element.isProgrammable = false;
             element.state = "success";
-            changeOrderState(element); //change the order template state to success
+            changeOrderState(element, 'span', 1, element.state); //change the order template state to success
             activeFounds(element.quantity, element.type);
             userOrders.push(element); // push the order to sucess orders
             pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
@@ -161,16 +164,16 @@ export const pendingOrdersReview = function () {
     });
 }
 
-function changeOrderState(element) {
+
+function changeOrderState(element, className, index, text) {
     /* modify the order template once it needs pass order to success */
     const order = ordersTemplate.childNodes;
     for (const x in order) {
         if ((x >= 1) && (order[x].dataset.id == element.id)) {
             order[x].dataset.state = "success"; // updates data-state from html tag object
-            const state = order[x].getElementsByTagName('span')[0]; //get the element that content the order state
-            state.innerText = state.textContent = element.state; // change the order state
+            const state = order[x].getElementsByTagName(className)[index]; //get the element that content the order state
+            state.innerText = state.textContent = text; // change the order state
             //changeSpanContent(state, element.state);
-
         }
     }
 }

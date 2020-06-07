@@ -18,7 +18,7 @@ export function generateSymbol(exchange, fromSymbol, toSymbol) {
 }
 
 export function parseFullSymbol(fullSymbol) {
-  console.log(fullSymbol)
+  //console.log(fullSymbol)
   const match = fullSymbol.match(/^(\w+):(\w+)\/(\w+)$/);
   if (!match) {
       return null;
