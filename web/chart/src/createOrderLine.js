@@ -8,6 +8,8 @@ const cashItem = document.querySelector('.cash');
 // Market order inputs
 const priceInput = document.querySelector('.priceStop');// for price stop Lost
 const lotesInput = document.querySelector('.lotsMarket');
+const lastPrice = document.querySelector('.idOp');
+const stopLostButton = document.getElementById('stop');
 
 // Limit order inputs
 const priceInputLimit = document.querySelector('.price');
@@ -30,9 +32,9 @@ function setMarketOrder(stopPrice, lotes, orderType) {
     createOrder(LP, lotes, orderType, false, stopPrice);
 }
 
-function setOrderProgrammable (price, lotes, orderType) {
+function setOrderProgrammable (price, lotes, orderType, stopPrice) {
     lotes  = (lotes * 10); // get the dollas quantity of the order
-    createOrder(price, lotes, orderType, true);
+    createOrder(price, lotes, orderType, true, stopPrice);
 }
 
 const createOrder = function (price, quantity, orderType, isProgrammable, stopPrice) {
@@ -43,16 +45,20 @@ const createOrder = function (price, quantity, orderType, isProgrammable, stopPr
     const orderObject = saveOrder(order, orderType, price, isProgrammable, stopPrice) ; // save order in object, return an order object  info  
     createOrderInChart(orderObject, order); // create order in chart
     createRowTable(orderObject); // crete row in table orders
-    createStopLossOrder(orderObject, quantity);
+    
+    if (!isProgrammable) {
+        if (orderObject.stopPrice != 'NaN') createStopLossOrder(orderObject, orderType);
+    }
 }
 
-function createStopLossOrder(orderObject, quantity) {
+function createStopLossOrder(orderObject, orderType) {
+    if (orderType === 'buy') orderType = 'sell' ;
     const stopOrder = {
         id : orderObject.id,
         price: orderObject.stopPrice,
         programmable: true,
-        quantity: quantity,
-        type: 'sell',
+        quantity: orderObject.quantity,
+        type: orderType,
         state: orderObject.state
     }
     pendingOrders.push(stopOrder);
@@ -76,7 +82,7 @@ function orderStyleChart (order, color, obj) {
 function growthOrder(price, quantity, orderType) {
     let bool = false;
     userOrders.forEach(el => {
-        if ((price.toFixed(0) === el.price.toFixed(0)) && (orderType === el.type)) {
+        if ((price.toFixed(1) === el.price.toFixed(1)) && (orderType === el.type)) {
             el.quantity += quantity;
             el.orr._data.quantityText = el.quantity;
             bool = true;
@@ -118,8 +124,10 @@ function saveOrder (order, orderType, price, isProgrammable, stopPrice) {
 
 function createRowTable (el) {
     let tr = document.createElement('tr');
-    let ob = [el.id, el.type, el.price, '2455', el.quantity, el.state];
-    let prop = ['id', 'type', 'price', 'stop', 'quantity', 'state'];
+    const ob = [['id', el.id], ['type', el.type], ['price', el.price],
+    ['stop', el.stopPrice], ['quantity', el.quantity], ['state', el.state]];
+    //let ob = [el.id, el.type, el.price, el.stopPrice, el.quantity, el.state];
+    //let prop = ['id', 'type', 'price', 'stop', 'quantity', 'state'];
 
     for (let i = 0; i <= ob.length; i++) {
         let td = document.createElement('td');
@@ -129,8 +137,8 @@ function createRowTable (el) {
             return
         }
         else {
-            td.dataset[prop[i]] = ob[i];
-            td.appendChild(document.createTextNode(ob[i]));
+            td.dataset[ob[i][0]] = ob[i][1];
+            td.appendChild(document.createTextNode(ob[i][1]));
             tr.appendChild(td);
         }
     }
@@ -174,7 +182,7 @@ export const pendingOrdersReview = function () {
         Update pending orders to complete succesfully orders
         if a price in a prending order is equal to last pice the oerder must be taked
     */
-    //priceInput.placeholder = LP.toFixed(1); //updates real price in price order input
+    lastPrice.placeholder = LP.toFixed(1); //updates real price in price order input
     pendingOrders.forEach(element =>  {
         if (element.price == LP) {
             if (!activeFounds(element.quantity, element.type)) return;
@@ -182,6 +190,7 @@ export const pendingOrdersReview = function () {
             element.isProgrammable = false;
             element.state = "success";
             changeOrderState(element, element.state, 5); //change the order template state to success
+            createStopLossOrder(element, element.type);
             userOrders.push(element); // push the order to sucess orders
             pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
         }
@@ -248,16 +257,26 @@ buyButton.addEventListener('click', () => {
         setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type);
     } else {
         //console.log(typeof priceInputLimit.value)
-        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type);
+        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
     }
 });
 
 sellButton.addEventListener('click', () => {
     if (priceInputLimit.disabled) {
-        setMarketOrder(lotesInput.value, sellButton.dataset.type);
+        setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
     } else {
         console.log(priceInputLimit.value)
-        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type);
+        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+    }
+});
+
+stopLostButton.addEventListener('click', () => {
+    if (priceInput.disabled) {
+        priceInput.disabled = false;
+        stopLostButton.classList.add('closeGreen');
+    } else {
+        priceInput.disabled = true;
+        stopLostButton.classList.add('closeRed');
     }
 });
 

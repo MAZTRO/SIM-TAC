@@ -55,6 +55,8 @@ export default {
     console.log('[onReady]: Method call');
     founds();
     const priceInputLimit = document.querySelector('.price');
+    const priceInput = document.querySelector('.priceStop');
+    priceInput.disabled = true;
     priceInputLimit.disabled = true;
     
     setTimeout(() => callback(configurationData));
