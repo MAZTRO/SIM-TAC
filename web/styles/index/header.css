@@ -19,7 +19,7 @@ header a img {
 
 /* Body of user info */
 
-header .btnLogin {
+header .btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +32,4 @@ header .btnLogin {
   border-radius: 5px;
   width: 60px;
   height: 40px;
-
-  position: absolute;
-  right: 30px;
 }
