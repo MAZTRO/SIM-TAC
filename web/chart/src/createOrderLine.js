@@ -4,43 +4,60 @@ import { LP } from './streaming.js'; // import last price each time the socket u
 //const ordersTemplate = document.querySelector('.operations_list');
 const ordersTemplate = document.getElementById('operations_list');
 const cashItem = document.querySelector('.cash');
-const priceInput = document.querySelector('.priceStop');
-const lotesInput = document.querySelector('.lots');
+
+// Market order inputs
+const priceInput = document.querySelector('.priceStop');// for price stop Lost
+const lotesInput = document.querySelector('.lotsMarket');
+
+// Limit order inputs
+const priceInputLimit = document.querySelector('.price');
+const lotesInputLimit = document.querySelector('.lotsLimit');
+const stopInputLimit = document.querySelector('.stopIn');
+
 const buyButton = document.getElementById('buy');
 const sellButton = document.getElementById('sell');
 
-console.log(ordersTemplate)
 let userOrders  = [];
 let pendingOrders = [];
 let currencies = {};
 let money = 20;
 let count = 0;
 
-function orderCase (price, lotes, orderType) {
-    /*
-        ordercase buy or sell
-        if price doesn't comes from user is a market order
-        if price comes from user input is a programable order 
-    */
-    lotes  = (lotes * 10); // get the dollas quantity of the order
-    if (!price) {
-        if (!activeFounds(lotes, orderType)) return;
-        if (growthOrder(LP, lotes, orderType)) return;
-        createOrder(LP, lotes, orderType, false);
-    }
-    else {
-        createOrder(price, lotes, orderType, true);
-    }
+function setMarketOrder(stopPrice, lotes, orderType) {
+    lotes  = (lotes * 10);
+    if (!activeFounds(lotes, orderType)) return;
+    if (growthOrder(LP, lotes, orderType)) return;
+    createOrder(LP, lotes, orderType, false, stopPrice);
 }
 
-const createOrder = function (price, quantity, orderType, isProgrammable) {
+function setOrderProgrammable (price, lotes, orderType) {
+    lotes  = (lotes * 10); // get the dollas quantity of the order
+    createOrder(price, lotes, orderType, true);
+}
+
+const createOrder = function (price, quantity, orderType, isProgrammable, stopPrice) {
     /* create order in active chart called order */
     const order  = window.tvWidget.activeChart().createOrderLine();
     order.setPrice(price);
     order.setQuantity(quantity);
-    const orderObject = saveOrder(order, orderType, price, isProgrammable); // save order in object, return an order object  info  
+    const orderObject = saveOrder(order, orderType, price, isProgrammable, stopPrice) ; // save order in object, return an order object  info  
     createOrderInChart(orderObject, order); // create order in chart
     createRowTable(orderObject); // crete row in table orders
+    createStopLossOrder(orderObject, quantity);
+}
+
+function createStopLossOrder(orderObject, quantity) {
+    const stopOrder = {
+        id : orderObject.id,
+        price: orderObject.stopPrice,
+        programmable: true,
+        quantity: quantity,
+        type: 'sell',
+        state: orderObject.state
+    }
+    pendingOrders.push(stopOrder);
+    console.log('stop loss success: ' + stopOrder.price)
+    console.log(pendingOrders)
 }
 
 function createOrderInChart(obj, order) {
@@ -70,11 +87,12 @@ function growthOrder(price, quantity, orderType) {
     return bool;
 }
 
-function saveOrder (order, orderType, price, isProgrammable) {
+function saveOrder (order, orderType, price, isProgrammable, stopPrice) {
     /*
         * save order in proper object data for orders
         * orderObject: order based in the order data
      */
+    if (stopPrice === '') stopPrice = 'NaN';
     const orderObject = {
         id : order._line._id,
         orr: order,
@@ -82,7 +100,8 @@ function saveOrder (order, orderType, price, isProgrammable) {
         programmable: isProgrammable,
         quantity: order._data.quantityText,
         symbol: window.tvWidget.activeChart().symbol().split(":")[1],
-        type: orderType
+        type: orderType,
+        stopPrice: stopPrice
     }
     console.log(orderObject)
 
@@ -158,7 +177,8 @@ export const pendingOrdersReview = function () {
     //priceInput.placeholder = LP.toFixed(1); //updates real price in price order input
     pendingOrders.forEach(element =>  {
         if (element.price == LP) {
-            activeFounds(element.quantity, element.type);
+            if (!activeFounds(element.quantity, element.type)) return;
+            console.log('success sell');
             element.isProgrammable = false;
             element.state = "success";
             changeOrderState(element, element.state, 5); //change the order template state to success
@@ -217,18 +237,28 @@ function activeFounds (lotes, orderType) {
             return;
         }
     }
+    console.log(currencies);
     cashItem.innerText = cashItem.textContent = money;
     return true;
 }
 
 /* buttons events open and close */
 buyButton.addEventListener('click', () => {
-    console.log(lotesInput.value)
-    orderCase(priceInput.value, lotesInput.value, buyButton.dataset.type);
+    if (priceInputLimit.disabled) {
+        setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type);
+    } else {
+        //console.log(typeof priceInputLimit.value)
+        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type);
+    }
 });
 
 sellButton.addEventListener('click', () => {
-    orderCase(priceInput.value, lotesInput.value, sellButton.dataset.type);
+    if (priceInputLimit.disabled) {
+        setMarketOrder(lotesInput.value, sellButton.dataset.type);
+    } else {
+        console.log(priceInputLimit.value)
+        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type);
+    }
 });
 
 const addCloseEvent = function (element) {

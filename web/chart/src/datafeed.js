@@ -54,6 +54,9 @@ export default {
   onReady: (callback) => {
     console.log('[onReady]: Method call');
     founds();
+    const priceInputLimit = document.querySelector('.price');
+    priceInputLimit.disabled = true;
+    
     setTimeout(() => callback(configurationData));
   },
   searchSymbols: async (userInput, exchange, symbolType, onResultReadyCallback) => {
