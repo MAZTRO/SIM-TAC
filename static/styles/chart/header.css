@@ -171,6 +171,10 @@ header .menuSlideOpen ul {
   padding: 0px 10px;
 }
 
+header .menuSlideOpen ul a {
+  width: 100%;
+}
+
 header .menuSlideOpen ul button {
   width: 60%;
   height: 40px;
