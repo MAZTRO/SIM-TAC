@@ -452,10 +452,3 @@ body .player {
     cursor: pointer;
   }
 }
-
-.closeGreen {
-  background-color: rgb(248, 7, 7);
-}
-.closeRed {
-  background-color: rgb(29, 156, 4);
-}
