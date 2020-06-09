@@ -5,22 +5,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  {% load static %}
   <script
     type="text/javascript"
-    src="chart/charting_library/charting_library.min.js" async>
+    src="{% static 'chart/charting_library/charting_library.min.js' %}" async>
   </script>
   <!-- <script src="chart/src/createOrderLine.js" async></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js" async></script>
   <!-- Custom datafeed module. -->
-  <script type="module" src="chart/src/main.js" async></script>
-  <script src="scripts/header.js" async></script>
-  <script src="scripts/config_module.js" async></script>
-  <script src="scripts/operation_module.js" async></script>
 
-  <link rel="stylesheet" href="styles/chart/header.css">
-  <link rel="stylesheet" href="styles/chart/common.css">
-  <link rel="stylesheet" href="styles/chart/footer.css">
-  <link rel="stylesheet" href="styles/chart/body.css">
+  <script type="module" src="{% static 'chart/src/main.js' %}" async></script>
+  <script src="{% static 'scripts/header.js' %}" async></script>
+  <script src="{% static 'scripts/config_module.js' %}" async></script>
+  <script src="{% static 'scripts/operation_module.js' %}" async></script>
+
+  <link rel="stylesheet" href="{% static 'styles/chart/header.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/chart/common.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/chart/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/chart/body.css' %}">
 
   <title>SIM-TAC</title>
 </head>
@@ -30,7 +32,7 @@
   <!-- ==================== -->
   <header>
     <a href="#">
-      <img src="pub_images/sim_logo.png" alt="sim-tac">
+      <img src="{% static 'pub_images/sim_logo.png' %}" alt="sim-tac">
     </a>
     <div class="userInfo">
       <div class="avatar"></div>
@@ -45,7 +47,7 @@
     <div class="menuSlideClose" id="menuSlides">
       <ul>
         <li class="title">Do you want to leave the session?<br>Click in the button bellow!</button></li>
-        <li><button>Sign out</button></li>
+        <li><a href="{% url 'home' %}"><button>Sign out</button></a></li>
       </ul>
     </div>
   </header>

@@ -7,8 +7,6 @@ const limitHead = headtabs[1];
 const marketTab = tabs[0];
 const limitTab = tabs[1];
 
-console.log(tabs);
-
 marketHead.addEventListener('click', event => {
   marketHead.className = "HeadTab headOpen";
   limitHead.className = "HeadTab";

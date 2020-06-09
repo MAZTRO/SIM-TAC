@@ -43,7 +43,7 @@ export function unsubscribeFromStream(subscribeUID) {
   for (const channelString of channelToSubscription.keys()) {
     const subscriptionItem = channelToSubscription.get(channelString);
     const handlerIndex = subscriptionItem.handlers.findIndex(handler => handler.id === subscribeUID);
-    
+
     if (handlerIndex !== -1) {
       subscriptionItem.handlers.splice(handlerIndex, 1);
       if (subscriptionItem.handlers.length === 0) {
@@ -102,7 +102,7 @@ socket.on('m', data => {
     }
     console.log('[socket] Update the latest bar by price', tradePrice);
   }
-  
+
   subscriptionItem.lastDailyBar = bar;
   subscriptionItem.handlers[0].callback(bar);
 });

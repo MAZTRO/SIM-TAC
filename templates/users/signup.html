@@ -6,23 +6,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <title>SIM-TAC</title>
 
-  <link rel="stylesheet" href="styles/login/header.css">
-  <link rel="stylesheet" href="styles/login/common.css">
-  <link rel="stylesheet" href="styles/login/footer.css">
-  <link rel="stylesheet" href="styles/login/body.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles/login/header.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/login/common.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/login/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/login/body.css' %}">
 
-  <script src="scripts/login.js" async></script>
+  <script src="{% static 'scripts/login.js' %}" async></script>
 </head>
 
 
 <body>
   <header>
     <a href="./index.html">
-      <img src="pub_images/sim_logo.png" alt="sim-tac">
+      <img src="{% static 'pub_images/sim_logo.png' %}" alt="sim-tac">
     </a>
   </header>
   <div class="main">
-    <div class="container" id="container">
+    <div class="container right-panel-active" id="container">
       <div class="form-container sign-up-container">
         <form action="#">
           <h1>Create Account</h1>

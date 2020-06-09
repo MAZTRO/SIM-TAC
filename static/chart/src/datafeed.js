@@ -7,7 +7,7 @@ const lastBarCache = new Map();
 async function getAllSymbols() {
   const data = await makeApiRequest('data/v3/all/exchanges');
   let allSymbols = [];
-  
+
   for (const exchange of configurationData.exchanges) {
     const pairs = data.Data[exchange.value].pairs;
     for (const leftPairPart of Object.keys(pairs)) {
@@ -141,7 +141,7 @@ export default {
               }];
             }
           });
-        } 
+        }
       }
 
       if (firstDataRequest) {
@@ -169,7 +169,7 @@ export default {
       let seconds = d.getMinutes() * 60 + d.getSeconds(); //convet 00:00 to seconds for easier caculation
       let Min = 60 * resolution;
       let timeleft = Min - seconds % Min; // let's say 01:30, then current seconds is 90, 90%300 = 90, then 300-90 = 210. That's the time left!
-      let result = parseInt(timeleft / 60) + ':' + timeleft % 60; //formart seconds into 00:00 
+      let result = parseInt(timeleft / 60) + ':' + timeleft % 60; //formart seconds into 00:00
       /* console.log(result); */
       if (result === "0:59") {
         onResetCacheNeededCallback();

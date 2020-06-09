@@ -43,7 +43,7 @@ const createOrder = function (price, quantity, orderType, isProgrammable) {
     const order  = window.tvWidget.activeChart().createOrderLine();
     order.setPrice(price);
     order.setQuantity(quantity);
-    // save order in object, return an order object  info   
+    // save order in object, return an order object  info
     const orderObject = saveOrder(order, orderType, price, isProgrammable);
     createOrderTemplate(orderObject); // Create order in template orders
 }
