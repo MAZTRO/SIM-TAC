@@ -80,19 +80,21 @@ function growthOrder(price, quantity, orderType) {
             bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.quantity, 4); 
         } else {
-            bool = updateOrderChart(el, quantity, price);
+            bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.price, 2);
+            changeOrderState(el, el.quantity, 4);
         }
     });
     return bool;
 }
 
 function updateOrderChart(el, quantity, price, orderType) {
-    orderType === 'sell' ? el.quantity -= quantity :  el.quantity += quantity;
+    if (orderType == 'sell') el.quantity -= quantity;
+    else if (orderType == 'buy') el.quantity += quantity;
     if (el.quantity === 0) {
         el.orr.remove();
-        const orders = ordersTemplate.childNodes;
-        console.log("pass");
+        deletesOrdersTemplates(el);
+        deleteSpecificPendingOrder(el.stopOrderId);
         userOrders.splice(userOrders.indexOf(el), 1);
     }
     else {
@@ -103,15 +105,39 @@ function updateOrderChart(el, quantity, price, orderType) {
     return true;
 }
 
+function deletesOrdersTemplates(el) {
+    const orders = ordersTemplate.childNodes;
+    for (let i = 4; i < orders.length; i++) {
+        if (orders[i].cells[0].dataset.id === el.id) {
+            deleteParenNode(orders[i]);
+        }
+        if (orders[i].cells[0].dataset.id === el.stopOrderId) {
+            deleteParenNode(orders[i]);
+            el.stopOrderTemp.remove();
+        }
+    }
+}
+
+function  deleteParenNode (or) {
+    const order = or.getElementsByTagName('td')[6];
+    order.parentNode.remove();
+}
+function deleteSpecificPendingOrder(id) {
+    for (const x in pendingOrders) {
+        if (pendingOrders[x].id === id) {
+            pendingOrders.splice(pendingOrders.indexOf(pendingOrders[x]), 1);
+        }
+    }
+}
+
 function changeOrderState(element, text, index) {
     /* modify the order template once it needs pass order to success */
     const orders = ordersTemplate.childNodes;
-    for (const x in orders) {
-        if (orders[x].cells) {
-            if (orders[x].cells[0].dataset.id == element.id) {
-                const order = orders[x].getElementsByTagName('td')[index]; 
-                order.innerText = order.textContent = text;
-            }
+    console.log(orders)
+    for (let i = 4; i < orders.length; i++) {
+        if (orders[i].cells[0].dataset.id === element.id) {
+            const order = orders[i].getElementsByTagName('td')[index]; 
+            order.innerText = order.textContent = text;
         }
     }
 }
@@ -127,9 +153,8 @@ const createOrder = function (price, quantity, orderType, isProgrammable, stopPr
     createRowTable(orderObject); // crete row in table orders
 
     if (orderObject.stopOrder != 'NaN' && orderObject.stopOrder != "esaCosa") {
-        console.log("pass")
-        const  obstop = createStopLossOrder(orderObject, orderType); 
-    }
+        createStopLossOrder(orderObject, orderType);
+    } else return (orderObject);
 }
 
 function createOrderInChart(obj, order) {
@@ -160,7 +185,9 @@ function saveOrder (order, orderType, price, isProgrammable, stopPrice) {
         quantity: order.getQuantity(),
         symbol: window.tvWidget.activeChart().symbol().split(":")[1],
         type: orderType,
-        stopOrder:  stopPrice
+        stopOrder:  stopPrice,
+        stopOrderId: '',
+        stopOrderTemp: ''
     }
 
     if (isProgrammable) {
@@ -177,7 +204,9 @@ function saveOrder (order, orderType, price, isProgrammable, stopPrice) {
 function createStopLossOrder(orderObject, orderType) {
     if (orderType === 'buy') orderType = 'sell'
     else if (orderType === 'sell') orderType = 'buy';
-    createOrder(orderObject.stopOrder, orderObject.quantity, orderType, true, "esaCosa");
+    const obstop = createOrder(orderObject.stopOrder, orderObject.quantity, orderType, true, "esaCosa");
+    orderObject.stopOrderId  = obstop.id;
+    orderObject.stopOrderTemp = obstop.orr;
 }
 
 function createRowTable (el) {
@@ -271,6 +300,7 @@ buyButton.addEventListener('click', () => {
 
 sellButton.addEventListener('click', () => {
     if (priceInputLimit.disabled) {
+        console.log(sellButton.dataset.type )
         setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
     } else {
         console.log(priceInputLimit.value);
