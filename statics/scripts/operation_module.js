@@ -12,7 +12,7 @@ marketHead.addEventListener('click', event => {
   limitHead.className = "HeadTab";
   limitTab.className = "tab";
   marketTab.className = "tab tabOpen";
-  console.log("Market");
+  /* console.log("Market"); */
 });
 
 limitHead.addEventListener('click', event => {
@@ -20,5 +20,5 @@ limitHead.addEventListener('click', event => {
   marketHead.className = "HeadTab";
   marketTab.className = "tab";
   limitTab.className = "tab tabOpen";
-  console.log("Limit");
+  /* console.log("Limit"); */
 });

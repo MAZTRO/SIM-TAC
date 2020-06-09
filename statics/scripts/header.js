@@ -9,11 +9,11 @@ userMenu.addEventListener('click', event => {
   if (userMenu.className === 'userMenu') {
     menuSlide.className = 'menuSlideOpen';
     userMenu.className = 'userMenuOpen';
-    console.log('MENU OPEN');
+    /* console.log('MENU OPEN'); */
   } else {
     menuSlide.className = 'menuSlideClose';
     userMenu.className = 'userMenu';
-    console.log('MENU CLOSE');
+    /* console.log('MENU CLOSE'); */
   }
 });
 
