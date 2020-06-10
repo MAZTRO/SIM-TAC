@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% load static %}
   <meta charset="UTF-8">
+  <link rel="shortcut icon" href="{% static 'pub_images/Favicon.png' %}" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <script src="{% static 'scripts/home.js' %}"></script>
+
   <title>SIM-TAC</title>
 
-  {% load static %}
   <link rel="stylesheet" href="{% static 'styles/index/header.css' %}">
   <link rel="stylesheet" href="{% static 'styles/index/common.css' %}">
   <link rel="stylesheet" href="{% static 'styles/index/footer.css' %}">
@@ -14,14 +17,32 @@
 </head>
 <body>
   <header>
-    <a href="./index.html">
+    <a href="{% url 'app:home' %}">
       <img src="{% static 'pub_images/sim_logo.png' %}" alt="sim-tac">
     </a>
     <a class="btn LogIn" href="{% url 'users:login'%}">Login</a>
     <a class="btn signUp" href="{% url 'users:signup' %}">signup</a>
+    <a class="btn Features" href="{% url 'app:home' %}">Features</a>
+    <a class="btn AboutUs" href="{% url 'app:home' %}">About us</a>
+    <a class="btn ContactUs" href="{% url 'app:home' %}">Contact us</a>
   </header>
   <div class="main">
-
+    <div class="Slide">
+      <div class="preview1"></div>
+      <div class="preview">
+        <img src="{% static 'pub_images/laptop.png' %}" alt="prev">
+        <h1><p>Simulator Technical Analysis Charts</p></h1>
+      </div>
+      <div class="title">
+        <h2>Develop your skills in the world of Trading.</h2>
+        <p>
+          Risk, invest and learn everything about the markets in SIM-TAC
+        </p>
+        <a href="{% url 'users:signup' %}"><button>Start now!</button></a>
+      </div>
+    </div>
+    <div class="FeaturesSection">
+    </div>
   </div>
   <footer>
     by SIM-TAC

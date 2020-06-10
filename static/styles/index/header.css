@@ -1,20 +1,32 @@
-/* Body */
+:root {
+  --color-blue: rgba(50, 100, 255, 1);
+  --color-blue-dark: #083763;
+  --color-red: rgb(209, 65, 65);
+  --color-green: rgb(25, 175, 58);
+}
 
 header {
   display: flex;
   align-items: center;
   width: 100%;
-  height: 100px;
+  height: 80px;
   border: 0px;
-  border-bottom: 1px solid;
-  border-color: rgba(230, 230, 230, 1);
+
+  z-index: 10;
 }
 
 /* Logo */
 header a img {
   position: relative;
-  left: 30px;
-  height: 70px;
+  top: 30px;
+  left: 290px;
+  height: 100px;
+
+  background-color: rgba(255, 255, 255, .8);
+  border-radius: 5px;
+  padding: 5px;
+
+  z-index: 10;
 }
 
 /* Body of user info */
@@ -25,11 +37,57 @@ header .btn {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  color: rgba(200, 200, 200, 1);
-  background-color: rgba(150, 150, 150, 1);
+  color: rgba(255, 255, 255, 1);
 
   border: 1px solid;
-  border-radius: 5px;
-  width: 60px;
+  border-radius: 10px;
+  width: 100px;
   height: 40px;
+  outline: none;
+
+  font-size: 15px;
+
+  z-index: 10;
+}
+
+header .LogIn {
+  position: absolute;
+  right: 30px;
+  color: #FFFFFF;
+}
+
+header .signUp {
+  position: absolute;
+  right: 140px;
+  background-color: rgba(255, 255, 255, .1);
+  color: #FFFFFF;
+}
+
+header .signUp:hover, .LogIn:hover {
+  opacity: .95;
+  transform: scale(.95);
+}
+
+header .Features {
+  position: absolute;
+  right: 450px;
+  border: 0px;
+}
+
+header .AboutUs {
+  position: absolute;
+  right: 350px;
+  border: 0px;
+}
+
+header .ContactUs {
+  position: absolute;
+  right: 250px;
+  border: 0px;
+}
+
+header .ContactUs:hover, .AboutUs:hover, .Features:hover {
+  border-radius: 0px;
+  border-bottom: 1px solid #FFFFFF;
+  /* background-color: rgba(255, 255, 255, 0.1); */
 }
