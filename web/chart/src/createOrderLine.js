@@ -22,7 +22,7 @@ const sellButton = document.getElementById('sell');
 let userOrders  = [];
 let pendingOrders = [];
 let currencies = {};
-let money = 10000;
+let money = 100000
 let count = 0;
 
 function setMarketOrder(stopPrice, lotes, orderType) {
@@ -69,7 +69,7 @@ function activeFounds (lotes, orderType) {
         }
     }
     console.log(currencies);
-    cashItem.innerText = cashItem.textContent = money;
+    cashItem.innerText = cashItem.textContent = money.toLocaleString();
     return true;
 }
 
@@ -346,7 +346,7 @@ export const pendingOrdersReview = function () {
 export const founds = function () {
     /* show the user found in chas item input */
     const p = document.createElement('p');
-    cashItem.appendChild(document.createTextNode(money));
+    cashItem.appendChild(document.createTextNode(money.toLocaleString()));
 }
 
 
