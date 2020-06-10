@@ -49,6 +49,7 @@ function activeFounds (lotes, orderType) {
         // currencies will contains the currency user has in lotes price
         if (!currencies.hasOwnProperty(currency)) {
             currencies[currency] = lotes;
+
         } else currencies[currency]  += lotes;
         money -= lotes;
     }
@@ -59,8 +60,14 @@ function activeFounds (lotes, orderType) {
                 console.log('cant sell this quantity you only have: ' + currencies[currency] + ' in ' + currency);
                 return;
             }
-            currencies[currency] -= lotes;
-            money += lotes;
+        if (userOrders.length) {
+            userOrders.forEach(el => {
+                let last = (LP - el.price);
+                currencies[currency] -= lotes;
+                console.log(lotes + last)
+                money += (lotes + last);
+            })
+        }
             console.log(currencies)
         }
         else {
@@ -78,14 +85,22 @@ function growthOrder(price, quantity, orderType, stopPrice) {
     userOrders.forEach(el => {
         el.price = parseFloat(el.price)
         if (price.toFixed(1) === el.price.toFixed(1)) {
+            console.log(el.stopOrder + ' ' + 'stop' + stopPrice)
             if (el.stopOrder === 'NaN' && stopPrice != '') {
                 el.stopOrder = stopPrice;
+                console.log('happens')
                 changeOrderState(el, el.stopOrder, 3);
                 createStopLossOrder(el, orderType);
             }
             bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.quantity, 4);
         } else {
+            console.log(el.stopOrder + ' ' + 'stop' + stopPrice)
+            if (el.stopOrder === 'NaN' && stopPrice != '') {
+                console.log(el);
+                el.stopOrder = stopPrice;
+                createStopLossOrder(el, orderType);
+            }
             bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.price, 2);
             changeOrderState(el, el.quantity, 4);
@@ -195,6 +210,7 @@ function saveOrder (order, orderType, price, isProgrammable, stopPrice) {
         quantity: order.getQuantity(),
         symbol: window.tvWidget.activeChart().symbol().split(":")[1],
         type: orderType,
+
         stopOrder:  stopPrice,
         stopOrderId: '',
         stopOrderTemp: '',
@@ -250,17 +266,19 @@ function createRowTable (el) {
 function GLverificate () {
     userOrders.forEach(el => {
         let last = (LP - el.price).toFixed(1);
-        const element = changeOrderState(el, last, 6);
-        if (last > 0) {
-            element.classList.remove('redFont');
-            element.classList.add('greenFont');
+        if (el.type === "buy" || el.type === "Buy") {
+            const element = changeOrderState(el, last, 6);
+            if (last > 0) {
+                element.classList.remove('redFont');
+                element.classList.add('greenFont');
 
-        } else if (last < 0){
-            element.classList.remove('greenFont')
-            element.classList.add('redFont');
-        } else {
-            element.classList.remove('greenFont');
-            element.classList.remove('redFont');
+            } else if (last < 0){
+                element.classList.remove('greenFont')
+                element.classList.add('redFont');
+            } else {
+                element.classList.remove('greenFont');
+                element.classList.remove('redFont');
+            }
         }
     });
 }
@@ -311,7 +329,7 @@ function deleteSpecificPendingOrder(id) {
     }
 }
 
-function deletesOrdersbyButton(id) {x
+function deletesOrdersbyButton(id) {
     const orders = ordersTemplate.childNodes;
     for (let i = 4; i < orders.length; i++) {
         if (orders[i].cells[0].dataset.id === id) {
@@ -332,7 +350,7 @@ export const pendingOrdersReview = function () {
     if (pendingOrders.length) {
         pendingOrders.filter(element => {
             if (element.price == LP) {
-                if (!activeFounds(element.quantity, element.type)) return;
+                if (!activeFounds((element.quantity * 10), element.type)) return;
                 element.isProgrammable = false;
                 element.state = "success";
                 changeOrderState(element, element.state, 5); //change the order template state to success

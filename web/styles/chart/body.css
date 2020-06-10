@@ -507,7 +507,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
 .operator .amountInfo .cash {
   color: rgb(50, 50, 50);
-  font-size: 20px;
+  font-size: 19px;
   display: flex;
   justify-content: center;
   align-items: center;
