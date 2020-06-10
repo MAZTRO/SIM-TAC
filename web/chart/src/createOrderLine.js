@@ -22,13 +22,13 @@ const sellButton = document.getElementById('sell');
 let userOrders  = [];
 let pendingOrders = [];
 let currencies = {};
-let money = 1000;
+let money = 10000;
 let count = 0;
 
 function setMarketOrder(stopPrice, lotes, orderType) {
     lotes  = (lotes * 10);
     if (!activeFounds(lotes, orderType)) return;
-    if (growthOrder(LP, lotes, orderType)) return;
+    if (growthOrder(LP, lotes, orderType, stopPrice)) return;
     createOrder(LP, lotes, orderType, false, stopPrice);
 }
 
@@ -40,7 +40,8 @@ function setOrderProgrammable (price, lotes, orderType, stopPrice) {
 function activeFounds (lotes, orderType) {
     /* Verificates and make properly operation for found in order */
     const currency = window.tvWidget.activeChart().symbol().split(":")[1]; //symbol pair
-    if (orderType === "buy") {
+    console.log(orderType)
+    if (orderType === "Buy" || orderType === "buy") {
         if (money <= 0 || (money - lotes) < 0) {
             console.log("not enought founds");
             return;
@@ -72,13 +73,18 @@ function activeFounds (lotes, orderType) {
     return true;
 }
 
-function growthOrder(price, quantity, orderType) {
+function growthOrder(price, quantity, orderType, stopPrice) {
     let bool = false;
     userOrders.forEach(el => {
         el.price = parseFloat(el.price)
         if (price.toFixed(1) === el.price.toFixed(1)) {
+            if (el.stopOrder === 'NaN' && stopPrice != '') {
+                el.stopOrder = stopPrice;
+                changeOrderState(el, el.stopOrder, 3);
+                createStopLossOrder(el, orderType);
+            }
             bool = updateOrderChart(el, quantity, price, orderType);
-            changeOrderState(el, el.quantity, 4); 
+            changeOrderState(el, el.quantity, 4);
         } else {
             bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.price, 2);
@@ -89,8 +95,9 @@ function growthOrder(price, quantity, orderType) {
 }
 
 function updateOrderChart(el, quantity, price, orderType) {
-    if (orderType == 'sell') el.quantity -= quantity;
-    else if (orderType == 'buy') el.quantity += quantity;
+    if (orderType == 'sell') el.quantity -= (quantity / 10);
+    else if (orderType == 'buy') el.quantity += (quantity / 10);
+    
     if (el.quantity === 0) {
         el.orr.remove();
         deletesOrdersTemplates(el);
@@ -98,7 +105,12 @@ function updateOrderChart(el, quantity, price, orderType) {
         userOrders.splice(userOrders.indexOf(el), 1);
     }
     else {
+        
         el.orr.setQuantity(el.quantity);
+        if (el.stopOrderTemp) {
+            el.stopOrderTemp.setQuantity(el.quantity);
+            changeOrderState(el.stopOrderTemp._line, el.quantity, 4);
+        }
         el.orr.setPrice((el.price + price) / 2);
         el.price = el.orr.getPrice().toFixed(1);
     }
@@ -108,47 +120,45 @@ function updateOrderChart(el, quantity, price, orderType) {
 function deletesOrdersTemplates(el) {
     const orders = ordersTemplate.childNodes;
     for (let i = 4; i < orders.length; i++) {
+        if (orders[i + 1]) {
+            if (orders[i + 1].cells[0].dataset.id === el.stopOrderId) {
+                deleteParenNode(orders[i + 1]);
+                el.stopOrderTemp.remove();
+            }
+        }
         if (orders[i].cells[0].dataset.id === el.id) {
             deleteParenNode(orders[i]);
-        }
-        if (orders[i].cells[0].dataset.id === el.stopOrderId) {
-            deleteParenNode(orders[i]);
-            el.stopOrderTemp.remove();
         }
     }
 }
 
-function  deleteParenNode (or) {
-    const order = or.getElementsByTagName('td')[6];
+function  deleteParenNode (_order) {
+    const order = _order.getElementsByTagName('td')[6];
     order.parentNode.remove();
-}
-function deleteSpecificPendingOrder(id) {
-    for (const x in pendingOrders) {
-        if (pendingOrders[x].id === id) {
-            pendingOrders.splice(pendingOrders.indexOf(pendingOrders[x]), 1);
-        }
-    }
 }
 
 function changeOrderState(element, text, index) {
     /* modify the order template once it needs pass order to success */
+    let id;
+    if (element._id) id = element._id;
+    else id = element.id;
     const orders = ordersTemplate.childNodes;
-    console.log(orders)
     for (let i = 4; i < orders.length; i++) {
-        if (orders[i].cells[0].dataset.id === element.id) {
+        if (orders[i].cells[0].dataset.id === id) {
             const order = orders[i].getElementsByTagName('td')[index]; 
             order.innerText = order.textContent = text;
+            return order;
         }
     }
 }
 
-const createOrder = function (price, quantity, orderType, isProgrammable, stopPrice) {
+const createOrder = function (price, quantity, orderType, prog, stopPrice) {
     /* create order in active chart called order */
     const order  = window.tvWidget.activeChart().createOrderLine();
     order.setPrice(price);
-    order.setQuantity(quantity);
-    isProgrammable ? order.setText("Cover limit order") : order.setText("Cover market order") 
-    const orderObject = saveOrder(order, orderType, price, isProgrammable, stopPrice) ; // save order in object, return an order object  info  
+    order.setQuantity(quantity / 10);
+    prog ? order.setText("Cover limit order") : order.setText("Cover market order") 
+    const orderObject = saveOrder(order, orderType, price, prog, stopPrice) ; // save order in object, return an order object  info  
     createOrderInChart(orderObject, order); // create order in chart
     createRowTable(orderObject); // crete row in table orders
 
@@ -187,7 +197,8 @@ function saveOrder (order, orderType, price, isProgrammable, stopPrice) {
         type: orderType,
         stopOrder:  stopPrice,
         stopOrderId: '',
-        stopOrderTemp: ''
+        stopOrderTemp: '',
+        GL: 0.0
     }
 
     if (isProgrammable) {
@@ -213,7 +224,8 @@ function createRowTable (el) {
     let tr = document.createElement('tr');
     el.type  = el.type[0].toUpperCase() + el.type.slice(1);
     const ob = [['id', el.id], ['type', el.type], ['price', el.price],
-    ['stop', el.stopOrder], ['quantity', el.quantity], ['state', el.state]];
+    ['stop', el.stopOrder], ['quantity', el.quantity], ['state', el.state],
+    ['GL', el.GL]];
 
     for (let i = 0; i <= ob.length; i++) {
         let td = document.createElement('td');
@@ -225,9 +237,32 @@ function createRowTable (el) {
         else {
             td.dataset[ob[i][0]] = ob[i][1];
             td.appendChild(document.createTextNode(ob[i][1]));
+            if (i == 1) {
+                if (ob[i][1] === 'Buy') td.classList.add('greenFont');
+                else td.classList.add('redFont');
+                //.log(td)green
+            }
             tr.appendChild(td);
         }
     }
+}
+
+function GLverificate () {
+    userOrders.forEach(el => {
+        let last = (LP - el.price).toFixed(1);
+        const element = changeOrderState(el, last, 6);
+        if (last > 0) {
+            element.classList.remove('redFont');
+            element.classList.add('greenFont');
+
+        } else if (last < 0){
+            element.classList.remove('greenFont')
+            element.classList.add('redFont');
+        } else {
+            element.classList.remove('greenFont');
+            element.classList.remove('redFont');
+        }
+    });
 }
 
 function createCloseOrderButton(el, td) {
@@ -252,15 +287,37 @@ function deleteOrder (id, isProgrammable) {
 
 function deleteSpecific(id, ordersObject) {
     /* deletes order from active chart and object */
-    console.log(ordersObject);
     ordersObject.forEach(element => {
         if (id === element.id) {
+            if (element.stopOrderId) {
+                element.stopOrderTemp.remove()
+                deleteSpecificPendingOrder(element.stopOrderId);
+            }
             const index = ordersObject.indexOf(element); // get the index of the object
-            element.orr._active = false; //put inactive the order in the chart
-            setTimeout(() => element.orr.remove(), 1000); // remove the order of the chart
+            element.orr.remove(); // remove the order of the chart
             if (index > -1) ordersObject.splice(index, 1); // deletes the order of the object
         }
     });
+}
+
+
+function deleteSpecificPendingOrder(id) {
+    for (const x in pendingOrders) {
+        if (pendingOrders[x].id === id) {
+            deletesOrdersbyButton(id)
+            pendingOrders.splice(pendingOrders.indexOf(pendingOrders[x]), 1);
+
+        }
+    }
+}
+
+function deletesOrdersbyButton(id) {x
+    const orders = ordersTemplate.childNodes;
+    for (let i = 4; i < orders.length; i++) {
+        if (orders[i].cells[0].dataset.id === id) {
+            deleteParenNode(orders[i]);
+        }
+    }
 }
 
 export const pendingOrdersReview = function () {
@@ -268,17 +325,22 @@ export const pendingOrdersReview = function () {
         Update pending orders to complete succesfully orders
         if a price in a prending order is equal to last pice the oerder must be taked
     */
-    lastPrice.placeholder = LP.toFixed(1); //updates real price in price order input
-    pendingOrders.forEach(element =>  {
-        if (element.price == LP) {
-            if (!activeFounds(element.quantity, element.type)) return;
-            element.isProgrammable = false;
-            element.state = "success";
-            changeOrderState(element, element.state, 5); //change the order template state to success
-            userOrders.push(element); // push the order to sucess orders
-            pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
-        }
-    });
+   lastPrice.placeholder = LP.toFixed(1); //updates real price in price order input
+    if (userOrders.length) {
+        GLverificate();
+    }
+    if (pendingOrders.length) {
+        pendingOrders.filter(element => {
+            if (element.price == LP) {
+                if (!activeFounds(element.quantity, element.type)) return;
+                element.isProgrammable = false;
+                element.state = "success";
+                changeOrderState(element, element.state, 5); //change the order template state to success
+                userOrders.push(element); // push the order to sucess orders
+                pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
+            }
+        });
+    }
 }
 
 export const founds = function () {
@@ -324,20 +386,6 @@ const addCloseEvent = function (element) {
         element.parentNode.parentNode.remove();
     });
 }
-
-
-/*here
-we  have two options first generate de complete order form
-and send  to the api or send to the api and call it again with the
-safe stored information*/
-
-
-// send  Post order to the api
-
-//  create order template
-
-//  inner the order template in the view
-
 
 /*other methos that can set to the order line on th chart
       const color = '#ff9f0a';
