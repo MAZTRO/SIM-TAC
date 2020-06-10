@@ -5,12 +5,17 @@ from users import views
 urlpatterns = [
     path(
         route='login/',
-        view=views.login_view,
+        view=views.LoginView.as_view(),
         name='login'
     ),
-
-    path(route='signup/',
-    view=views.signup_view,
-    name='signup'
+    path(
+        route='logout/',
+        view=views.LogoutView.as_view(),
+        name='logout'
+    ),
+    path(
+        route='signup/',
+        view=views.SignupView.as_view(),
+        name='signup'
     )
 ]

@@ -37,8 +37,8 @@
     </a>
     <div class="userInfo">
       <div class="avatar"></div>
-      <div class="name">Jhon Doe</div>
-      <div class="userId">123456789</div>
+      <div class="name">{{ user.username }}</div>
+      <div class="userId">{{ user.pk }}</div>
       <button class="userMenu">
         <span class="top-bar"></span>
         <span class="med-bar"></span>
@@ -48,7 +48,7 @@
     <div class="menuSlideClose" id="menuSlides">
       <ul>
         <li class="title">Do you want to leave the session?<br>Click in the button bellow!</button></li>
-        <li><a href="{% url 'app:home' %}"><button>Sign out</button></a></li>
+        <li><a href="{% url 'users:logout' %}"><button>Sign out</button></a></li>
       </ul>
     </div>
   </header>
