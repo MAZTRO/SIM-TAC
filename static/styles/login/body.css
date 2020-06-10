@@ -28,9 +28,9 @@ h2 {
 p {
 	font-size: 14px;
 	font-weight: 300;
-	line-height: 20px;
+	line-height: 10px;
 	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
+	/* margin: 20px 0 30px; */
 }
 
 span {
@@ -88,13 +88,13 @@ form {
 
 input {
 	background-color: rgba(230, 230, 230, 1);
-  box-shadow: inset 4px 4px 10px rgb(190, 190, 190),
+	box-shadow: inset 4px 4px 10px rgb(190, 190, 190),
               inset -4px -4px 10px rgb(255, 255, 255);
 	border: none;
 	border-radius: 15px;
 	padding: 0px 30px;
-	height: 50px;
-	margin: 8px 0;
+	height: 25px;
+	/* margin: 8px 0; */
 	width: 100%;
 	outline: none;
 }
