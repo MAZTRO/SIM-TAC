@@ -6,7 +6,7 @@
   <link rel="shortcut icon" href="{% static 'pub_images/Favicon.png' %}" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-  <script src="{% static 'scripts/home.js' %}"></script>
+  <script src="{% static 'scripts/home.js' %}" async></script>
 
   <title>SIM-TAC</title>
 
@@ -21,18 +21,14 @@
       <img src="{% static 'pub_images/sim_logo.png' %}" alt="sim-tac">
     </a>
     <a class="btn LogIn" href="{% url 'users:login'%}">Login</a>
-    <a class="btn signUp" href="{% url 'users:signup' %}">signup</a>
-    <a class="btn Features" href="{% url 'app:home' %}">Features</a>
+    <a class="btn signUp" href="{% url 'users:signup' %}"><b>signup</b></a>
+    <a class="btn Features" href="#features">Features</a>
     <a class="btn AboutUs" href="{% url 'app:home' %}">About us</a>
     <a class="btn ContactUs" href="{% url 'app:home' %}">Contact us</a>
   </header>
   <div class="main">
+
     <div class="Slide">
-      <div class="preview1"></div>
-      <div class="preview">
-        <img src="{% static 'pub_images/laptop.png' %}" alt="prev">
-        <h1><p>Simulator Technical Analysis Charts</p></h1>
-      </div>
       <div class="title">
         <h2>Develop your skills in the world of Trading.</h2>
         <p>
@@ -40,9 +36,40 @@
         </p>
         <a href="{% url 'users:signup' %}"><button>Start now!</button></a>
       </div>
+      <a href="#features">
+        <img id="arrow" src="{% static 'pub_images/arrow.png' %}" alt="">
+      </a>
     </div>
-    <div class="FeaturesSection">
+
+    <div class="preview">
+      <img src="{% static 'pub_images/laptop.png' %}" alt="prev">
+      <div class="h1">
+        <h1><p>Simulator Technical Analysis Charts</p></h1>
+      </div>
     </div>
+
+    <div class="FeaturesSection" id="features">
+      <h3><p>Features</p></h3>
+      <div class="cards">
+        <div class="card">
+          <img src="{% static 'pub_images/crypto.png' %}" alt="">
+          <p><b>Specific markets</b></p>
+        </div>
+        <div class="card">
+          <img src="{% static 'pub_images/design.png' %}" alt="">
+          <p><b>Clean and simple design</b></p>
+        </div>
+        <div class="card">
+          <img src="{% static 'pub_images/data.png' %}" alt="">
+          <p><b>Real time data</b></p>
+        </div>
+        <div class="card">
+          <img src="{% static 'pub_images/costs.png' %}" alt="">
+          <p><b>No hidden costs</b></p>
+        </div>
+      </div>
+    </div>
+
   </div>
   <footer>
     by SIM-TAC

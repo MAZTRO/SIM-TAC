@@ -24,89 +24,67 @@ body .main {
 .Slide {
   z-index: 5;
 
-  position: absolute;
-  top: 0px;
-  height: 500px;
   width: 100%;
+  height: 95vh;
 
-  background: var(--color-blue-dark);
-  bottom: 0;
-}
+  display: flex;
+  justify-content: center;
 
-.Slide::before, .Slide::after {
-  content: "";
-  display: block;
-  position: absolute;
-  border-radius: 100% 50%;
-}
-
-.Slide::before {
-  width: 53.5%;
-  height: 50%;
-  background-color: #fff;
-  right: 0%;
-  top: 80%;
-}
-.Slide::after {
-  width: 55%;
-  height: 50%;
- /*  background-color: var(--color-blue-dark); */
-  background-color: var(--color-blue-dark);
-  left: -1.5%;
-  top: 68.2%;
-}
-
-.main .Slide .preview {
-  z-index: 15;
-
-  position: absolute;
-  top: 200px;
-  left: 60px;
-
-  width: 600px;
-  height: 500px;
-
-  background-color: #FFFFFF;
-
-  border-radius: 10px;
-
-  box-shadow: 0px 5px 25px var(--color-blue-dark);
-}
-
-.main .Slide .preview1 {
-  z-index: 15;
-
-  position: absolute;
-  top: 0px;
-  left: 60px;
-
-  width: 600px;
-  height: 150px;
-
-  background-color: #FFFFFF;
-
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-
-  box-shadow: 0px 5px 25px var(--color-blue-dark);
-}
-
-.main .Slide .preview img {
   position: relative;
-  top: 40px;
+  top: 0px;
+
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgb(255, 255, 255) 35%, rgb(240, 240, 240) 100%);
+}
+
+.main .preview {
+  z-index: 15;
+
+  position: absolute;
+  top: 150px;
+  left: 0px;
+
+  width: 600px;
+  height: 350px;
+
+  background-color: #FFFFFF;
+
+  box-shadow: 0px 5px 25px var(--color-blue-dark);
+}
+
+.main .preview img {
+  position: relative;
+  top: 10px;
   left: 25px;
 
   margin: auto;
   width: 550px;
 }
 
-.main .Slide .preview h1 {
+.main .preview .h1 {
+  position: relative;
+  top: 10px;
+  left: 200px;
+  width: 90%;
+  height: 50%;
+
+  padding: 5px;
+
+  margin: auto;
+  /* border-radius: 10px; */
+
+  background-color: var(--color-blue-dark);
+}
+
+.main .preview h1 {
   position: relative;
   top: 0px;
 
   text-align: center;
   font-size: 40px;
-  font-weight: 100;
+  font-weight: 300;
+
+  color: #FFFFFF;
 }
 
 .main .title {
@@ -123,15 +101,15 @@ body .main {
 .main .title h2 {
   font-size: 40px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--color-blue-dark);
 
-  margin: 0px;
+  margin: 20px auto;
 }
 
 .main .title p {
   font-size: 20px;
   font-weight: 300;
-  color: #FFFFFF;
+  color: var(--color-blue-dark);
 
   margin: 0px;
 }
@@ -149,7 +127,7 @@ body .main {
   width: 30%;
   height: 20%;
 
-  border-radius: 5px;
+  border-radius: 2px;
   outline: none;
   border: 0px;
 
@@ -166,6 +144,24 @@ body .main {
   cursor: pointer;
 }
 
+.main .Slide #arrow {
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+  bottom: 0px;
+}
+
+.main .Slide #arrow:hover {
+  transform: scale(0.95);
+  cursor: pointer;
+}
+
+.main .Slide #arrow:active {
+  transform: scale(0.9);
+  cursor: pointer;
+}
+
 
 /* ================================== */
 /* ======== Features section ======== */
@@ -173,9 +169,72 @@ body .main {
 
 body .main .FeaturesSection {
   position: relative;
-  top: 600px;
+  top: 0px;
 
   width: 100%;
-  height: 500px;
-  background-color: #FFFFFF;
+  height: 700px;
+  background: rgb(240, 240, 240);
+
+  color: rgb(61, 61, 61);
+}
+
+.FeaturesSection h3 {
+  position: relative;
+  top: 10px;
+  left: 5%;
+
+  width: 90%;
+
+  display: flex;
+  margin: 0px;
+
+  text-align: center;
+  font-size: 60px;
+  font-weight: 200;
+}
+
+.FeaturesSection .cards {
+  width: 100%;
+  height: 60%;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-flow: row;
+}
+
+.main .FeaturesSection .card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+
+  width: 20%;
+  height: 70%;
+
+  border-bottom: 10px solid #03203b;
+
+  background-color: rgb(255,255,255);
+
+  color: #666666;
+
+  margin: 0px;
+
+  transition: .5s;
+}
+
+.main .FeaturesSection .card:hover {
+  transform: scale(1.2);
+}
+
+.main .FeaturesSection .card img {
+  width: 30%;
+
+  margin: 10px auto;
+}
+
+.main .FeaturesSection .cards .card p {
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 10px;
 }

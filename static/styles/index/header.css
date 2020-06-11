@@ -18,13 +18,8 @@ header {
 /* Logo */
 header a img {
   position: relative;
-  top: 30px;
-  left: 290px;
-  height: 100px;
-
-  background-color: rgba(255, 255, 255, .8);
-  border-radius: 5px;
-  padding: 5px;
+  left: 100px;
+  height: 60px;
 
   z-index: 10;
 }
@@ -37,7 +32,7 @@ header .btn {
   align-items: center;
   text-align: center;
   text-decoration: none;
-  color: rgba(255, 255, 255, 1);
+  color: var(--color-blue-dark);
 
   border: 1px solid;
   border-radius: 10px;
@@ -45,7 +40,7 @@ header .btn {
   height: 40px;
   outline: none;
 
-  font-size: 15px;
+  font-size: 14px;
 
   z-index: 10;
 }
@@ -53,14 +48,18 @@ header .btn {
 header .LogIn {
   position: absolute;
   right: 30px;
-  color: #FFFFFF;
+  color: var(--color-blue-dark);
 }
 
 header .signUp {
+  height: 43px;
   position: absolute;
   right: 140px;
-  background-color: rgba(255, 255, 255, .1);
+  background-color: var(--color-blue-dark);
+  border: 0px;
   color: #FFFFFF;
+
+  font-size: 16px;
 }
 
 header .signUp:hover, .LogIn:hover {
@@ -88,6 +87,6 @@ header .ContactUs {
 
 header .ContactUs:hover, .AboutUs:hover, .Features:hover {
   border-radius: 0px;
-  border-bottom: 1px solid #FFFFFF;
+  border-bottom: 1px solid var(--color-blue-dark);
   /* background-color: rgba(255, 255, 255, 0.1); */
 }

@@ -1,5 +1,6 @@
-const divLOL = document.getElementsByClassName('FeaturesSection');
+const divLOL = document.querySelector('.FeaturesSection');
+let visualH = window.scrollY;
 
-let visualH = window.innerHeight;
-
-console.log(visualH);
+divLOL.addEventListener('click', event => {
+  console.log(visualH);
+});
