@@ -21,7 +21,8 @@ export const changeOrderState = function(element, text, index) {
 export const createStopLossOrder = function(orderObject, orderType) {
     if (orderType === 'buy') orderType = 'sell'
     else if (orderType === 'sell') orderType = 'buy';
-    const obstop = createOrder(orderObject.stopOrder, orderObject.quantity, orderType, true, "esaCosa");
+    const quantity = orderObject.quantity * 10;
+    const obstop = createOrder(orderObject.stopOrder, quantity, orderType, true, "esaCosa");
     orderObject.stopOrderId  = obstop.id;
     orderObject.stopOrderTemp = obstop.orr;
 }

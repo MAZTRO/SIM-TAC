@@ -1,6 +1,6 @@
 import  {  changeOrderState, createStopLossOrder, updateOrderChart } from './chartUpdates.js';
 import { userOrders} from './createOrderLine.js';
-import { LP } from './streaming.js';
+import { LP } from './streaming.js';    
 export let currencies = {};
 export let money = 100000;
 
@@ -8,7 +8,6 @@ export let money = 100000;
 export const activeFounds = function(lotes, orderType) {
     /* Verificates and make properly operation for found in order */
     const currency = window.tvWidget.activeChart().symbol().split(":")[1]; //symbol pair
-    console.log(orderType)
     if (orderType === "Buy" || orderType === "buy") {
         if (money <= 0 || (money - lotes) < 0) {
             console.log("not enought founds");
@@ -18,7 +17,9 @@ export const activeFounds = function(lotes, orderType) {
         if (!currencies.hasOwnProperty(currency)) {
             currencies[currency] = lotes;
 
-        } else currencies[currency]  += lotes;
+        } else {
+             currencies[currency]  += lotes;
+        }
         money -= lotes;
     }
     else {
@@ -28,15 +29,13 @@ export const activeFounds = function(lotes, orderType) {
                 console.log('cant sell this quantity you only have: ' + currencies[currency] + ' in ' + currency);
                 return;
             }
-        if (userOrders.length) {
-            userOrders.forEach(el => {
-                let last = (LP - el.price);
-                currencies[currency] -= lotes;
-                console.log(lotes + last)
-                money += (lotes + last);
-            })
-        }
-            console.log(currencies)
+            if (userOrders.length) {
+                userOrders.forEach(el => {
+                    let last = (LP - el.price);
+                    currencies[currency] -= lotes;
+                    money += (lotes + last);
+                })
+            }
         }
         else {
             console.log('cant sell this quantity you only have: 0'  + ' in ' + currency);
@@ -54,7 +53,6 @@ export const growthOrder = function(price, quantity, orderType, stopPrice) {
     userOrders.forEach(el => {
         el.price = parseFloat(el.price)
         if (price.toFixed(1) === el.price.toFixed(1)) {
-            console.log(el.stopOrder + ' ' + 'stop' + stopPrice)
             if (el.stopOrder === 'NaN' && stopPrice != '') {
                 el.stopOrder = stopPrice;
                 console.log('happens')

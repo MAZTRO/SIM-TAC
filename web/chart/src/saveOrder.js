@@ -6,7 +6,7 @@ export const saveOrder = function(order, orderType, price, isProgrammable, stopP
         * orderObject: order based in the order data
      */
     price = parseFloat(price);
-
+    
     if (stopPrice === '') stopPrice = 'NaN';
     const orderObject = {
         id : order._line._id,

@@ -7,7 +7,6 @@ export const createOrderInChart = function(obj, order) {
     (obj.type === "buy") ? orderStyleChart(order, buyColor, obj) : orderStyleChart(order, sellColor, obj);
 }
 
-
 export const createRowTable = function(el) {
     let tr = document.createElement('tr');
     el.type  = el.type[0].toUpperCase() + el.type.slice(1);

@@ -1,4 +1,4 @@
-import { setMarketOrder, setOrderProgrammable } from './createOrderLine.js';
+import { setMarketOrder, setOrderProgrammable, pendingOrders } from './createOrderLine.js';
 import { deleteOrder } from './deleteHelpers.js';
 
 const buyButton = document.getElementById('buy');
@@ -28,7 +28,7 @@ sellButton.addEventListener('click', () => {
         console.log("creating market sell order")
         setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
     } else {
-        console.assert.log("creating limit sell order");
+        console.log("creating limit sell order");
         setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
     }
 });
