@@ -33,7 +33,8 @@ export const activeFounds = function(lotes, orderType) {
                 userOrders.forEach(el => {
                     let last = (LP - el.price);
                     currencies[currency] -= lotes;
-                    money += (lotes + last);
+                    console.log(last);
+                    money += (lotes + (last * 10));
                 })
             }
         }
@@ -55,14 +56,12 @@ export const growthOrder = function(price, quantity, orderType, stopPrice) {
         if (price.toFixed(1) === el.price.toFixed(1)) {
             if (el.stopOrder === 'NaN' && stopPrice != '') {
                 el.stopOrder = stopPrice;
-                console.log('happens')
                 changeOrderState(el, el.stopOrder, 3);
                 createStopLossOrder(el, orderType);
             }
             bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.quantity, 4);
         } else {
-            console.log(el.stopOrder + ' ' + 'stop' + stopPrice)
             if (el.stopOrder === 'NaN' && stopPrice != '') {
                 console.log(el);
                 el.stopOrder = stopPrice;

@@ -18,17 +18,17 @@ buyButton.addEventListener('click', () => {
     if (priceInputLimit.disabled) {
         setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type);
     } else {
-        //console.log(typeof priceInputLimit.value)
+        //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
         setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
     }
 });
 
 sellButton.addEventListener('click', () => {
     if (priceInputLimit.disabled) {
-        console.log("creating market sell order")
         setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
     } else {
-        console.log("creating limit sell order");
+        console.log(lotesInputLimit.value)
+        //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
         setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
     }
 });
@@ -49,4 +49,21 @@ export const addCloseEvent = function (element) {
         deleteOrder(element.dataset.id, element.dataset.is);
         element.parentNode.parentNode.remove();
     });
+}
+
+function checkmarket (lotes) {
+    if (lotes === '0') {
+        console.log("lotes can't be 0");
+        return;
+    }
+}
+
+function checkinput(limit, lotes) {
+    if (limit === '') {
+        console.log("price msut be number");
+        return;
+    } else if (lotes === '0') {
+        console.log("lotes can't be 0");
+        return;
+    }
 }
