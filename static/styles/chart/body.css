@@ -518,3 +518,14 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   background-color: rgba(200, 200, 200, 1);
   border-radius: 15px;
 }
+
+.btn.closeGreen {
+  background-color:rgb(38, 166, 154) !important;
+}
+
+.greenFont {
+  color: #19af3a !important;
+}
+.redFont {
+  color : red !important;
+}

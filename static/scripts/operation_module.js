@@ -7,11 +7,14 @@ const limitHead = headtabs[1];
 const marketTab = tabs[0];
 const limitTab = tabs[1];
 
+const priceInputLimit = document.querySelector('.price');
+
 marketHead.addEventListener('click', event => {
   marketHead.className = "HeadTab headOpen";
   limitHead.className = "HeadTab";
   limitTab.className = "tab";
   marketTab.className = "tab tabOpen";
+  priceInputLimit.disabled = true;
   /* console.log("Market"); */
 });
 
@@ -20,5 +23,6 @@ limitHead.addEventListener('click', event => {
   marketHead.className = "HeadTab";
   marketTab.className = "tab";
   limitTab.className = "tab tabOpen";
+  priceInputLimit.disabled = false;
   /* console.log("Limit"); */
 });

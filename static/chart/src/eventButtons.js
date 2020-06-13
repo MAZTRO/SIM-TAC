@@ -18,7 +18,6 @@ buyButton.addEventListener('click', () => {
   if (priceInputLimit.disabled) {
     setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type);
   } else {
-    //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
     setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
   }
 });
@@ -28,7 +27,6 @@ sellButton.addEventListener('click', () => {
     setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
   } else {
     console.log(lotesInputLimit.value)
-    //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
     setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
   }
 });
