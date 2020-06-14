@@ -8,12 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <title>SIM-TAC</title>
 
-  <link rel="stylesheet" href="{% static 'styles/login/header.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/login/common.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/login/footer.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/login/body.css' %}">
-
-  <script src="{% static 'scripts/login.js' %}" async></script>
+  <link rel="stylesheet" href="{% static 'styles/signup/header.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/signup/common.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/signup/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/signup/body.css' %}">
 </head>
 
 
@@ -33,45 +31,16 @@
           <button>Sign Up</button>
         </form>
       </div>
-      <div class="form-container sign-in-container">
-        <form action="#">
-          <h1>Sign in</h1>
-          <div class="social-container">
-            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-          <span>or use your account</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <a href="#">Forgot your password?</a>
-          <button>Sign In</button>
-        </form>
-      </div>
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-left">
-            <h1>Awesome!</h1>
+            <h2>Awesome!</h2>
             <p>You need little information to start your training.<br>but if you already have an account, <b>sign in!</b>.</p>
-            <button class="ghost" id="signIn">Sign In</button>
-          </div>
-          <div class="overlay-panel overlay-right">
-            <h1>Welcome Back!</h1>
-            <p>You can login to your account !, if you don't have one, <b>Sign Up!</b></p>
-            <button class="ghost" id="signUp">Sign Up</button>
+            <a href="{% url 'users:login'%}"><button class="ghost" id="signIn">Sign In</button></a>
           </div>
         </div>
       </div>
     </div>
-
-    <footer>
-      <p>
-        Created with <i class="fa fa-heart"></i> by
-        <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
-        - Read how I created this and how you can join the challenge
-        <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
-      </p>
-    </footer>
   </div>
   <footer>
     by SIM TAC

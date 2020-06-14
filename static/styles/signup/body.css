@@ -8,21 +8,31 @@
 }
 
 body .main {
+	z-index: 10;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-flow: column;
 
-  margin: 30px auto;
+	margin: 0px auto;
+	margin-bottom: 120px;
+
+	height: 650px;
+
+	background-color: rgba(250, 250, 250, 1);
 }
 
 h1 {
+	width: 100%;
+
 	font-weight: 500;
-	margin: 0;
+
+	margin: 0px auto;
 }
 
 h2 {
 	text-align: center;
+	font-size: 40px;
+
+	margin: 10px;
 }
 
 p {
@@ -33,29 +43,24 @@ p {
 	margin: 20px 0 30px;
 }
 
-span {
-	font-size: 14px;
-}
-
-body .main a {
-	color: #333;
-	font-size: 14px;
-	font-weight: 400;
-	text-decoration: none;
-	margin: 15px 0;
-}
-
 button {
+	position: relative;
+	top: 5px;
+
 	border-radius: 10px;
 	border: 1px solid;
 	background-color: var(--main-color);
+
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: 400;
-	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	transition: transform 30ms ease-in;
+
+	height: 8%;
+	width: 50%;
+
+	margin: 10px auto;
 }
 
 button:hover {
@@ -71,44 +76,49 @@ button:focus {
 }
 
 button.ghost {
+	position: relative;
+	top: 0px;
+
 	background-color: transparent;
-	border-color: rgba(250, 250, 250, .8)
+	border-color: rgba(250, 250, 250, .8);
+
+	height: 100%;
+	width: 100%;
+
+	padding: 5px 50px;
 }
 
 form {
 	background-color: #FFFFFF;
 	display: flex;
-	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding: 0 50px;
+
+	position: absolute;
+	top: 0px;
+
 	height: 100%;
+	width: 100%;
 	text-align: center;
 }
 
-form .tryAgain {
+form p {
+	position: relative;
+	top: 0px;
+	height: 10%;
+	margin: 0px;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-flow: column;
 
-	width: 100%;
-	height: 10%;
+	padding: 0 50px;
+}
 
-	background-color: rgba(255, 0, 0, .1);
-	border-radius: 10px;
-
+form p label {
 	margin: 10px;
 }
-
-form .tryAgain p {
-	font-size: 14px;
-	text-align: center;
-	color: red;
-
-	margin: auto;
-}
-
-
 
 input {
 	background-color: rgba(240, 240, 240, 1);
@@ -117,38 +127,62 @@ input {
 	border: none;
 	border-radius: 8px;
 	padding: 0px 30px;
-	height: 7%;
-	margin: 8px 0;
+	height: 70%;
+	margin: 2px 0;
 	width: 100%;
 	outline: none;
+}
+
+ul {
+	width: 80%;
+	height: 5%;
+
+	position: relative;
+
+	padding: 0 10px;
+	border-radius: 10px;
+
+	margin: 0px auto;
+	margin-top: 10px;
+}
+
+li {
+	width: 100%;
+	height: 80%;
+	margin: auto;
+	margin-top: 5px;
+
+	color: red;
+}
+
+.errorlist {
+
+	background-color: rgba(255, 0, 0, .1);
+	list-style: none;
+	text-align: center;
 }
 
 .container {
 	background-color: rgb(220, 220, 220);
 	border-radius: 15px;
 	box-shadow: 0 5px 20px rgb(160, 169, 197);
+
 	position: relative;
 	overflow: hidden;
+
 	width: 768px;
+	height: 97%;
+
 	max-width: 100%;
-	min-height: 480px;
+	min-height: 600px;
+
+	margin: 5px;
 }
 
 .form-container {
 	position: absolute;
 	top: 0;
 	height: 100%;
-	transition: all 0.3s ease-in-out;
-}
-
-.sign-in-container {
-	left: 0;
-	width: 50%;
-	z-index: 2;
-}
-
-.container.right-panel-active .sign-in-container {
-	transform: translateX(100%);
 }
 
 .sign-up-container {
@@ -162,19 +196,6 @@ input {
 	transform: translateX(100%);
 	opacity: 1;
 	z-index: 5;
-	animation: show 0.2s;
-}
-
-@keyframes show {
-	0%, 49.99% {
-		opacity: 0;
-		z-index: 1;
-	}
-
-	50%, 100% {
-		opacity: 1;
-		z-index: 5;
-	}
 }
 
 .overlay-container {
@@ -184,7 +205,6 @@ input {
 	width: 50%;
 	height: 100%;
 	overflow: hidden;
-	transition: transform 0.2s ease-in-out;
 	z-index: 100;
 }
 
@@ -204,8 +224,6 @@ input {
 	left: -100%;
 	height: 100%;
 	width: 200%;
-  transform: translateX(0);
-	transition: transform 0.4s ease-in-out;
 }
 
 .container.right-panel-active .overlay {
@@ -218,27 +236,15 @@ input {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding: 0 40px;
+	padding: 0 20px;
 	text-align: center;
 	top: 0;
 	height: 100%;
 	width: 50%;
-	transform: translateX(0);
-	transition: transform 0.6s ease-in-out;
 }
 
 .overlay-panel p {
-	margin: 20px;
 	font-size: 16px;
 
 	line-height: normal;
-}
-
-.overlay-right {
-	right: 0;
-	transform: translateX(0);
-}
-
-.container.right-panel-active .overlay-right {
-	transform: translateX(20%);
 }

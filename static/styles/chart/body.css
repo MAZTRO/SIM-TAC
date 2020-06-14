@@ -1,6 +1,6 @@
 :root {
   --color-blue: rgba(50, 100, 255, 1);
-  --color-blue-dark: #083763;
+  --color-blue-dark: #2d76bb;
   --color-red: rgb(209, 65, 65);
   --color-green: rgb(25, 175, 58);
 }
@@ -24,7 +24,7 @@ body .Body {
   height: 83vh;
   border-bottom: 1px solid;
   border-color: rgba(230, 230, 230, 1);
-  background-color: rgba(240, 240, 240, 1);
+  background-color: rgba(250, 250, 250, 1);
 }
 
 /* Basic blocks's configuration */
@@ -42,7 +42,7 @@ body .config {
 
 
   margin: 0px 5px 5px 5px;
-  background-color: rgba(180, 180, 180, 1);
+  background-color: rgba(210, 210, 210, 1);
   border-radius: 20px;
 }
 
@@ -69,7 +69,7 @@ body .operator {
   min-width: 200px;
 
   margin: 5px 5px 5px 0px;
-  background-color: rgba(180, 180, 180, 1);
+  background-color: rgba(210, 210, 210, 1);
   border-radius: 20px;
 }
 
@@ -118,6 +118,10 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   margin: auto auto;
 
   color: rgba(60, 60, 60, 1);
+
+  font-family: 'Red Hat Text', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .config .tableOp {
@@ -137,7 +141,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 .config .tableOp #operations_list {
   border-collapse: collapse;
   width: 100%;
-  height: 100%;
+  height: 20%;
 
   border-radius: 15px;
   background-color: rgb(230, 230, 230);
@@ -147,8 +151,8 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   font-size: 14px;
   color: #FFFFFF;
   height: 30px;
-  width: 15%;
-  background-color: var(--color-blue);
+  width: 10%;
+  background-color: var(--color-blue-dark);
 }
 
 .config #operations_list th:last-child {
@@ -217,6 +221,10 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   margin: 0px;
   margin-bottom: 2%;
   color: rgba(60, 60, 60, 1);
+
+  font-size: 25px;
+  font-weight: 500;
+  font-family: 'Red Hat Text', sans-serif;
 }
 
 .operator .status .statusDIV {
@@ -298,7 +306,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
 .operations #marketTab {
   grid-template-columns: 25% 25% 25% 25%;
-  grid-template-rows: 20% 20% 10% 20% 20%;
+  grid-template-rows: 20% 20% 10% 20% 30%;
 }
 
 .operations #limitTab {
@@ -311,7 +319,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 }
 
 .operations .headOpen {
-  border-bottom-color: rgba(180, 180, 180, 1);
+  border-bottom-color: rgba(210, 210, 210, 1);
 }
 
 .operations .btn {
@@ -320,7 +328,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
   margin: auto;
 
-  border-radius: 15px;
+  border-radius: 10px;
   border: 0px;
   background-color: rgb(230, 230, 230);
   color: #FFFFFF;
@@ -343,6 +351,8 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   background-color: rgba(100, 100, 100, 1);
 
   height: 40%;
+
+  font-size: 14px;
 }
 
 .operations #buy {
@@ -376,20 +386,20 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
 .operations .tab #BOTTOM {
   grid-column: 1 / span 4;
-  grid-row: 6 / span 6;
+  grid-row: 5 / span 5;
 
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 .operations .tab input {
   width: 70%;
-  height: 60%;
+  height: 80%;
 
   text-align: right;
   font-size: 14px;
 
   border: 0px;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: rgba(230, 230, 230, 1);
 
   outline: none;
@@ -402,7 +412,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   font-size: 14px;
 
   margin: auto;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
   color: rgba(60, 60, 60, 1);
 }
 
@@ -438,7 +448,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
   margin: auto;
 
   width: 40%;
-  height: 70%;
+  height: 80%;
 }
 
 .operations #marketTab input.lots {
@@ -475,7 +485,7 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 
 .operations .tab input.stopIn {
   width: 40%;
-  height: 40%;
+  height: 35%;
 
   margin-top: 0px;
   grid-column: 1 / span 4;
@@ -520,12 +530,12 @@ body .config .tableOp::-webkit-scrollbar-thumb {
 }
 
 .btn.closeGreen {
-  background-color:rgb(38, 166, 154) !important;
+  background-color:var(--color-blue-dark) !important;
 }
 
 .greenFont {
-  color: #19af3a !important;
+  color: rgb(25, 175, 58) !important;
 }
 .redFont {
-  color : red !important;
+  color : rgb(209, 65, 65) !important;
 }
