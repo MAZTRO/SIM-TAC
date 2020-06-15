@@ -1,6 +1,7 @@
 import { makeApiRequest, parseFullSymbol, generateSymbol } from './helpers.js';
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
-import { founds} from './createOrderLine.js';
+import { cacheExist } from './locaStorage.js';
+import { founds } from './createOrderLine.js';
 //import { LP } from './streaming.js';
 // ...
 
@@ -9,26 +10,43 @@ import { founds} from './createOrderLine.js';
 const lastBarCache = new Map();
 
 async function getAllSymbols() {
-  const data = await makeApiRequest('data/v3/all/exchanges');
-  let allSymbols = [];
+
+    /*
+        * test for cahe  refering symbols
+        if not are cache go to the api, if there is a
+        cache load from localStorage and use it
+    */
+  /************************************************* */
   
-  for (const exchange of configurationData.exchanges) {
-    const pairs = data.Data[exchange.value].pairs;
-    for (const leftPairPart of Object.keys(pairs)) {
-      const symbols = pairs[leftPairPart].map(rightPairPart => {
-        const symbol = generateSymbol(exchange.value, leftPairPart, rightPairPart);
-        return {
-          symbol: symbol.short,
-          full_name: symbol.full,
-          description: symbol.short,
-          exchange: exchange.value,
-          type: 'crypto',
-        };
-      });
-      allSymbols = [...allSymbols, ...symbols];
+  const data = await cacheExist('dataSymbols', 'data/v3/all/exchanges');
+  //const data = await makeApiRequest('data/v3/all/exchanges');
+  let allSymbols = [];
+  let allStoredSymbols = [];
+  allStoredSymbols = window.localStorage.getItem('allSymbols');
+  if (!allStoredSymbols) {
+    for (const exchange of configurationData.exchanges) {
+      const pairs = data.Data[exchange.value].pairs;
+      for (const leftPairPart of Object.keys(pairs)) {
+        const symbols = pairs[leftPairPart].map(rightPairPart => {
+          const symbol = generateSymbol(exchange.value, leftPairPart, rightPairPart);
+          return {
+            symbol: symbol.short,
+            full_name: symbol.full,
+            description: symbol.short,
+            exchange: exchange.value,
+            type: 'crypto',
+          };
+        });
+        allSymbols = [...allSymbols, ...symbols];
+      }
     }
-  }
+  /** save all symbols on localStorage */
+  window.localStorage.setItem('allSymbols', JSON.stringify(allSymbols));
   return allSymbols;
+  } else {
+      return JSON.parse(allStoredSymbols);
+  }
+  /************************************************* */
 }
 
 const configurationData = {
@@ -50,19 +68,20 @@ const configurationData = {
   ],
 };
 
+
 export default {
   onReady: (callback) => {
-    console.log('[onReady]: Method call');
-    founds();
+    //console.log('[onReady]: Method call');
+
+    founds(window.localStorage.getItem('money'));
     const priceInputLimit = document.querySelector('.price');
     const priceInput = document.querySelector('.priceStop');
     priceInput.disabled = true;
     priceInputLimit.disabled = true;
-    
     setTimeout(() => callback(configurationData));
   },
   searchSymbols: async (userInput, exchange, symbolType, onResultReadyCallback) => {
-    console.log('[searchSymbols]: Method call');
+    //console.log('[searchSymbols]: Method call');
     const symbols = await getAllSymbols();
     const newSymbols = symbols.filter(symbol => {
       const isExchangeValid = exchange === '' || symbol.exchange === exchange;
@@ -72,11 +91,11 @@ export default {
     onResultReadyCallback(newSymbols);
   },
   resolveSymbol: async (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
-    console.log('[resolveSymbol]: Method call', symbolName);
+    //console.log('[resolveSymbol]: Method call', symbolName);
     const symbols = await getAllSymbols();
     const symbolItem = symbols.find(({ full_name }) => full_name === symbolName);
     if (!symbolItem) {
-      console.log('[resolveSymbol]: Cannot resolve symbol', symbolName);
+      //console.log('[resolveSymbol]: Cannot resolve symbol', symbolName);
       onResolveErrorCallback('cannot resolve symbol');
       return;
     }
@@ -97,7 +116,7 @@ export default {
       volume_precision: 2,
       data_status: 'streaming',
     };
-    console.log('[resolveSymbol]: Symbol resolved', symbolName);
+    //console.log('[resolveSymbol]: Symbol resolved', symbolName);
     onSymbolResolvedCallback(symbolInfo);
   },
   getBars: async (symbolInfo, resolution, from, to, onHistoryCallback, onErrorCallback, firstDataRequest) => {
@@ -115,6 +134,7 @@ export default {
       let bars = [];
       let data;
       if (resolution == '1D') {
+        
         data = await makeApiRequest(`data/histoday?${query}`);
         if (data.Response && data.Response === 'Error' || data.Data.length === 0) {
           // "noData" should be set if there is no data in the requested period.
@@ -157,12 +177,12 @@ export default {
       if (firstDataRequest) {
         lastBarCache.set(symbolInfo.full_name, {...bars[bars.length - 1]});
       }
-     // console.log(`[getBars]: returned ${bars.length} bar(s)`);
+      //console.log(`[getBars]: returned ${bars.length} bar(s)`);
       onHistoryCallback(bars, { noData: false });
 
 
     } catch (error) {
-      console.log('[getBars]: Get error', error);
+      //console.log('[getBars]: Get error', error);
       onErrorCallback(error);
     }
   },

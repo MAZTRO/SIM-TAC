@@ -9,7 +9,7 @@ export const createOrderInChart = function(obj, order) {
 
 export const createRowTable = function(el) {
     let tr = document.createElement('tr');
-    el.type  = el.type[0].toUpperCase() + el.type.slice(1);
+    //el.type  = el.type[0].toUpperCase() + el.type.slice(1);
     const ob = [['id', el.id], ['type', el.type], ['price', el.price],
     ['stop', el.stopOrder], ['quantity', el.quantity], ['state', el.state],
     ['GL', el.GL]];

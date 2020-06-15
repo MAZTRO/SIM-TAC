@@ -1,14 +1,13 @@
-import { growthOrder, activeFounds, money } from './ordersHelpers.js';
+import { growthOrder, activeFounds } from './ordersHelpers.js';
 import { createStopLossOrder, changeOrderState } from './chartUpdates.js';
 import { createOrderInChart, createRowTable } from './ordersTemplatesHelpers.js';
 import { saveOrder } from './saveOrder.js';
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
 
 const lastPriceInput = document.querySelector('.idOp');
-
-let userOrders  = []
+let count = 0;
+let userOrders  = [];
 let pendingOrders = [];
-
 
 export { userOrders, pendingOrders };
 
@@ -24,19 +23,31 @@ export const setOrderProgrammable = function(price, lotes, orderType, stopPrice)
     createOrder(price, lotes, orderType, true, stopPrice);
 }
 
-export const createOrder = function (price, quantity, orderType, prog, stopPrice) {
+export const createOrder = function (price, quantity, orderType, prog, stopPrice, flag) {
     /* create order in active chart called order */
-    const order  = window.tvWidget.activeChart().createOrderLine();
-    order.setPrice(price);
-    order.setQuantity(quantity / 10);
-    prog ? order.setText("Cover limit order") : order.setText("Cover market order") 
-    const orderObject = saveOrder(order, orderType, price, prog, stopPrice) ; // save order in object, return an order object  info  
-    createOrderInChart(orderObject, order); // create order in chart
-    createRowTable(orderObject); // crete row in table orders
+    if (flag) {
+        const order = window.tvWidget.activeChart().createOrderLine();
+        order.setPrice(price);
+        order.setQuantity(quantity);
+        prog ? order.setText("Cover limit order") : order.setText("Cover market order") ;
+        const orderObject = saveOrder(order, orderType, price, prog, stopPrice, flag);
+        createOrderInChart(orderObject, order); // create order in chart
+        createRowTable(orderObject);  // create row in table orders
+    }
+    else {
+        const order = window.tvWidget.activeChart().createOrderLine();
+        order.setPrice(price);
+        order.setQuantity(quantity / 10);
+        prog ? order.setText("Cover limit order") : order.setText("Cover market order") ;
+        const orderObject = saveOrder(order, orderType, price, prog, stopPrice); // save order in object, return an order object  info
+        createOrderInChart(orderObject, order); // create order in chart
+        createRowTable(orderObject);  // create row in table orders
 
-    if (orderObject.stopOrder != 'NaN' && orderObject.stopOrder != "esaCosa") {
-        createStopLossOrder(orderObject, orderType);
-    } else return (orderObject);
+        if (orderObject.stopOrder != 'NaN' && orderObject.stopOrder != "esaCosa") {
+            createStopLossOrder(orderObject, orderType);
+        } else return (orderObject);
+    }
+    //createRowTable(orderObject);  // create row in table orders
 }
 
 export const pendingOrdersReview = function () {
@@ -44,7 +55,32 @@ export const pendingOrdersReview = function () {
         Update pending orders to complete succesfully orders
         if a price in a prending order is equal to last pice the oerder must be taked
     */
-   lastPriceInput.placeholder = LP.toFixed(1); //updates real price in price order input
+    lastPriceInput.placeholder = LP.toFixed(1);
+
+    if (count < 1) {
+        let cache2 = window.localStorage.getItem('userOrders');
+        if (cache2) {
+            cache2 = JSON.parse(cache2);
+            cache2.forEach(el => {
+                //createRowTable(el);
+                console.log(el.type)
+                createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true);
+            })
+        }
+
+        let cache = window.localStorage.getItem('pendingOrders');
+        if (cache) {
+            cache = JSON.parse(cache);
+            cache.forEach(el => {
+                //createRowTable(el);
+                console.log(el.type)
+                createOrder(el.price, el.quantity, el.type, true, el.stopOrder, true);
+            })
+        }
+        count++;
+    }
+
+    //updates real price in price order input
     if (userOrders.length) {
         GLverificate();
     }
@@ -82,11 +118,13 @@ function GLverificate () {
     });
 }
 
-export const founds = function () {
+export const founds = function (money) {
     /* show the user found in chas item input */
+    const founds = JSON.parse(money);
+    console.log(founds)
     const p = document.createElement('p');
     const cashItem = document.querySelector('.cash');
-    cashItem.appendChild(document.createTextNode(money.toLocaleString()));
+    cashItem.appendChild(document.createTextNode(founds.toLocaleString()));
 }
 
 /*other methos that can set to the order line on th chart

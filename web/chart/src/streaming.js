@@ -5,15 +5,15 @@ const channelToSubscription = new Map();
 const socket = io('wss://streamer.cryptocompare.com');
 export let LP;
 socket.on('connect', () => {
-  console.log('[socket] Connected');
+  //console.log('[socket] Connected');
 });
 
 socket.on('disconnect', (reason) => {
-  console.log('[socket] Disconnect', reason);
+  //console.log('[socket] Disconnect', reason);
 });
 
 socket.on('error', (error) => {
-  console.log('[socket] Error', error);
+  //console.log('[socket] Error', error);
 });
 
 export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback, lastDailyBar) {
@@ -36,7 +36,7 @@ export function subscribeOnStream(symbolInfo, resolution, onRealtimeCallback, su
     handlers: [handler],
   };
   channelToSubscription.set(channelString, subscriptionItem);
-  console.log('[subscribeBars]: Subscribe to streaming. Channel:', channelString);
+  //console.log('[subscribeBars]: Subscribe to streaming. Channel:', channelString);
   socket.emit('SubAdd', {subs: [channelString]});
 }
 
@@ -48,7 +48,7 @@ export function unsubscribeFromStream(subscribeUID) {
     if (handlerIndex !== -1) {
       subscriptionItem.handlers.splice(handlerIndex, 1);
       if (subscriptionItem.handlers.length === 0) {
-        console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString);
+        //console.log('[unsubscribeBars]: Unsubscribe from streaming. Channel:', channelString);
         socket.emit('SubRemove', {subs: [channelString]});
         channelToSubscription.delete(channelString);
         break;
@@ -59,7 +59,7 @@ export function unsubscribeFromStream(subscribeUID) {
 
 socket.on('m', data => {
   /* debugger */
-  //console.log('[socket] Message:', data);
+  ////console.log('[socket] Message:', data);
   const [
     eventTypeStr,
     exchange,
@@ -101,7 +101,7 @@ socket.on('m', data => {
       low: Math.min(lastDailyBar.low, tradePrice),
       close: tradePrice,
     }
-    //console.log('[socket] Update the latest bar by price', tradePrice);
+    ////console.log('[socket] Update the latest bar by price', tradePrice);
     LP = tradePrice;
     pendingOrdersReview();
   }
