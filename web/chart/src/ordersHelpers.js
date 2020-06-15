@@ -1,27 +1,39 @@
 import  {  changeOrderState, createStopLossOrder, updateOrderChart } from './chartUpdates.js';
 import { userOrders} from './createOrderLine.js';
 import { LP } from './streaming.js';    
+//export let currencies = {};
+//export let money = 100000;
+
+let money = window.localStorage.getItem('money');
+if (money) {
+    money = JSON.parse(money)
+} else {
+    window.localStorage.setItem('money', JSON.stringify(100000));
+    money = JSON.parse(window.localStorage.getItem('money'));
+}
+//window.localStorage.setItem('money', JSON.stringify(100000));
 
 export const activeFounds = function(lotes, orderType) {
     /* Verificates and make properly operation for found in order */
     let currencies = JSON.parse(window.localStorage.getItem('currencies'));
-    let money = JSON.parse(window.localStorage.getItem('money'));
+    //let money = JSON.parse(window.localStorage.getItem('money'));
     const currency = window.tvWidget.activeChart().symbol().split(":")[1]; //symbol pair
     if (orderType === "Buy" || orderType === "buy") {
+        
         if (money <= 0 || (money - lotes) < 0) {
             console.log("not enought founds");
             return;
         }
         // currencies will contains the currency user has in lotes price
-        if (!currencies.hasOwnProperty(currency)) {
+        if (!currencies) {
+            currencies = {};
             currencies[currency] = lotes;
             window.localStorage.setItem('currencies', JSON.stringify(currencies));
-
+        
         } else {
             window.localStorage.removeItem('currencies');
             currencies[currency]  += lotes;
             window.localStorage.setItem('currencies', JSON.stringify(currencies));
-            
         }
         money -= lotes;
         window.localStorage.setItem('money', JSON.stringify(money));
@@ -40,8 +52,9 @@ export const activeFounds = function(lotes, orderType) {
                     window.localStorage.removeItem('currencies');
                     currencies[currency] -= lotes;
                     window.localStorage.setItem('currencies', JSON.stringify(currencies));
+                    last = last * lotes;
                     console.log(last);
-                    money += (lotes + (last * 10));
+                    money += (lotes + last);
                     window.localStorage.setItem('money', JSON.stringify(money));
                 })
             }

@@ -1,7 +1,7 @@
 import { growthOrder, activeFounds } from './ordersHelpers.js';
 import { createStopLossOrder, changeOrderState } from './chartUpdates.js';
 import { createOrderInChart, createRowTable } from './ordersTemplatesHelpers.js';
-import { saveOrder } from './saveOrder.js';
+import { saveOrder, templates} from './saveOrder.js';
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
 
 const lastPriceInput = document.querySelector('.idOp');
@@ -67,7 +67,6 @@ export const pendingOrdersReview = function () {
                 createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true);
             })
         }
-
         let cache = window.localStorage.getItem('pendingOrders');
         if (cache) {
             cache = JSON.parse(cache);
@@ -118,13 +117,14 @@ function GLverificate () {
     });
 }
 
-export const founds = function (money) {
+export const founds = function () {
     /* show the user found in chas item input */
-    const founds = JSON.parse(money);
-    console.log(founds)
     const p = document.createElement('p');
     const cashItem = document.querySelector('.cash');
-    cashItem.appendChild(document.createTextNode(founds.toLocaleString()));
+    let found = JSON.parse(window.localStorage.getItem('money'));
+    console.log(found);
+    if (found) cashItem.appendChild(document.createTextNode(found.toLocaleString()));
+    else cashItem.appendChild(document.createTextNode(money.toLocaleString()));
 }
 
 /*other methos that can set to the order line on th chart

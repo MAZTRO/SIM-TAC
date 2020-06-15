@@ -73,7 +73,7 @@ export default {
   onReady: (callback) => {
     //console.log('[onReady]: Method call');
 
-    founds(window.localStorage.getItem('money'));
+    founds();
     const priceInputLimit = document.querySelector('.price');
     const priceInput = document.querySelector('.priceStop');
     priceInput.disabled = true;
