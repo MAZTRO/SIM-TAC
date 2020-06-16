@@ -9,11 +9,11 @@ body {
 /* ================== */
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(180, 180, 180, 1);
+  background: rgba(200, 200, 200, 1);
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {

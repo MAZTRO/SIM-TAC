@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <script src="{% static 'scripts/home.js' %}" async></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
 
   <title>SIM-TAC</title>
 
@@ -17,15 +18,15 @@
   <link rel="stylesheet" href="{% static 'styles/index/body.css' %}">
 </head>
 <body>
-  <header>
+  <header class="big">
     <a href="{% url 'app:home' %}">
       <img src="{% static 'pub_images/sim_logo.png' %}" alt="sim-tac">
     </a>
     <a class="btn LogIn" href="{% url 'users:login'%}">Login</a>
     <a class="btn signUp" href="{% url 'users:signup' %}"><b>signup</b></a>
     <a class="btn Features" href="#features">Features</a>
-    <a class="btn AboutUs" href="#aboutussection">About us</a>
-    <a class="btn ContactUs" href="#contacUsSection">Contact us</a>
+    <a class="btn AboutUs" href="#aboutussection">Team</a>
+    <a class="btn ContactUs" href="#FAQ">FAQ</a>
   </header>
   <div class="main">
 
@@ -35,7 +36,7 @@
         <p>
           Risk, invest and learn everything about the markets in SIM-TAC
         </p>
-        <a href="{% url 'users:signup' %}"><button>Start now!</button></a>
+        <a href="{% url 'users:signup' %}"><button>Try our Beta!</b></button></a>
       </div>
       <a class="arrow" href="#features">
         <img id="arrow" src="{% static 'pub_images/arrow.png' %}" alt="">
@@ -50,36 +51,164 @@
     </div>
 
     <div class="FeaturesSection" id="features">
-      <h3><p>Features</p></h3>
+      <h3>Features</h3>
       <div class="cards">
-        <div class="card">
-          <img src="{% static 'pub_images/crypto.png' %}" alt="">
-          <p><b>Specific markets</b></p>
+
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="{% static 'pub_images/crypto.png' %}" alt="">
+            <p><b>Specific markets</b></p>
+          </div>
+          <div class="card-back">
+            <p>We focus on cryptocurrencies so that our users can develop their skills as traders, having great distress in the world of trading can operate in any type of market.</p>
+          </div>
         </div>
-        <div class="card">
-          <img src="{% static 'pub_images/design.png' %}" alt="">
-          <p><b>Clean and simple design</b></p>
+
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="{% static 'pub_images/design.png' %}" alt="">
+            <p><b>Clean and simple design</b></p>
+          </div>
+          <div class="card-back">
+            <p>Simple design so that our users can feel comfortable when interacting with our interface, without losing any kind of detail when performing their operations.</p>
+          </div>
         </div>
-        <div class="card">
-          <img src="{% static 'pub_images/data.png' %}" alt="">
-          <p><b>Real time data</b></p>
+
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="{% static 'pub_images/data.png' %}" alt="">
+            <p><b>Real time data</b></p>
+          </div>
+          <div class="card-back">
+            <p>We obtain data in real time, and thus be up-to-date with market prices to develop the necessary skills without losing money on brokers.</p>
+          </div>
         </div>
-        <div class="card">
-          <img src="{% static 'pub_images/costs.png' %}" alt="">
-          <p><b>No hidden costs</b></p>
+
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="{% static 'pub_images/costs.png' %}" alt="">
+            <p><b>No hidden costs</b></p>
+          </div>
+          <div class="card-back">
+            <p>You do not pay anything additional when practicing, you will not have to worry about the money you lose or earn in the simulator, since it is play money</p>
+          </div>
         </div>
+
       </div>
     </div>
 
-    <div class="AboutUsSection" id="aboutussection"></div>
+    <div class="AboutUsSection" id="aboutussection">
+      <h3>Team</h3>
+      <div class="img Cristian">
+      </div>
+      <div class="img Evert">
+      </div>
+      <div class="img Jonatan">
+      </div>
 
-    <div class="ContacUSSection" id="contacUsSection"></div>
+      <p class="aboutUsP">
+        The SIM-TAC project is made up of highly motivated engineers with great abilities in various disciplines, who are responsible for the growth and development of the initiative.
+      </p>
 
-    <button class="UP" id="up">UP</button>
+      <p class="titleP CristianT"><b>Cristian Gomez</b><br>Software engineer</p>
+      <p class="titleP EvertT"><b>Evert Escalante</b><br>Software engineer</p>
+      <p class="titleP JonatanT"><b>Jonatan Mazo</b><br>Software engineer</p>
+
+      <div class="social CristianS">
+        <a href="https://twitter.com/cristianfg1702" target="_blank"><div class="twitter"></div></a>
+        <a href="https://github.com/cristian-fg" target="_blank"><div class="github"></div></a>
+        <a href="https://www.linkedin.com/in/cristian-gomez-566113182/" target="_blank"><div class="linkedin"></div></a>
+      </div>
+      <div class="social EvertS">
+        <a href="https://twitter.com/escalante_evert"><div class="twitter"></div></a>
+        <a href="https://github.com/Evertcolombia" target="_blank"><div class="github"></div></a>
+        <a href="https://www.linkedin.com/in/evert-escalante-85169a174/" target="_blank"><div class="linkedin"></div></a>
+      </div>
+      <div class="social JonatanS">
+        <a href="https://twitter.com/JonatanRMC" target="_blank"><div class="twitter"></div></a>
+        <a href="https://github.com/MAZTRO" target="_blank"><div class="github"></div></a>
+        <a href="https://www.linkedin.com/in/jonatan-ricardo-mazo-castro-75633390/" target="_blank"><div class="linkedin"></div></a>
+      </div>
+    </div>
+
+    <div class="FAQ" id="FAQ">
+      <h3>FAQ</h3>
+      <div class="acordion">
+        <div class="acordion-item" id="FAQ1">
+          <a class="FAQ_Question" href="#FAQ1">
+            What is SIM-TAC?
+            <ion-icon class="down" name="caret-down-outline"></ion-icon>
+            <ion-icon class="up" name="caret-up-outline"></ion-icon>
+          </a>
+          <div class="FAQ_Answer">
+            <p>It's a trading simulator with a clean and simple interface in order to learn the operability of the markets without losing real money in the process.</p>
+          </div>
+        </div>
+
+        <div class="acordion-item" id="FAQ2">
+          <a class="FAQ_Question" href="#FAQ2">
+            What type of users is SIM-TAC for?
+            <ion-icon class="down" name="caret-down-outline"></ion-icon>
+            <ion-icon class="up" name="caret-up-outline"></ion-icon>
+          </a>
+          <div class="FAQ_Answer">
+            <p>SIM-TAC is focused on users who already have previous knowledge of Trading.</p>
+          </div>
+        </div>
+
+        <div class="acordion-item" id="FAQ3">
+          <a class="FAQ_Question" href="#FAQ3">
+            Does it have any cost?
+            <ion-icon class="down" name="caret-down-outline"></ion-icon>
+            <ion-icon class="up" name="caret-up-outline"></ion-icon>
+          </a>
+          <div class="FAQ_Answer">
+            <p>No, it is totally free to use, it is in a beta phase.</p>
+          </div>
+        </div>
+
+        <div class="acordion-item" id="FAQ4">
+          <a class="FAQ_Question" href="#FAQ4">
+            It's a broker?
+            <ion-icon class="down" name="caret-down-outline"></ion-icon>
+            <ion-icon class="up" name="caret-up-outline"></ion-icon>
+          </a>
+          <div class="FAQ_Answer">
+            <p>No, it is an application where the market is simulated in real time.</p>
+          </div>
+        </div>
+
+        <div class="acordion-item" id="FAQ5">
+          <a class="FAQ_Question" href="#FAQ5">
+            Does this operate in all markets?
+            <ion-icon class="down" name="caret-down-outline"></ion-icon>
+            <ion-icon class="up" name="caret-up-outline"></ion-icon>
+          </a>
+          <div class="FAQ_Answer">
+            <p>No, we only focus on cryptocurrencies.</p>
+          </div>
+        </div>
+
+        <div class="acordion-item" id="FAQ6">
+          <a class="FAQ_Question" href="#FAQ6">
+            Trading in cryptocurrencies is the same as in traditional markets??
+            <ion-icon class="down" name="caret-down-outline"></ion-icon>
+            <ion-icon class="up" name="caret-up-outline"></ion-icon>
+          </a>
+          <div class="FAQ_Answer">
+            <p>Having great distress in the world of trading in cryptocurrencies, you can operate in any type of market.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="UP" id="up"></button>
 
   </div>
   <footer>
-    by SIM-TAC
+    ©SIM-TAC<br>
+    From Colombia &#128155 &#128153 &#128147 to the world!
   </footer>
 </body>
 </html>

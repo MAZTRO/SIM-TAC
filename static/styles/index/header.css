@@ -5,23 +5,51 @@
   --color-green: rgb(25, 175, 58);
 }
 
-header {
+.big {
+  position: fixed;
+  top: 0px;
+
   display: flex;
   align-items: center;
   width: 100%;
-  height: 80px;
+  height: 70px;
   border: 0px;
 
+  background-color: #FFFFFF;
+
   z-index: 10;
+
+  transition: 0.4s;
+}
+
+.small {
+  position: fixed;
+  top: 0px;
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  border: 0px;
+
+  background-color: #FFFFFF;
+
+  z-index: 10;
+
+  transition: 0.4s;
 }
 
 /* Logo */
 header a img {
-  position: relative;
-  left: 100px;
-  height: 60px;
+  position: absolute;
+  top: 15%;
+  left: 30px;
 
-  z-index: 10;
+  height: 70%;
+
+  background-color: #FFFFFF;
+
+  z-index: 100;
 }
 
 /* Body of user info */
@@ -37,7 +65,7 @@ header .btn {
   border: 1px solid;
   border-radius: 10px;
   width: 100px;
-  height: 40px;
+  height: 60%;
   outline: none;
 
   font-size: 14px;
@@ -47,12 +75,12 @@ header .btn {
 
 header .LogIn {
   position: absolute;
+  height: 55%;
   right: 30px;
   color: var(--color-blue-dark);
 }
 
 header .signUp {
-  height: 43px;
   position: absolute;
   right: 140px;
   background-color: var(--color-blue-dark);
