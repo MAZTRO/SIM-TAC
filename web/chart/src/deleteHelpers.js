@@ -1,4 +1,5 @@
 import { userOrders, pendingOrders } from  './createOrderLine.js';
+import { LP } from './streaming.js';
 
 export const deleteOrder = function(id, isProgrammable) {
     /* Delete an specific order  calling deleteSpecific pasing properly obj */
@@ -18,6 +19,23 @@ export const deleteSpecific = function (price, ordersObject) {
                     deleteSpecificPendingOrder(element.stopOrder, element.stopOrderTemp);
                 }
             }
+            let money = window.localStorage.getItem('money');
+            if (money) {
+                money =  JSON.parse(money) 
+                let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
+                const currency = window.tvWidget.activeChart().symbol().split(":")[1];
+                currencies[currency] -= element.quantity * 10;
+                if (currencies[currency == 0]) window.localStorage.removeItem('currencies');
+                let last = (LP - element.price);
+                window.localStorage.setItem('currencies', JSON.stringify(currencies));
+                last = last * (element.quantity * 10);
+                money += ((element.quantity * 10) + last);
+                window.localStorage.setItem('money', JSON.stringify(money));
+                const cashItem = document.querySelector('.cash');
+                cashItem.innerText = cashItem.textContent = money.toLocaleString();
+
+            }
+
             const index = ordersObject.indexOf(element); // get the index of the object
             element.orr.remove(); // remove the order of the chart
             if (index > -1) ordersObject.splice(index, 1); // deletes the order of the object
