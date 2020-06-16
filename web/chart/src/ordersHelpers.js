@@ -56,7 +56,6 @@ export const activeFounds = function(lotes, orderType) {
                         money += last + lotes;
                     }
                     else {
-                        console.log('here')
                         money -= lotes - last;
                     }
                     window.localStorage.removeItem('money');

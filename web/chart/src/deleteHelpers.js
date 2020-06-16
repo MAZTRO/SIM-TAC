@@ -95,7 +95,6 @@ export const  deletesOrdersbyButton = function(price) {
     for (let i = 4; i < orders.length; i++) {
         let pr = parseInt(orders[i].cells[2].dataset.price);
         if (pr.toFixed() === price.toFixed()) {
-            console.log("here");
             deleteParenNode(orders[i]);
         }
     }
