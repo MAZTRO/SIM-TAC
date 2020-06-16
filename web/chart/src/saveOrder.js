@@ -47,7 +47,6 @@ export const saveOrder = function(order, orderType, price, isProgrammable, stopP
 
     if (isProgrammable) {
         orderObject['state'] = 'pending';
-
         pendingOrders.push(orderObject); // pendingOrders: programmable orders
         
         if (!flag) {

@@ -36,20 +36,7 @@ export const updateOrderChart = function (el, quantity, price, orderType) {
         deletesOrdersTemplates(el);
         deleteSpecificPendingOrder(el.stopOrderId);
         userOrders.splice(userOrders.indexOf(el), 1);
-
-        let cache = window.localStorage.getItem('pendingOrders');
-        if (cache) {
-            cache = JSON.parse(cache);
-            cache.filter(element => {
-                let elPrice = parseInt(element.price);
-                let pr = parseInt(el.stopOrder);
-                if (pr.toFixed() === elPrice.toFixed()) {
-                    const index = cache.indexOf(element);
-                    if (index > -1) cache.splice(index, 1);
-                    window.localStorage.setItem('pendingOrders', JSON.stringify(cache));
-                }
-            });
-        }
+        cacheTest('pendingOrders', el);
         if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders');
     }
     else {
@@ -58,6 +45,22 @@ export const updateOrderChart = function (el, quantity, price, orderType) {
         if (el.stopOrderTemp) {
             el.stopOrderTemp.setQuantity(el.quantity);
             changeOrderState(el.stopOrderTemp._line, el.quantity, 4);
+            let cache = window.localStorage.getItem('pendingOrders');
+            if (cache) 
+            {
+                console.log(el.quantity);
+                let eso = JSON.parse(cache);
+                eso.filter(element => {
+                    console.log(element);
+
+                    const elPrice = parseInt(element.price);
+                    const pr = parseInt(el.stopOrder);
+                    if (pr.toFixed() === elPrice.toFixed()) {
+                        element.quantity = el.quantity;
+                        window.localStorage.setItem('pendingOrders', JSON.stringify(eso));
+                    }
+                })
+            }
         }
         el.orr.setPrice((el.price + price) / 2);
         el.price = el.orr.getPrice().toFixed(1);
@@ -88,5 +91,21 @@ function deleteSpecificPendingOrder(id) {
             pendingOrders.splice(pendingOrders.indexOf(pendingOrders[x]), 1);
 
         }
+    }
+}
+
+function cacheTest(st, el) {
+    let cache = window.localStorage.getItem(st);
+    if (cache) {
+        cache = JSON.parse(cache);
+        cache.filter(element => {
+            let elPrice = parseInt(element.price);
+            let pr = parseInt(el.stopOrder);
+            if (pr.toFixed() === elPrice.toFixed()) {
+                const index = cache.indexOf(element);
+                if (index > -1) cache.splice(index, 1);
+                window.localStorage.setItem(st, JSON.stringify(cache));
+            }
+        });
     }
 }

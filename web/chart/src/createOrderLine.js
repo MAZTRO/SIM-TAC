@@ -70,7 +70,7 @@ export const pendingOrdersReview = function () {
         if (cache) {
             cache = JSON.parse(cache);
             cache.forEach(el => {
-                console.log(el.type)
+                console.log(el);
                 createOrder(el.price, el.quantity, el.type, true, el.stopOrder, true);
             })
         }

@@ -16,7 +16,6 @@ if (money) {
 export const activeFounds = function(lotes, orderType) {
     /* Verificates and make properly operation for found in order */
     let currencies = JSON.parse(window.localStorage.getItem('currencies'));
-    //let money = JSON.parse(window.localStorage.getItem('money'));
     const currency = window.tvWidget.activeChart().symbol().split(":")[1]; //symbol pair
     if (orderType === "Buy" || orderType === "buy") {
         
@@ -31,8 +30,8 @@ export const activeFounds = function(lotes, orderType) {
             window.localStorage.setItem('currencies', JSON.stringify(currencies));
         
         } else {
-            window.localStorage.removeItem('currencies');
             currencies[currency]  += lotes;
+            window.localStorage.removeItem('currencies');
             window.localStorage.setItem('currencies', JSON.stringify(currencies));
         }
         money -= lotes;
@@ -49,13 +48,22 @@ export const activeFounds = function(lotes, orderType) {
             if (userOrders.length) {
                 userOrders.forEach(el => {
                     let last = (LP - el.price);
-                    window.localStorage.removeItem('currencies');
-                    currencies[currency] -= lotes;
-                    window.localStorage.setItem('currencies', JSON.stringify(currencies));
                     last = last * lotes;
-                    console.log(last);
-                    money += (lotes + last);
+                    if (last === 0) {
+                        money += (lotes);
+                    }
+                    else if (last > 0) {
+                        money += last + lotes;
+                    }
+                    else {
+                        console.log('here')
+                        money -= lotes - last;
+                    }
+                    window.localStorage.removeItem('money');
                     window.localStorage.setItem('money', JSON.stringify(money));
+                    currencies[currency] -= lotes;
+                    window.localStorage.removeItem('currencies');
+                    window.localStorage.setItem('currencies', JSON.stringify(currencies));
                 })
             }
         }
@@ -72,6 +80,7 @@ export const activeFounds = function(lotes, orderType) {
 
 export const growthOrder = function(price, quantity, orderType, stopPrice) {
     let bool = false;
+
     userOrders.forEach(el => {
         el.price = parseFloat(el.price)
         if (price.toFixed(1) === el.price.toFixed(1)) {
@@ -85,6 +94,7 @@ export const growthOrder = function(price, quantity, orderType, stopPrice) {
             
             if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders');
             saveOrderCache('userOrders', userOrders);
+    
         } else {
             if (el.stopOrder === 'NaN' && stopPrice != '') {
                 console.log(el);
