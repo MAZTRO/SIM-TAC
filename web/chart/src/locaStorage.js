@@ -12,10 +12,3 @@ export const cacheExist =  async function (reference, path) {
     }
 }
 
-
-function reloadOrders () {
-    if (window.localStorage.getItem(orders)) {
-        let cache = window.localStorage.getItem(orders);
-        
-    }
-}

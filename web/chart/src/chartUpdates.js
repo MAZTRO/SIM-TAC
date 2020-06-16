@@ -36,6 +36,21 @@ export const updateOrderChart = function (el, quantity, price, orderType) {
         deletesOrdersTemplates(el);
         deleteSpecificPendingOrder(el.stopOrderId);
         userOrders.splice(userOrders.indexOf(el), 1);
+
+        let cache = window.localStorage.getItem('pendingOrders');
+        if (cache) {
+            cache = JSON.parse(cache);
+            cache.filter(element => {
+                let elPrice = parseInt(element.price);
+                let pr = parseInt(el.stopOrder);
+                if (pr.toFixed() === elPrice.toFixed()) {
+                    const index = cache.indexOf(element);
+                    if (index > -1) cache.splice(index, 1);
+                    window.localStorage.setItem('pendingOrders', JSON.stringify(cache));
+                }
+            });
+        }
+        if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders');
     }
     else {
         

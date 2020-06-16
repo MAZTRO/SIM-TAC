@@ -94,9 +94,6 @@ export const growthOrder = function(price, quantity, orderType, stopPrice) {
             bool = updateOrderChart(el, quantity, price, orderType);
             changeOrderState(el, el.price, 2);
             changeOrderState(el, el.quantity, 4);
-            
-            if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders');
-            saveOrderCache('userOrders', userOrders);
         }
     });
     return bool;

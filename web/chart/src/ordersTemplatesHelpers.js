@@ -46,6 +46,7 @@ function createCloseOrderButton(el, td) {
     close.id = `closeOrderButton-${++count}`;
     close.dataset.is = el.programmable;
     close.dataset.id = el.id;
+    close.dataset.price = el.price;
     close.classList.add('remove');
     addCloseEvent(close);
     td.appendChild(close);

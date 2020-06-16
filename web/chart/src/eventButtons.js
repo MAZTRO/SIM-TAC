@@ -45,7 +45,8 @@ stopLostButton.addEventListener('click', (event) => {
 
 export const addCloseEvent = function (element) {
     element.addEventListener('click', () => {
-        deleteOrder(element.dataset.id, element.dataset.is);
+        console.log(element.dataset)
+        deleteOrder(element.dataset.price, element.dataset.is);
         element.parentNode.parentNode.remove();
     });
 }

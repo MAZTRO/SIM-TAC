@@ -62,7 +62,6 @@ export const pendingOrdersReview = function () {
         if (cache2) {
             cache2 = JSON.parse(cache2);
             cache2.forEach(el => {
-                //createRowTable(el);
                 console.log(el.type)
                 createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true);
             })
@@ -71,7 +70,6 @@ export const pendingOrdersReview = function () {
         if (cache) {
             cache = JSON.parse(cache);
             cache.forEach(el => {
-                //createRowTable(el);
                 console.log(el.type)
                 createOrder(el.price, el.quantity, el.type, true, el.stopOrder, true);
             })
