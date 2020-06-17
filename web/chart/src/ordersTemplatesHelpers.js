@@ -35,7 +35,7 @@ export const createRowTable = function(el) {
     }
 }
 
-function orderStyleChart (order, color, obj) {
+function orderStyleChart (order, color) {
     order.setLineColor(color).setBodyTextColor(color).setBodyBorderColor(color);                
     order.setQuantityBorderColor(color).setQuantityTextColor(color);
     order.setLineStyle(2).setQuantityBackgroundColor("#fff");

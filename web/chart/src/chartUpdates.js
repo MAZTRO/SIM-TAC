@@ -2,15 +2,17 @@ import { createOrder } from './createOrderLine.js';
 import { deleteParenNode, deletesOrdersbyButton} from './deleteHelpers.js'
 import { userOrders, pendingOrders } from './createOrderLine.js';
 
-export const changeOrderState = function(element, text, index) {
+export const changeOrderState = function(element, text, index, flag) {
     /* modify the order template once it needs pass order to success */
     let id;
     if (element._id) id = element._id;
     else id = element.id;
     const ordersTemplate = document.getElementById('operations_list');
     const orders = ordersTemplate.childNodes;
+
     for (let i = 4; i < orders.length; i++) {
         if (orders[i].cells[0].dataset.id === id) {
+            if (flag) orders[i].cells[7].childNodes[0].dataset.is = false;
             const order = orders[i].getElementsByTagName('td')[index]; 
             order.innerText = order.textContent = text;
             return order;

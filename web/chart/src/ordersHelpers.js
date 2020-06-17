@@ -49,14 +49,15 @@ export const activeFounds = function(lotes, orderType) {
                 userOrders.forEach(el => {
                     let last = (LP - el.price);
                     last = last * lotes;
-                    if (last === 0) {
-                        money += (lotes);
+                    if (last === 0 || last === 0.0 || last === -0.0) {
+                        money += lotes;
                     }
                     else if (last > 0) {
                         money += last + lotes;
                     }
                     else {
-                        money -= lotes - last;
+                        const res = lotes + last;
+                        money += res;
                     }
                     window.localStorage.removeItem('money');
                     window.localStorage.setItem('money', JSON.stringify(money));
@@ -108,7 +109,7 @@ export const growthOrder = function(price, quantity, orderType, stopPrice) {
     return bool;
 }
 
-function saveOrderCache (reference, obj) {
+export const saveOrderCache = function (reference, obj) {
     let eso = [];
     window.localStorage.setItem(reference, JSON.stringify(obj, function(key, val) {
     if (val != null && typeof val == "object") {

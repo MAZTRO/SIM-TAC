@@ -1,12 +1,13 @@
 import { userOrders, pendingOrders } from  './createOrderLine.js';
 import { LP } from './streaming.js';
 
-export const deleteOrder = function(id, isProgrammable) {
+export const deleteOrder = function(price, isProgrammable) {
     /* Delete an specific order  calling deleteSpecific pasing properly obj */
     if (isProgrammable === 'false') {
-        deleteSpecific(id, userOrders);
+        console.log("here")
+        deleteSpecific(price, userOrders);
     } else {
-        deleteSpecific(id, pendingOrders);
+        deleteSpecific(price, pendingOrders);
     }
 }
 
@@ -19,17 +20,21 @@ export const deleteSpecific = function (price, ordersObject) {
                     deleteSpecificPendingOrder(element.stopOrder, element.stopOrderTemp);
                 }
             }
+            console.log(element);
             let money = window.localStorage.getItem('money');
-            if (money) {
-                money =  JSON.parse(money) 
+            if (money && !element.programmable) {
+                money =  JSON.parse(money)
                 let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
                 const currency = window.tvWidget.activeChart().symbol().split(":")[1];
+                
                 currencies[currency] -= element.quantity * 10;
-                if (currencies[currency == 0]) window.localStorage.removeItem('currencies');
+                if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
+
                 let last = (LP - element.price);
-                window.localStorage.setItem('currencies', JSON.stringify(currencies));
                 last = last * (element.quantity * 10);
                 money += ((element.quantity * 10) + last);
+
+                window.localStorage.setItem('currencies', JSON.stringify(currencies));
                 window.localStorage.setItem('money', JSON.stringify(money));
                 const cashItem = document.querySelector('.cash');
                 cashItem.innerText = cashItem.textContent = money.toLocaleString();

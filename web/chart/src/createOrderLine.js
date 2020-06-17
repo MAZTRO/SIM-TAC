@@ -1,7 +1,7 @@
-import { growthOrder, activeFounds } from './ordersHelpers.js';
+import { growthOrder, activeFounds, saveOrderCache } from './ordersHelpers.js';
 import { createStopLossOrder, changeOrderState } from './chartUpdates.js';
 import { createOrderInChart, createRowTable } from './ordersTemplatesHelpers.js';
-import { saveOrder, templates} from './saveOrder.js';
+import { saveOrder } from './saveOrder.js';
 import { LP } from './streaming.js'; // import last price each time the socket update a tick
 
 const lastPriceInput = document.querySelector('.idOp');
@@ -62,7 +62,6 @@ export const pendingOrdersReview = function () {
         if (cache2) {
             cache2 = JSON.parse(cache2);
             cache2.forEach(el => {
-                console.log(el.type)
                 createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true);
             })
         }
@@ -70,7 +69,6 @@ export const pendingOrdersReview = function () {
         if (cache) {
             cache = JSON.parse(cache);
             cache.forEach(el => {
-                console.log(el);
                 createOrder(el.price, el.quantity, el.type, true, el.stopOrder, true);
             })
         }
@@ -86,10 +84,36 @@ export const pendingOrdersReview = function () {
             if (element.price == LP) {
                 if (!activeFounds((element.quantity * 10), element.type)) return;
                 element.isProgrammable = false;
+                element.programmable = false;
                 element.state = "success";
-                changeOrderState(element, element.state, 5); //change the order template state to success
+                changeOrderState(element, element.state, 5, true); //change the order template state to success
                 userOrders.push(element); // push the order to sucess orders
                 pendingOrders.splice(pendingOrders.indexOf(element), 1); // deletes order from pending
+
+                let pending = window.localStorage.getItem('pendingOrders');
+                if (pending) {
+                    pending = JSON.parse(pending);
+
+                    pending.filter(el => {
+                        const pr = parseInt(element.price);
+                        const elPrice = parseInt(el.price);
+                        if (pr.toFixed() === elPrice.toFixed()) {
+                            const index = pending.indexOf(el);
+                            if (index > -1) pending.splice(index, 1);
+                            window.localStorage.setItem('pendingOrders', JSON.stringify(pending));
+                        }
+                    });
+                }
+
+                let usersOr = window.localStorage.getItem('userOrders');
+                if (usersOr) {
+                    usersOr = JSON.parse(usersOr);
+                } else {
+                    usersOr = [];
+                    usersOr.push(element);
+                    if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders')
+                    saveOrderCache('userOrders', usersOr);
+                }
             }
         });
     }
