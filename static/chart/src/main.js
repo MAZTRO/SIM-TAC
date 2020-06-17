@@ -11,5 +11,5 @@ window.tvWidget = new TradingView.widget({
     container_id: 'tvChart',
     datafeed: Datafeed,
     autosize: true,
-    library_path: 'static/chart/charting_library/',
+    library_path: '../static/chart/charting_library/',
 });

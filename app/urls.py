@@ -3,13 +3,13 @@ from app import views
 
 urlpatterns = [
     path(
-        route='',
+        route='simulator/',
         view=views.simulator,
         name='simulator'
     ),
 
     path(
-        route='home/',
+        route='',
         view=views.home_view,
         name='home'
     ),
