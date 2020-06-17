@@ -29,9 +29,14 @@ export const createStopLossOrder = function(orderObject, orderType) {
     orderObject.stopOrderTemp = obstop.orr;
 }
 
-export const updateOrderChart = function (el, quantity, price, orderType) {
-    if (orderType == 'sell') el.quantity -= (quantity / 10);
-    else if (orderType == 'buy') el.quantity += (quantity / 10);
+export const updateOrderChart = function (el, quantity, price, orderType, short) {
+    if (short) {
+        if (orderType == 'sell') el.quantity += (quantity / 10);
+        else if (orderType == 'buy') el.quantity -= (quantity / 10);
+    } else {
+        if (orderType == 'sell') el.quantity -= (quantity / 10);
+        else if (orderType == 'buy') el.quantity += (quantity / 10);
+    }
     
     if (el.quantity === 0) {
         el.orr.remove();
@@ -50,11 +55,8 @@ export const updateOrderChart = function (el, quantity, price, orderType) {
             let cache = window.localStorage.getItem('pendingOrders');
             if (cache) 
             {
-                console.log(el.quantity);
                 let eso = JSON.parse(cache);
                 eso.filter(element => {
-                    console.log(element);
-
                     const elPrice = parseInt(element.price);
                     const pr = parseInt(el.stopOrder);
                     if (pr.toFixed() === elPrice.toFixed()) {

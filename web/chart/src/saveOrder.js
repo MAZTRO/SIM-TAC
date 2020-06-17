@@ -3,7 +3,7 @@ import {userOrders, pendingOrders} from './createOrderLine.js';
 let templates = [];
 export { templates };
 
-export const saveOrder = function(order, orderType, price, isProgrammable, stopPrice, flag) { 
+export const saveOrder = function(order, orderType, price, isProgrammable, stopPrice, flag, short) { 
     /*
         * save order in proper object data for orders
         * orderObject: order based in the order data
@@ -24,6 +24,7 @@ export const saveOrder = function(order, orderType, price, isProgrammable, stopP
         quantity: order.getQuantity(),
         symbol: window.tvWidget.activeChart().symbol().split(":")[1],
         type: orderType,
+        short: short,
 
         stopOrder:  stopPrice,
         stopOrderId: '',
@@ -41,7 +42,8 @@ export const saveOrder = function(order, orderType, price, isProgrammable, stopP
             stopOrder: stopPrice,
             quantity: order._data.quantityText,
             state: state,
-            GL: 0.0
+            GL: 0.0,
+            short: short
         };
     }
 

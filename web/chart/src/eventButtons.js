@@ -24,12 +24,22 @@ buyButton.addEventListener('click', () => {
 });
 
 sellButton.addEventListener('click', () => {
-    if (priceInputLimit.disabled) {
-        setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
+
+    const short = JSON.parse(window.localStorage.getItem('currencies'));
+    if (!short) {
+        if (priceInputLimit.disabled) {
+            setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type, true);
+        } else {
+            console.log(lotesInputLimit.value)
+            setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+        }
     } else {
-        console.log(lotesInputLimit.value)
-        //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
-        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+        if (priceInputLimit.disabled) {
+            setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type, false);
+        } else {
+            console.log(lotesInputLimit.value)
+            setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+        }
     }
 });
 

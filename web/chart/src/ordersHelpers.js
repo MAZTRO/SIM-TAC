@@ -25,9 +25,8 @@ export const activeFounds = function(lotes, orderType) {
         if (!currencies) {
             currencies = {};
             currencies[currency] = lotes;
-            console.log(currencies);
             window.localStorage.setItem('currencies', JSON.stringify(currencies));
-            console.log(window.localStorage.getItem('currencies'))
+            console.log(currencies);
         
         } else {
             currencies[currency]  += lotes;
@@ -43,6 +42,7 @@ export const activeFounds = function(lotes, orderType) {
     else {
         // sell a currency if the user had bought
         let _currencies = JSON.parse(window.localStorage.getItem('currencies'));
+        let _money = JSON.parse(window.localStorage.getItem('money'));
         if (_currencies) {
             if (_currencies.hasOwnProperty(currency)) {
                 if (lotes > _currencies[currency]) {
@@ -50,9 +50,6 @@ export const activeFounds = function(lotes, orderType) {
                     return;
                 }
                 if (userOrders.length) {
-                    let _money = JSON.parse(window.localStorage.getItem('money'));
-                    console.log(_money);
-                
                     userOrders.forEach(el => {
                         let last = (LP - el.price);
                         last = last * lotes;
@@ -74,8 +71,23 @@ export const activeFounds = function(lotes, orderType) {
             }
         }
         else {
-            console.log('cant sell this quantity you only have: 0'  + ' in ' + currency);
-            return;
+            if (_money <= 0 || (_money - lotes) < 0) {
+                console.log("not enought founds");
+                return;
+            }
+            let shortCurrencies = JSON.parse(window.localStorage.getItem('shortCurrencies'));
+            if (!shortCurrencies) {
+                shortCurrencies = {};
+                shortCurrencies[currency] = lotes;
+                window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
+            } else {
+                shortCurrencies[currency]  += lotes;
+                window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
+            }
+            if (_money)  {
+                _money -= lotes;
+                window.localStorage.setItem('money', JSON.stringify(_money));
+            }
         }
     }
     const cashItem = document.querySelector('.cash');
@@ -83,18 +95,18 @@ export const activeFounds = function(lotes, orderType) {
     return true;
 }
 
-export const growthOrder = function(price, quantity, orderType, stopPrice) {
+export const growthOrder = function(price, quantity, orderType, stopPrice, short) {
     let bool = false;
-
     userOrders.forEach(el => {
         el.price = parseFloat(el.price)
-        if (price.toFixed(1) === el.price.toFixed(1)) {
+        console.log(el)
+        if (price.toFixed(1) === el.price.toFixed(1) && short === el.short) {
             if (el.stopOrder === 'NaN' && stopPrice != '') {
                 el.stopOrder = stopPrice;
                 changeOrderState(el, el.stopOrder, 3);
                 createStopLossOrder(el, orderType);
             }
-            bool = updateOrderChart(el, quantity, price, orderType);
+            bool = updateOrderChart(el, quantity, price, orderType, el.short);
             changeOrderState(el, el.quantity, 4);
             
             if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders');
@@ -106,7 +118,7 @@ export const growthOrder = function(price, quantity, orderType, stopPrice) {
                 el.stopOrder = stopPrice;
                 createStopLossOrder(el, orderType);
             }
-            bool = updateOrderChart(el, quantity, price, orderType);
+            bool = updateOrderChart(el, quantity, price, orderType, short);
             changeOrderState(el, el.price, 2);
             changeOrderState(el, el.quantity, 4);
         }

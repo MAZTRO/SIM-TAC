@@ -11,11 +11,11 @@ let pendingOrders = [];
 
 export { userOrders, pendingOrders };
 
-export const  setMarketOrder  = function(stopPrice, lotes, orderType) {
+export const  setMarketOrder  = function(stopPrice, lotes, orderType, short) {
     lotes  = (lotes * 10);
     if (!activeFounds(lotes, orderType)) return;
-    if (growthOrder(LP, lotes, orderType, stopPrice)) return;
-    createOrder(LP, lotes, orderType, false, stopPrice);
+    if (growthOrder(LP, lotes, orderType, stopPrice, short)) return;
+    createOrder(LP, lotes, orderType, false, stopPrice, false, short);
 }
 
 export const setOrderProgrammable = function(price, lotes, orderType, stopPrice) {
@@ -23,7 +23,7 @@ export const setOrderProgrammable = function(price, lotes, orderType, stopPrice)
     createOrder(price, lotes, orderType, true, stopPrice);
 }
 
-export const createOrder = function (price, quantity, orderType, prog, stopPrice, flag) {
+export const createOrder = function (price, quantity, orderType, prog, stopPrice, flag, short) {
     /* create order in active chart called order */
     if (flag) {
         const order = window.tvWidget.activeChart().createOrderLine();
@@ -39,7 +39,8 @@ export const createOrder = function (price, quantity, orderType, prog, stopPrice
         order.setPrice(price);
         order.setQuantity(quantity / 10);
         prog ? order.setText("Cover limit order") : order.setText("Cover market order") ;
-        const orderObject = saveOrder(order, orderType, price, prog, stopPrice); // save order in object, return an order object  info
+        const orderObject = saveOrder(order, orderType, price, prog, stopPrice, flag, short); // save order in object, return an order object  info
+        console.log(orderObject) 
         createOrderInChart(orderObject, order); // create order in chart
         createRowTable(orderObject);  // create row in table orders
 
@@ -101,7 +102,6 @@ export const pendingOrdersReview = function () {
                             const index = pending.indexOf(el);
                             if (index > -1) pending.splice(index, 1);
                             window.localStorage.setItem('pendingOrders', JSON.stringify(pending));
-                            console.log(window.localStorage.getItem('pendingOrders'))
                         }
                     });
                 }
