@@ -1,5 +1,6 @@
 import  {  changeOrderState, createStopLossOrder, updateOrderChart } from './chartUpdates.js';
 import { userOrders} from './createOrderLine.js';
+import { setCacheForElement } from './locaStorage.js';
 import { LP } from './streaming.js';    
 //export let currencies = {};
 //export let money = 100000;
@@ -31,8 +32,7 @@ export const activeFounds = function(lotes, orderType) {
         
         } else {
             currencies[currency]  += lotes;
-            window.localStorage.removeItem('currencies');
-            window.localStorage.setItem('currencies', JSON.stringify(currencies));
+            setCacheForElement([currencies, 'currencies']);
         }
         money -= lotes;
         window.localStorage.setItem('money', JSON.stringify(money));
@@ -59,11 +59,8 @@ export const activeFounds = function(lotes, orderType) {
                         const res = lotes + last;
                         money += res;
                     }
-                    window.localStorage.removeItem('money');
-                    window.localStorage.setItem('money', JSON.stringify(money));
                     currencies[currency] -= lotes;
-                    window.localStorage.removeItem('currencies');
-                    window.localStorage.setItem('currencies', JSON.stringify(currencies));
+                    setCacheForElement([[money, 'money'], [currencies, 'currencies']]);
                 })
             }
         }

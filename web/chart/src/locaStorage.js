@@ -12,3 +12,11 @@ export const cacheExist =  async function (reference, path) {
     }
 }
 
+export const setCacheForElement =  function (elements=[]) {
+    if (elements) {
+        elements.forEach(el => {
+            window.localStorage.removeItem(el[1]);
+            window.localStorage.setItem(el[1], JSON.stringify(el[0]))
+        })
+    }
+}
