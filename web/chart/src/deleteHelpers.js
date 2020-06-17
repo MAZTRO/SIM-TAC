@@ -21,21 +21,20 @@ export const deleteSpecific = function (price, ordersObject) {
                 }
             }
             console.log(element);
-            let money = window.localStorage.getItem('money');
+            let money = JSON.parse(window.localStorage.getItem('money'));
             if (money && !element.programmable) {
-                money =  JSON.parse(money)
                 let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
                 const currency = window.tvWidget.activeChart().symbol().split(":")[1];
-                
+                console.log(element.quantity);
                 currencies[currency] -= element.quantity * 10;
                 if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
-
+              
                 let last = (LP - element.price);
                 last = last * (element.quantity * 10);
                 money += ((element.quantity * 10) + last);
-
-                window.localStorage.setItem('currencies', JSON.stringify(currencies));
+                console.log(money)
                 window.localStorage.setItem('money', JSON.stringify(money));
+                console.log(window.localStorage.getItem('money'));
                 const cashItem = document.querySelector('.cash');
                 cashItem.innerText = cashItem.textContent = money.toLocaleString();
 

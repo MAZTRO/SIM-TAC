@@ -5,14 +5,11 @@ import { LP } from './streaming.js';
 //export let currencies = {};
 //export let money = 100000;
 
-let money = window.localStorage.getItem('money');
-if (money) {
-    money = JSON.parse(money)
-} else {
+let money = JSON.parse(window.localStorage.getItem('money'));
+if (!money) {
     window.localStorage.setItem('money', JSON.stringify(100000));
-    money = JSON.parse(window.localStorage.getItem('money'));
+    money = JSON.parse(window.localStorage.getItem('money'))
 }
-//window.localStorage.setItem('money', JSON.stringify(100000));
 
 export const activeFounds = function(lotes, orderType) {
     /* Verificates and make properly operation for found in order */
@@ -28,40 +25,52 @@ export const activeFounds = function(lotes, orderType) {
         if (!currencies) {
             currencies = {};
             currencies[currency] = lotes;
+            console.log(currencies);
             window.localStorage.setItem('currencies', JSON.stringify(currencies));
+            console.log(window.localStorage.getItem('currencies'))
         
         } else {
             currencies[currency]  += lotes;
-            setCacheForElement([currencies, 'currencies']);
+            window.localStorage.setItem('currencies', JSON.stringify(currencies));
         }
-        money -= lotes;
-        window.localStorage.setItem('money', JSON.stringify(money));
+        let _money = JSON.parse(window.localStorage.getItem('money'));
+        if (_money)  {
+            _money -= lotes;
+            window.localStorage.setItem('money', JSON.stringify(_money));
+        }
 
     }
     else {
         // sell a currency if the user had bought
-        if (currencies.hasOwnProperty(currency)) {
-            if (lotes > currencies[currency]) {
-                console.log('cant sell this quantity you only have: ' + currencies[currency] + ' in ' + currency);
-                return;
-            }
-            if (userOrders.length) {
-                userOrders.forEach(el => {
-                    let last = (LP - el.price);
-                    last = last * lotes;
-                    if (last === 0 || last === 0.0 || last === -0.0) {
-                        money += lotes;
-                    }
-                    else if (last > 0) {
-                        money += last + lotes;
-                    }
-                    else {
-                        const res = lotes + last;
-                        money += res;
-                    }
-                    currencies[currency] -= lotes;
-                    setCacheForElement([[money, 'money'], [currencies, 'currencies']]);
-                })
+        let _currencies = JSON.parse(window.localStorage.getItem('currencies'));
+        if (_currencies) {
+            if (_currencies.hasOwnProperty(currency)) {
+                if (lotes > _currencies[currency]) {
+                    console.log('cant sell this quantity you only have: ' + _currencies[currency] + ' in ' + currency);
+                    return;
+                }
+                if (userOrders.length) {
+                    let _money = JSON.parse(window.localStorage.getItem('money'));
+                    console.log(_money);
+                
+                    userOrders.forEach(el => {
+                        let last = (LP - el.price);
+                        last = last * lotes;
+                        if (last === 0 || last === 0.0 || last === -0.0) {
+                            _money += lotes;
+
+                        }
+                        else if (last > 0) {
+                            _money += last + lotes;
+                        }
+                        else {
+                            const res = lotes + last;
+                            _money += res;
+                        }
+                        _currencies[currency] -= lotes;
+                        setCacheForElement([[_money, 'money'], [_currencies, 'currencies']]);
+                    })
+                }
             }
         }
         else {
@@ -69,7 +78,6 @@ export const activeFounds = function(lotes, orderType) {
             return;
         }
     }
-    console.log(currencies);
     const cashItem = document.querySelector('.cash');
     cashItem.innerText = cashItem.textContent = JSON.parse(window.localStorage.getItem('money')).toLocaleString();//money.toLocaleString();
     return true;

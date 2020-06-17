@@ -101,6 +101,7 @@ export const pendingOrdersReview = function () {
                             const index = pending.indexOf(el);
                             if (index > -1) pending.splice(index, 1);
                             window.localStorage.setItem('pendingOrders', JSON.stringify(pending));
+                            console.log(window.localStorage.getItem('pendingOrders'))
                         }
                     });
                 }
