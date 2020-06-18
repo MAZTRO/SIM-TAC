@@ -1,50 +1,110 @@
 import { userOrders, pendingOrders } from  './createOrderLine.js';
+import { LP } from './streaming.js';
+import { updateMoney, updateMoney2 } from './ordersHelpers.js';
 
-export const deleteOrder = function(id, isProgrammable) {
+export const deleteOrder = function(price, isProgrammable) {
   /* Delete an specific order  calling deleteSpecific pasing properly obj */
   if (isProgrammable === 'false') {
-    deleteSpecific(id, userOrders);
+    deleteSpecific(price, userOrders);
   } else {
-    deleteSpecific(id, pendingOrders);
+    deleteSpecific(price, pendingOrders);
   }
 }
 
-export const deleteSpecific = function (id, ordersObject) {
+export const deleteSpecific = function (price, ordersObject) {
   /* deletes order from active chart and object */
   ordersObject.forEach(element => {
-    console.log('element ' + element.id + ' id ' + id)
-    if (id === element.id) {
+    if (price === element.price) {
       if (element.stopOrderId) {
         if (pendingOrders.length) {
-          //if (element.stopOrderTemp) {
-            //element.stopOrderTemp.remove();
-          //}
-          deleteSpecificPendingOrder(element.stopOrderId, element.stopOrderTemp);
+          deleteSpecificPendingOrder(element.stopOrder, element.stopOrderTemp);
+        }
+      }
+      let money = JSON.parse(window.localStorage.getItem('money'));
+      if (money) {
+        const currency = window.tvWidget.activeChart().symbol().split(":")[1];
+        let last = (LP - element.price);
+        let lotes = element.quantity * 10;
+        if (element.short && !element.programmable) {
+          let shortCurrencies = JSON.parse(window.localStorage.getItem('shortCurrencies'));
+          if (shortCurrencies) {
+            shortCurrencies[currency] -= element.quantity * 10;
+            if (shortCurrencies[currency] === 0) window.localStorage.removeItem('shortCurrencies');
+            else window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
+            last = last * lotes;
+            money = updateMoney2(last, money);
+            window.localStorage.setItem('money', JSON.stringify(money));
+            const cashItem = document.querySelector('.cash');
+            cashItem.innerText = cashItem.textContent = money.toLocaleString();
+          }
+        } else {
+          let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
+          if (currencies) {
+            currencies[currency] -= element.quantity * 10;
+            if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
+            else window.localStorage.setItem('currencies', JSON.stringify(currencies));
+            last = last * lotes;
+            money = updateMoney(last, money);
+            window.localStorage.setItem('money', JSON.stringify(money));
+            const cashItem = document.querySelector('.cash');
+            cashItem.innerText = cashItem.textContent = money.toLocaleString();
+          }
         }
       }
       const index = ordersObject.indexOf(element); // get the index of the object
-      console.log(index)
       element.orr.remove(); // remove the order of the chart
       if (index > -1) ordersObject.splice(index, 1); // deletes the order of the object
+      let cache = window.localStorage.getItem('userOrders');
+      if (cache) {
+        window.localStorage.removeItem('userOrders');
+      }
+      let pendingCache = window.localStorage.getItem('pendingOrders');
+      if (pendingCache) {
+        pendingCache = JSON.parse(pendingCache);
+        pendingCache.filter(el => {
+          const pr = parseInt(element.price);
+          const elPrice = parseInt(el.price);
+          if (pr.toFixed() === elPrice.toFixed()) {
+            const index = pendingCache.indexOf(el);
+            if (index > -1) pendingCache.splice(index, 1);
+            window.localStorage.setItem('pendingOrders', JSON.stringify(pendingCache));
+          }
+        });
+      }
     }
   });
 }
 
-function deleteSpecificPendingOrder(id, stopOrder) {
+function deleteSpecificPendingOrder(price, stopOrder) {
   for (const x in pendingOrders) {
-    if (pendingOrders[x].id === id) {
-      deletesOrdersbyButton(id);
+    const pr = parseInt(pendingOrders[x].price);
+    price = parseInt(price);
+    if (pr.toFixed() === price.toFixed()) {
+      deletesOrdersbyButton(price);
       stopOrder.remove();
+      let cache = window.localStorage.getItem('pendingOrders');
+      if (cache) {
+        cache = JSON.parse(cache);
+        cache.filter(el => {
+          let elPrice = parseInt(el.price);
+          if (pr.toFixed() === elPrice.toFixed()) {
+            const index = cache.indexOf(el);
+            if (index > -1) cache.splice(index, 1);
+            window.localStorage.setItem('pendingOrders', JSON.stringify(cache));
+          }
+        });
+      }
       pendingOrders.splice(pendingOrders.indexOf(pendingOrders[x]), 1);
     }
   }
 }
 
-export const  deletesOrdersbyButton = function(id) {
+export const  deletesOrdersbyButton = function(price) {
   const ordersTemplate = document.getElementById('operations_list');
   const orders = ordersTemplate.childNodes;
   for (let i = 4; i < orders.length; i++) {
-    if (orders[i].cells[0].dataset.id === id) {
+    let pr = parseInt(orders[i].cells[2].dataset.price);
+    if (pr.toFixed() === price.toFixed()) {
       deleteParenNode(orders[i]);
     }
   }
