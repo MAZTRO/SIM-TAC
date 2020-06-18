@@ -25,10 +25,28 @@ export const activeFounds = function(lotes, orderType) {
             window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
             // test if shortCurrencies = 0
             let _money = JSON.parse(window.localStorage.getItem('money'));
-            if (_money)  {
-                _money += lotes;
-                window.localStorage.setItem('money', JSON.stringify(_money));
-            }
+            if (_money)  {  
+                //_money += lotes;
+                if (userOrders.length) {
+                    userOrders.forEach(el => {
+                        let last = (LP - el.price);
+                        last = last * lotes;
+                        if (last === 0 || last === 0.0 || last === -0.0) {
+                            _money += lotes;
+                        }
+                        else if (last > 0) {
+                            last = last - lotes;
+                            _money += last;
+                        }
+                        else {
+                            last = (last * (-1) + lotes);
+                            _money += last;
+                        }
+                    });
+                    window.localStorage.removeItem('money');
+                    window.localStorage.setItem('money', JSON.stringify(_money));            
+                }
+            }  
         } else {
 
             if (money <= 0 || (money - lotes) < 0) {
@@ -52,7 +70,6 @@ export const activeFounds = function(lotes, orderType) {
                 window.localStorage.setItem('money', JSON.stringify(_money));
             }
         }
-
     }
     else {
         // sell a currency if the user had bought

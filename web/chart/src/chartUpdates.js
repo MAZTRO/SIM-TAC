@@ -29,6 +29,7 @@ export const createStopLossOrder = function(orderObject, orderType) {
 }
 
 export const updateOrderChart = function (el, quantity, price, orderType, short) {
+    console.log("heree")
     if (short) {
         if (orderType == 'sell') el.quantity += (quantity / 10);
         else if (orderType == 'buy') el.quantity -= (quantity / 10);
@@ -48,11 +49,12 @@ export const updateOrderChart = function (el, quantity, price, orderType, short)
         window.localStorage.removeItem('shortCurrencies');
     }
     else {
-        
         el.orr.setQuantity(el.quantity);
         if (el.stopOrderTemp) {
             el.stopOrderTemp.setQuantity(el.quantity);
-            changeOrderState(el.stopOrderTemp._line, el.quantity, 4);
+            const element = changeOrderState(el.stopOrderTemp._line, el.quantity, 4);
+            element.innerText = element.textContent = el.quantity;
+            console.log("heree")
             let cache = window.localStorage.getItem('pendingOrders');
             if (cache) 
             {
@@ -69,6 +71,8 @@ export const updateOrderChart = function (el, quantity, price, orderType, short)
         }
         el.orr.setPrice((el.price + price) / 2);
         el.price = el.orr.getPrice().toFixed(1);
+        const order = changeOrderState(el, el.quantity, 4);
+        order.innerText = order.textContent = el.quantity;
     }
     return true;
 }

@@ -134,15 +134,12 @@ function GLverificate () {
         let last;
         const price = parseInt(el.price);
         if (el.short) {
-            console.log(price)
             last = (LP - price).toFixed(1);
-            console.log(last)
         }
         else {
             last = (LP - price).toFixed(1);
         }
         const element = changeOrderState(el, last, 6, el.short);
-        console.log(el);
         changeStyle(element, last, el.short);
     });
 }
