@@ -43,7 +43,8 @@ export const deleteSpecific = function (price, ordersObject) {
             currencies[currency] -= element.quantity * 10;
             if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
             else window.localStorage.setItem('currencies', JSON.stringify(currencies));
-            money += last + lotes;
+            last = last * lotes;
+            money += last;
             console.log(money)
             window.localStorage.setItem('money', JSON.stringify(money));
             console.log(window.localStorage.getItem('money'));
