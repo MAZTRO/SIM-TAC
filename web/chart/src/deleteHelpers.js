@@ -22,13 +22,27 @@ export const deleteSpecific = function (price, ordersObject) {
             }
             console.log(element);
             let money = JSON.parse(window.localStorage.getItem('money'));
-            if (money && !element.programmable) {
-                let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
+            
+            if (money) {
                 const currency = window.tvWidget.activeChart().symbol().split(":")[1];
-                console.log(element.quantity);
-                currencies[currency] -= element.quantity * 10;
-                if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
-              
+
+                if (element.short && !element.programmable) {
+                    let shortCurrencies = JSON.parse(window.localStorage.getItem('shortCurrencies'));
+                    shortCurrencies[currency] -= element.quantity * 10;
+                    if (shortCurrencies[currency] === 0) window.localStorage.removeItem('shortCurrencies');
+                    else window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
+                }
+                else {
+
+                    let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
+                    if (currencies) {
+                        console.log(element.quantity);
+                        currencies[currency] -= element.quantity * 10;
+                        if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
+                        else window.localStorage.setItem('currencies', JSON.stringify(currencies));
+                    }
+
+                }
                 let last = (LP - element.price);
                 last = last * (element.quantity * 10);
                 money += ((element.quantity * 10) + last);

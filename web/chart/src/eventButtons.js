@@ -15,11 +15,21 @@ const stopInputLimit = document.querySelector('.stopIn');
 
 
 buyButton.addEventListener('click', () => {
-    if (priceInputLimit.disabled) {
-        setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type);
+    const long = JSON.parse(window.localStorage.getItem('shortCurrencies'));
+    if (long) {
+        if (priceInputLimit.disabled) {
+            setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type, true);
+        } else {
+            //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
+            setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
+        }
     } else {
-        //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
-        setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
+        if (priceInputLimit.disabled) {
+            setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type, false);
+        } else {
+            //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
+            setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
+        }
     }
 });
 

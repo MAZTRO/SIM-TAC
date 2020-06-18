@@ -17,25 +17,40 @@ export const activeFounds = function(lotes, orderType) {
     const currency = window.tvWidget.activeChart().symbol().split(":")[1]; //symbol pair
     if (orderType === "Buy" || orderType === "buy") {
         
-        if (money <= 0 || (money - lotes) < 0) {
-            console.log("not enought founds");
-            return;
-        }
-        // currencies will contains the currency user has in lotes price
-        if (!currencies) {
-            currencies = {};
-            currencies[currency] = lotes;
-            window.localStorage.setItem('currencies', JSON.stringify(currencies));
-            console.log(currencies);
-        
+        let shortCurrencies = JSON.parse(window.localStorage.getItem('shortCurrencies'));
+        if (shortCurrencies) {
+            shortCurrencies[currency] -= lotes;
+            console.log(shortCurrencies);
+            window.localStorage.removeItem('shortCurrencies');
+            window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
+            // test if shortCurrencies = 0
+            let _money = JSON.parse(window.localStorage.getItem('money'));
+            if (_money)  {
+                _money += lotes;
+                window.localStorage.setItem('money', JSON.stringify(_money));
+            }
         } else {
-            currencies[currency]  += lotes;
-            window.localStorage.setItem('currencies', JSON.stringify(currencies));
-        }
-        let _money = JSON.parse(window.localStorage.getItem('money'));
-        if (_money)  {
-            _money -= lotes;
-            window.localStorage.setItem('money', JSON.stringify(_money));
+
+            if (money <= 0 || (money - lotes) < 0) {
+                console.log("not enought founds");
+                return;
+            }
+            // currencies will contains the currency user has in lotes price
+            if (!currencies) {
+                currencies = {};
+                currencies[currency] = lotes;
+                window.localStorage.setItem('currencies', JSON.stringify(currencies));
+                console.log(currencies);
+            
+            } else {
+                currencies[currency]  += lotes;
+                window.localStorage.setItem('currencies', JSON.stringify(currencies));
+            }
+            let _money = JSON.parse(window.localStorage.getItem('money'));
+            if (_money)  {
+                _money -= lotes;
+                window.localStorage.setItem('money', JSON.stringify(_money));
+            }
         }
 
     }
@@ -79,9 +94,11 @@ export const activeFounds = function(lotes, orderType) {
             if (!shortCurrencies) {
                 shortCurrencies = {};
                 shortCurrencies[currency] = lotes;
+                window.localStorage.removeItem('shortCurrencies');
                 window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
             } else {
                 shortCurrencies[currency]  += lotes;
+                window.localStorage.removeItem('shortCurrencies');
                 window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
             }
             if (_money)  {

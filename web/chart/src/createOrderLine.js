@@ -30,7 +30,7 @@ export const createOrder = function (price, quantity, orderType, prog, stopPrice
         order.setPrice(price);
         order.setQuantity(quantity);
         prog ? order.setText("Cover limit order") : order.setText("Cover market order") ;
-        const orderObject = saveOrder(order, orderType, price, prog, stopPrice, flag);
+        const orderObject = saveOrder(order, orderType, price, prog, stopPrice, flag, short);
         createOrderInChart(orderObject, order); // create order in chart
         createRowTable(orderObject);  // create row in table orders
     }
@@ -56,26 +56,8 @@ export const pendingOrdersReview = function () {
         Update pending orders to complete succesfully orders
         if a price in a prending order is equal to last pice the oerder must be taked
     */
-    lastPriceInput.placeholder = LP.toFixed(1);
 
-    if (count < 1) {
-        let cache2 = window.localStorage.getItem('userOrders');
-        if (cache2) {
-            cache2 = JSON.parse(cache2);
-            cache2.forEach(el => {
-                createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true);
-            })
-        }
-        let cache = window.localStorage.getItem('pendingOrders');
-        if (cache) {
-            cache = JSON.parse(cache);
-            cache.forEach(el => {
-                createOrder(el.price, el.quantity, el.type, true, el.stopOrder, true);
-            })
-        }
-        count++;
-    }
-
+   recreateOrders ();
     //updates real price in price order input
     if (userOrders.length) {
         GLverificate();
@@ -119,24 +101,49 @@ export const pendingOrdersReview = function () {
         });
     }
 }
+function recreateOrders () {
+    lastPriceInput.placeholder = LP.toFixed(1);
+    if (count < 1) {
+        let cache2 = window.localStorage.getItem('userOrders');
+        if (cache2) {
+            cache2 = JSON.parse(cache2);
+            cache2.forEach(el => {
+                if (el.type === "sell") {
+                    const short = true;
+                    console.log("here")
+                    createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true, short);
+                }
+                else {
+                    createOrder(el.price, el.quantity, el.type, false, el.stopOrder, true);
+                }
+            })
+        }
+        let cache = window.localStorage.getItem('pendingOrders');
+        if (cache) {
+            cache = JSON.parse(cache);
+            cache.forEach(el => {
+                createOrder(el.price, el.quantity, el.type, true, el.stopOrder, true);
+            })
+        }
+        count++;
+    }
+}
 
 function GLverificate () {
     userOrders.forEach(el => {
-        let last = (LP - el.price).toFixed(1);
-        if (el.type === "buy" || el.type === "Buy") {
-            const element = changeOrderState(el, last, 6);
-            if (last > 0) {
-                element.classList.remove('redFont');
-                element.classList.add('greenFont');
-
-            } else if (last < 0){
-                element.classList.remove('greenFont')
-                element.classList.add('redFont');
-            } else {
-                element.classList.remove('greenFont');
-                element.classList.remove('redFont');
-            }
+        let last;
+        const price = parseInt(el.price);
+        if (el.short) {
+            console.log(price)
+            last = (LP - price).toFixed(1);
+            console.log(last)
         }
+        else {
+            last = (LP - price).toFixed(1);
+        }
+        const element = changeOrderState(el, last, 6, el.short);
+        console.log(el);
+        changeStyle(element, last, el.short);
     });
 }
 
@@ -150,6 +157,38 @@ export const founds = function () {
     else cashItem.appendChild(document.createTextNode(money.toLocaleString()));
 }
 
+function changeStyle (element, last, short) {
+    if (short) {
+        if (last > 0) {
+            element.classList.remove('greenFont');
+            element.classList.add('redFont');
+            element.innerText = element.textContent = last * (-1);
+    
+        } else if (last < 0){
+            element.innerText = element.textContent = last * 1;
+            element.classList.remove('redFont')
+            element.classList.add('greenFont');
+        } else {
+            element.innerText = element.textContent = last;
+            element.classList.remove('greenFont');
+            element.classList.remove('redFont');
+        }
+    }
+    else {
+        element.innerText = element.textContent = last;
+        if (last > 0) {
+            element.classList.remove('redFont');
+            element.classList.add('greenFont');
+
+        } else if (last < 0){
+            element.classList.remove('greenFont')
+            element.classList.add('redFont');
+        } else {
+            element.classList.remove('greenFont');
+            element.classList.remove('redFont');
+        }
+    }
+}
 /*other methos that can set to the order line on th chart
       const color = '#ff9f0a';
       const fontColor = '#fff';

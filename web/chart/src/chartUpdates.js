@@ -13,8 +13,7 @@ export const changeOrderState = function(element, text, index, flag) {
     for (let i = 4; i < orders.length; i++) {
         if (orders[i].cells[0].dataset.id === id) {
             if (flag) orders[i].cells[7].childNodes[0].dataset.is = false;
-            const order = orders[i].getElementsByTagName('td')[index]; 
-            order.innerText = order.textContent = text;
+            const order = orders[i].getElementsByTagName('td')[index];
             return order;
         }
     }
@@ -45,6 +44,8 @@ export const updateOrderChart = function (el, quantity, price, orderType, short)
         userOrders.splice(userOrders.indexOf(el), 1);
         cacheTest('pendingOrders', el);
         if (window.localStorage.getItem('userOrders')) window.localStorage.removeItem('userOrders');
+        window.localStorage.removeItem('currencies');
+        window.localStorage.removeItem('shortCurrencies');
     }
     else {
         
