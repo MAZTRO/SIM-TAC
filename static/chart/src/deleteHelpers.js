@@ -32,7 +32,7 @@ export const deleteSpecific = function (price, ordersObject) {
             if (shortCurrencies[currency] === 0) window.localStorage.removeItem('shortCurrencies');
             else window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
             last = last * lotes;
-            money = updateMoney2(last, lotes, money);
+            money = updateMoney2(last, money);
             window.localStorage.setItem('money', JSON.stringify(money));
             const cashItem = document.querySelector('.cash');
             cashItem.innerText = cashItem.textContent = money.toLocaleString();
@@ -40,14 +40,11 @@ export const deleteSpecific = function (price, ordersObject) {
         } else {
           let  currencies = JSON.parse(window.localStorage.getItem('currencies'));
           if (currencies) {
-            console.log(element.quantity);
             currencies[currency] -= element.quantity * 10;
             if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
             else window.localStorage.setItem('currencies', JSON.stringify(currencies));
             last = last * lotes;
-            console.log(lotes);
-            console.log(last);
-            money = updateMoney(last, lotes, money);
+            money = updateMoney(last, money);
             window.localStorage.setItem('money', JSON.stringify(money));
             const cashItem = document.querySelector('.cash');
             cashItem.innerText = cashItem.textContent = money.toLocaleString();

@@ -28,10 +28,8 @@ export const activeFounds = function(lotes, orderType) {
             last = last.toFixed();
             last = parseInt(last);
             if (last > 0) {
-              console.log(`entro dddddd ${last}`);
               _money -= last;
             } else if (last < 0) {
-              console.log(`entro eeeeee ${last}`);
               last = last * (-1);
               _money += last;
             }
@@ -144,7 +142,7 @@ export const saveOrderCache = function (reference, obj) {
   }));
 }
 
-export const updateMoney = function (last, lotes, _money) {
+export const updateMoney = function (last, _money) {
   if (last.toFixed(1) > 0) {
     _money += last;
   } else if (last.toFixed(1) < 0) {
@@ -153,7 +151,7 @@ export const updateMoney = function (last, lotes, _money) {
   return _money;
 }
 
-export const updateMoney2 = function (last, lotes, _money) {
+export const updateMoney2 = function (last, _money) {
   if (last.toFixed(1) > 0) {
     _money -= last;
   } else if (last.toFixed(1) < 0) {
