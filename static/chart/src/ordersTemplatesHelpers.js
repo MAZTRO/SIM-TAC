@@ -9,7 +9,6 @@ export const createOrderInChart = function(obj, order) {
 
 export const createRowTable = function(el) {
   let tr = document.createElement('tr');
-  //el.type  = el.type[0].toUpperCase() + el.type.slice(1);
   const ob = [['id', el.id], ['type', el.type], ['price', el.price],
   ['stop', el.stopOrder], ['quantity', el.quantity], ['state', el.state],
   ['GL', el.GL]];
@@ -23,12 +22,16 @@ export const createRowTable = function(el) {
       return;
     } else {
       td.dataset[ob[i][0]] = ob[i][1];
-      td.appendChild(document.createTextNode(ob[i][1]));
       if (i == 1) {
-        if (ob[i][1] === 'Buy') td.classList.add('greenFont');
-        else td.classList.add('redFont');
-        //.log(td)green
+        if (ob[i][1] === 'Buy' || ob[i][1] === 'buy') {
+          ob[i][1] = 'Buy';
+          td.classList.add('greenFont');
+        } else {
+          ob[i][1] = 'Sell';
+          td.classList.add('redFont');
+        }
       }
+      td.appendChild(document.createTextNode(ob[i][1]));
       tr.appendChild(td);
     }
   }

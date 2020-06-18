@@ -39,7 +39,6 @@ export const createOrder = function (price, quantity, orderType, prog, stopPrice
     order.setQuantity(quantity / 10);
     prog ? order.setText("Cover limit order") : order.setText("Cover market order") ;
     const orderObject = saveOrder(order, orderType, price, prog, stopPrice, flag, short); // save order in object, return an order object  info
-    /* console.log(orderObject) */
     createOrderInChart(orderObject, order); // create order in chart
     createRowTable(orderObject);  // create row in table orders
 
@@ -143,7 +142,6 @@ export const founds = function () {
   const p = document.createElement('p');
   const cashItem = document.querySelector('.cash');
   let found = JSON.parse(window.localStorage.getItem('money'));
-  /* console.log(found); */
   if (found) cashItem.appendChild(document.createTextNode(found.toLocaleString()));
   else cashItem.appendChild(document.createTextNode(money.toLocaleString()));
 }
@@ -153,9 +151,9 @@ function changeStyle (element, last, short) {
     if (last > 0) {
       element.classList.remove('greenFont');
       element.classList.add('redFont');
-      element.innerText = element.textContent = last * (-1);
+      element.innerText = element.textContent = last * (1);
     } else if (last < 0){
-      element.innerText = element.textContent = last * 1;
+      element.innerText = element.textContent = last * (-1);
       element.classList.remove('redFont')
       element.classList.add('greenFont');
     } else {

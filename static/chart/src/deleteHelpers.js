@@ -1,6 +1,6 @@
 import { userOrders, pendingOrders } from  './createOrderLine.js';
 import { LP } from './streaming.js';
-import { updateMoney } from './ordersHelpers.js';
+import { updateMoney, updateMoney2 } from './ordersHelpers.js';
 
 export const deleteOrder = function(price, isProgrammable) {
   /* Delete an specific order  calling deleteSpecific pasing properly obj */
@@ -31,7 +31,8 @@ export const deleteSpecific = function (price, ordersObject) {
             shortCurrencies[currency] -= element.quantity * 10;
             if (shortCurrencies[currency] === 0) window.localStorage.removeItem('shortCurrencies');
             else window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
-            money = updateMoney(last, lotes, money);
+            last = last * lotes;
+            money = updateMoney2(last, lotes, money);
             window.localStorage.setItem('money', JSON.stringify(money));
             const cashItem = document.querySelector('.cash');
             cashItem.innerText = cashItem.textContent = money.toLocaleString();
@@ -44,10 +45,10 @@ export const deleteSpecific = function (price, ordersObject) {
             if (currencies[currency] === 0) window.localStorage.removeItem('currencies');
             else window.localStorage.setItem('currencies', JSON.stringify(currencies));
             last = last * lotes;
-            money += last;
-            console.log(money)
+            console.log(lotes);
+            console.log(last);
+            money = updateMoney(last, lotes, money);
             window.localStorage.setItem('money', JSON.stringify(money));
-            console.log(window.localStorage.getItem('money'));
             const cashItem = document.querySelector('.cash');
             cashItem.innerText = cashItem.textContent = money.toLocaleString();
           }

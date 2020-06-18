@@ -24,7 +24,17 @@ export const activeFounds = function(lotes, orderType) {
         if (userOrders.length) {
           userOrders.forEach(el => {
             let last = (LP - el.price);
-            _money = updateMoney(last, lotes, _money);
+            last = last * lotes;
+            last = last.toFixed();
+            last = parseInt(last);
+            if (last > 0) {
+              console.log(`entro dddddd ${last}`);
+              _money -= last;
+            } else if (last < 0) {
+              console.log(`entro eeeeee ${last}`);
+              last = last * (-1);
+              _money += last;
+            }
           });
           window.localStorage.removeItem('money');
           window.localStorage.setItem('money', JSON.stringify(_money));
@@ -40,16 +50,10 @@ export const activeFounds = function(lotes, orderType) {
         currencies = {};
         currencies[currency] = lotes;
         window.localStorage.setItem('currencies', JSON.stringify(currencies));
-        /* console.log(currencies); */
       } else {
         currencies[currency]  += lotes;
         window.localStorage.setItem('currencies', JSON.stringify(currencies));
       }
-      /* let _money = JSON.parse(window.localStorage.getItem('money'));
-      if (_money)  {
-        _money -= lotes;
-        window.localStorage.setItem('money', JSON.stringify(_money));
-      } */
     }
   } else {
     // sell a currency if the user had bought
@@ -65,13 +69,16 @@ export const activeFounds = function(lotes, orderType) {
           userOrders.forEach(el => {
             let last = (LP - el.price);
             last = last * lotes;
+            last = last.toFixed();
             if (last > 0) {
+              last = parseInt(last);
               _money += last;
-            } else {
-              /* const res = lotes + last; */
+            } else if (last < 0) {
+              last = parseInt(last * (-1));
               _money -= last;
             }
             _currencies[currency] -= lotes;
+            console.log(window.localStorage.getItem('money'));
             setCacheForElement([[_money, 'money'], [_currencies, 'currencies']]);
             });
           }
@@ -88,14 +95,10 @@ export const activeFounds = function(lotes, orderType) {
           window.localStorage.removeItem('shortCurrencies');
           window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
         } else {
-          shortCurrencies[currency]  += lotes;
+          shortCurrencies[currency] += lotes;
           window.localStorage.removeItem('shortCurrencies');
           window.localStorage.setItem('shortCurrencies', JSON.stringify(shortCurrencies));
         }
-        /* if (_money)  {
-          _money -= lotes;
-          window.localStorage.setItem('money', JSON.stringify(_money));
-        } */
       }
     }
     const cashItem = document.querySelector('.cash');
@@ -107,7 +110,6 @@ export const growthOrder = function(price, quantity, orderType, stopPrice, short
   let bool = false;
   userOrders.forEach(el => {
     el.price = parseFloat(el.price)
-    /* console.log(el) */
     if (price.toFixed(1) === el.price.toFixed(1) && short === el.short) {
       if (el.stopOrder === 'NaN' && stopPrice != '') {
         el.stopOrder = stopPrice;
@@ -143,16 +145,19 @@ export const saveOrderCache = function (reference, obj) {
 }
 
 export const updateMoney = function (last, lotes, _money) {
-  if (last === 0 || last === 0.0 || last === -0.0) {
-    _money += lotes;
-  }
-  else if (last > 0) {
-    last = last - lotes;
-    console.log(last)
+  if (last.toFixed(1) > 0) {
+    _money += last;
+  } else if (last.toFixed(1) < 0) {
     _money += last;
   }
-  else {
-    last = (last * (-1) + lotes);
+  return _money;
+}
+
+export const updateMoney2 = function (last, lotes, _money) {
+  if (last.toFixed(1) > 0) {
+    _money -= last;
+  } else if (last.toFixed(1) < 0) {
+    last = last * (-1);
     _money += last;
   }
   return _money;
