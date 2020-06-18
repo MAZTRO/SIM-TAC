@@ -1,4 +1,4 @@
-import { setMarketOrder, setOrderProgrammable, pendingOrders } from './createOrderLine.js';
+import { setMarketOrder, setOrderProgrammable } from './createOrderLine.js';
 import { deleteOrder } from './deleteHelpers.js';
 
 const buyButton = document.getElementById('buy');
@@ -15,19 +15,40 @@ const stopInputLimit = document.querySelector('.stopIn');
 
 
 buyButton.addEventListener('click', () => {
-  if (priceInputLimit.disabled) {
-    setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type);
+  const long = JSON.parse(window.localStorage.getItem('shortCurrencies'));
+  if (long) {
+    if (priceInputLimit.disabled) {
+      setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type, true);
+    } else {
+      //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
+      setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
+    }
   } else {
-    setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
+    if (priceInputLimit.disabled) {
+      setMarketOrder(priceInput.value, lotesInput.value, buyButton.dataset.type, false);
+    } else {
+      //if (!checkinput(priceInputLimit.value, lotesInput.value)) return;
+      setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, buyButton.dataset.type, stopInputLimit.value);
+    }
   }
 });
 
 sellButton.addEventListener('click', () => {
-  if (priceInputLimit.disabled) {
-    setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type);
+  const short = JSON.parse(window.localStorage.getItem('currencies'));
+  if (!short) {
+    if (priceInputLimit.disabled) {
+      setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type, true);
+    } else {
+      /* console.log(lotesInputLimit.value) */
+      setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+    }
   } else {
-    console.log(lotesInputLimit.value)
-    setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+    if (priceInputLimit.disabled) {
+      setMarketOrder(priceInput.value, lotesInput.value, sellButton.dataset.type, false);
+    } else {
+      /* console.log(lotesInputLimit.value) */
+      setOrderProgrammable(priceInputLimit.value, lotesInputLimit.value, sellButton.dataset.type, stopInputLimit.value);
+    }
   }
 });
 
@@ -42,9 +63,9 @@ stopLostButton.addEventListener('click', (event) => {
 });
 
 export const addCloseEvent = function (element) {
-  console.log("clossing order proocess activate");
   element.addEventListener('click', () => {
-    deleteOrder(element.dataset.id, element.dataset.is);
+    /* console.log(element) */
+    deleteOrder(element.dataset.price, element.dataset.is);
     element.parentNode.parentNode.remove();
   });
 }
