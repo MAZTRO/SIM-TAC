@@ -1,4 +1,4 @@
-<p align="center"> <img src="../static/pub_images/sim_logo.png" width="350"/>
+<p align="center"> <img src="/static/pub_images/sim_logo.png" width="700"/>
 
 <!-- ![Profile](../static/pub_images/sim_logo.png) -->
 
@@ -41,9 +41,9 @@ You can run this project with this command:
 $ python3 manage.py runserver 0:8000
 ```
 
-<p align="center"> <img src="../Design/portrait.png" width="350"/>
+<p align="center"> <img src="/Design/portrait.png" width="700"/>
 <!-- ![Profile](../Design/portrait.png) -->
-<p align="center"> <img src="../Design/app.png" width="350"/>
+<p align="center"> <img src="/Design/app.png" width="700"/>
 <!-- ![app](../Design/app.png) -->
 
 ## Contributing:
@@ -57,7 +57,7 @@ $ python3 manage.py runserver 0:8000
 
 ## Team:
 
-<p align="center"> <img src="/Design/team.png" width="350"/>
+<p align="center"> <img src="/Design/team.png" width="700"/>
 <!-- ![Team](../Design/team.png) -->
 
 ## Authors:
