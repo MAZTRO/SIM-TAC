@@ -57,7 +57,7 @@ $ python3 manage.py runserver 0:8000
 
 ## Team:
 
-<p align="center"> <img src="../Design/team.pn" width="350"/>
+<p align="center"> <img src="/Design/team.png" width="350"/>
 <!-- ![Team](../Design/team.png) -->
 
 ## Authors:
